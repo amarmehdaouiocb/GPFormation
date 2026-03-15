@@ -60,17 +60,17 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-zinc-950 mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 mb-5">
           Choisissez votre{" "}
           <span className="text-[#4CAF50]">formation</span>
         </h2>
-        <p className="text-base md:text-lg text-zinc-500 max-w-xl mx-auto mb-8 font-light">
+        <p className="text-base md:text-lg text-zinc-500 max-w-lg mx-auto mb-10 font-light tracking-[0.01em]">
           Des programmes certifiés Qualiopi, adaptés à votre rythme et vos
           objectifs.
         </p>
         <Link
           href="/tarifs"
-          className="inline-flex items-center gap-2 px-7 py-3.5 bg-zinc-950 text-white font-semibold text-sm rounded-full hover:bg-zinc-800 transition-colors"
+          className="inline-flex items-center gap-2 px-8 py-3.5 bg-zinc-950 text-white font-medium uppercase tracking-[0.12em] text-[13px] rounded-full hover:bg-zinc-800 transition-colors"
         >
           Voir les tarifs <ArrowRight size={16} />
         </Link>

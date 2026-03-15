@@ -45,8 +45,8 @@ body {
 
 /* Typographie de titraille élégante (Taste Skill) */
 h1, .display-title {
-  letter-spacing: -0.05em !important; /* Tracking ultra tight pour le côté premium */
-  line-height: 0.95 !important;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
   font-weight: 800;
 }
 

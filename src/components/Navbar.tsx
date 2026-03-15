@@ -40,7 +40,7 @@ export default function Navbar() {
 
       if (isHome && !mobileMenuOpen) {
         const atTop = currentY < 50;
-        const pastHero = currentY > window.innerHeight * 2;
+        const pastHero = currentY > window.innerHeight * 0.3;
         setIsNavHidden(!atTop && !pastHero);
       }
 
@@ -88,8 +88,8 @@ export default function Navbar() {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button className={cn(
-                "flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors py-2",
-                isTransparent ? "text-white/90 hover:text-white" : "text-zinc-500 hover:text-zinc-950"
+                "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
+                isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
               )}>
                 Formations TAXI <ChevronDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'taxi' ? "rotate-180" : "")} />
               </button>
@@ -104,7 +104,7 @@ export default function Navbar() {
                   >
                     <div className="bg-white border border-zinc-200 shadow-xl rounded-xl p-2 flex flex-col gap-0.5">
                       {formationsTaxi.map((item) => (
-                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-medium text-zinc-500 hover:text-zinc-950 hover:bg-zinc-50 rounded-lg transition-colors">
+                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-normal tracking-[0.01em] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
                           {item.name}
                         </Link>
                       ))}
@@ -120,8 +120,8 @@ export default function Navbar() {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button className={cn(
-                "flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors py-2",
-                isTransparent ? "text-white/90 hover:text-white" : "text-zinc-500 hover:text-zinc-950"
+                "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
+                isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
               )}>
                 Formations VTC <ChevronDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'vtc' ? "rotate-180" : "")} />
               </button>
@@ -136,7 +136,7 @@ export default function Navbar() {
                   >
                     <div className="bg-white border border-zinc-200 shadow-xl rounded-xl p-2 flex flex-col gap-0.5">
                       {formationsVtc.map((item) => (
-                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-medium text-zinc-500 hover:text-zinc-950 hover:bg-zinc-50 rounded-lg transition-colors">
+                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-normal tracking-[0.01em] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
                           {item.name}
                         </Link>
                       ))}
@@ -147,20 +147,20 @@ export default function Navbar() {
             </div>
 
             <Link href="/recuperation-de-points" className={cn(
-              "text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors",
-              isTransparent ? "text-white/90 hover:text-white" : "text-zinc-500 hover:text-zinc-950"
+              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
+              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
             )}>
               Récupération de points
             </Link>
             <Link href="/tarifs" className={cn(
-              "text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors",
-              isTransparent ? "text-white/90 hover:text-white" : "text-zinc-500 hover:text-zinc-950"
+              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
+              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
             )}>
               Tarifs
             </Link>
             <Link href="/contact" className={cn(
-              "text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors",
-              isTransparent ? "text-white/90 hover:text-white" : "text-zinc-500 hover:text-zinc-950"
+              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
+              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
             )}>
               Contact
             </Link>

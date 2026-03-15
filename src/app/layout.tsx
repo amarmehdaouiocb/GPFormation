@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Geist_Mono } from "next/font/google";
+import { Outfit, Geist_Mono, Instrument_Serif, Bricolage_Grotesque, Syne } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -11,6 +11,22 @@ const outfit = Outfit({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+});
+
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
 });
 
@@ -26,7 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="scroll-smooth">
-      <body className={`${outfit.variable} ${geistMono.variable} font-sans bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased flex flex-col min-h-screen`}>
+      <head>
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
+      </head>
+      <body className={`${outfit.variable} ${geistMono.variable} ${instrumentSerif.variable} ${bricolageGrotesque.variable} ${syne.variable} font-sans bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased flex flex-col min-h-screen`}>
         <Navbar />
         <main className="flex-grow">
           {children}
