@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ChevronRight, GraduationCap } from "lucide-react";
+import { ArrowRight, CheckCircle, CaretRight, GraduationCap } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 
 interface SubFormation {
@@ -33,7 +33,7 @@ export default function FormationFamilyTemplate({ title, subtitle, content, subF
             <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
             {breadcrumbs.map((crumb, idx) => (
               <div key={idx} className="flex items-center gap-2 whitespace-nowrap">
-                <ChevronRight size={14} />
+                <CaretRight size={14} />
                 <Link 
                   href={crumb.href} 
                   className={idx === breadcrumbs.length - 1 ? "text-white" : "hover:text-white transition-colors"}
@@ -71,14 +71,14 @@ export default function FormationFamilyTemplate({ title, subtitle, content, subF
               className="lg:col-span-4 flex flex-col gap-px bg-zinc-800 border border-zinc-800"
             >
               <div className="bg-zinc-950 p-8 flex items-start gap-5">
-                <CheckCircle2 className="text-[#4CAF50] shrink-0 mt-1" size={24} strokeWidth={1.5} />
+                <CheckCircle className="text-[#4CAF50] shrink-0 mt-1" size={24} weight="duotone" />
                 <div>
                   <h4 className="font-bold text-white mb-2 text-lg">Centre Agréé</h4>
                   <p className="text-sm text-zinc-400 leading-relaxed">Reconnu par la préfecture pour l'examen officiel.</p>
                 </div>
               </div>
               <div className="bg-zinc-950 p-8 flex items-start gap-5">
-                <GraduationCap className="text-[#4CAF50] shrink-0 mt-1" size={24} strokeWidth={1.5} />
+                <GraduationCap className="text-[#4CAF50] shrink-0 mt-1" size={24} weight="duotone" />
                 <div>
                   <h4 className="font-bold text-white mb-2 text-lg">Éligible CPF</h4>
                   <p className="text-sm text-zinc-400 leading-relaxed">Financez votre formation jusqu'à 100%.</p>

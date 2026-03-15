@@ -3,7 +3,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, CaretRight } from "@phosphor-icons/react";
 
 interface MarkdownPageProps {
   content: string;
@@ -22,7 +22,7 @@ export default function MarkdownPage({ content, title, breadcrumbs }: MarkdownPa
               <Link href="/" className="hover:text-zinc-950 transition-colors">Accueil</Link>
               {breadcrumbs.map((crumb, idx) => (
                 <div key={idx} className="flex items-center gap-2 whitespace-nowrap">
-                  <ChevronRight size={14} />
+                  <CaretRight size={14} />
                   <Link 
                     href={crumb.href} 
                     className={idx === breadcrumbs.length - 1 ? "text-zinc-950" : "hover:text-zinc-950 transition-colors"}

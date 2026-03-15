@@ -2,7 +2,7 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CheckCircle2, ChevronRight, Info } from "lucide-react";
+import { CheckCircle, CaretRight, Info } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -38,7 +38,7 @@ const baseMarkdownComponents = {
   h3: ({ node, ...props }: any) => (
     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-6 flex items-center gap-3">
       <div className="w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-sm flex items-center justify-center shrink-0">
-        <ChevronRight className="text-[#4CAF50]" size={20} strokeWidth={3} />
+        <CaretRight className="text-[#4CAF50]" size={20} weight="bold" />
       </div>
       {props.children}
     </h3>
@@ -56,7 +56,7 @@ const baseMarkdownComponents = {
   li: ({ node, ...props }: any) => (
     <li className="flex items-start gap-4 p-4 md:p-5 bg-zinc-50 border border-zinc-200 rounded-xl hover:border-[#4CAF50]/30 hover:bg-white transition-colors group">
       <div className="mt-0.5 shrink-0 text-[#4CAF50]">
-        <CheckCircle2 size={24} strokeWidth={2} />
+        <CheckCircle size={24} weight="duotone" />
       </div>
       <span className="text-zinc-700 group-hover:text-zinc-950 leading-relaxed font-medium transition-colors text-lg">
         {props.children}
@@ -93,7 +93,7 @@ const baseMarkdownComponents = {
   blockquote: ({ node, ...props }: any) => (
     <blockquote className="my-8 p-6 md:p-8 bg-zinc-50 border border-zinc-200 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
       <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-zinc-200 shrink-0 shadow-sm">
-        <Info className="text-[#4CAF50]" size={24} />
+        <Info className="text-[#4CAF50]" size={24} weight="duotone" />
       </div>
       <div className="text-zinc-800 font-medium text-lg italic leading-relaxed pt-2">
         {props.children}

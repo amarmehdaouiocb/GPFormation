@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Sparkles, Clock } from "lucide-react";
+import { ArrowRight, CalendarBlank, Sparkle, Clock } from "@phosphor-icons/react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -13,7 +13,7 @@ const formations = [
     image: "/images/taxi-parisien.jpg",
     stat: "92% réussite",
     badge: "Prochaine session — Avril 2026",
-    BadgeIcon: Calendar,
+    BadgeIcon: CalendarBlank,
     href: "/formation-taxi",
     highlight: false,
   },
@@ -22,7 +22,7 @@ const formations = [
     image: "/images/vtc-berline-noire.jpg",
     stat: "+6 000 formés",
     badge: "Inscriptions ouvertes",
-    BadgeIcon: Sparkles,
+    BadgeIcon: Sparkle,
     href: "/formation-vtc",
     highlight: true,
   },
@@ -77,7 +77,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
       </motion.div>
 
       {/* Desktop : 3 cartes staggerées */}
-      <div className="hidden md:flex items-end justify-center gap-6 px-6">
+      <div className="hidden lg:flex items-end justify-center gap-6 px-6">
         {formations.map((formation, i) => {
           const isCenter = i === 1;
           return (
@@ -100,8 +100,8 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
                 <div
                   className={`relative rounded-3xl overflow-hidden ${
                     isCenter
-                      ? "w-[320px] h-[420px]"
-                      : "w-[280px] h-[360px]"
+                      ? "w-[360px] h-[470px]"
+                      : "w-[320px] h-[420px]"
                   } ${
                     isCenter
                       ? "ring-2 ring-[#4CAF50] ring-offset-4 ring-offset-white"
@@ -141,7 +141,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
 
       {/* Mobile : scroll horizontal */}
       <motion.div
-        className="md:hidden w-full"
+        className="lg:hidden w-full"
         initial={false}
         animate={
           heroState === 2
@@ -162,7 +162,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
               href={formation.href}
               className="group snap-center shrink-0"
             >
-              <div className="relative rounded-2xl overflow-hidden w-[260px] h-[340px]">
+              <div className="relative rounded-2xl overflow-hidden w-[280px] h-[370px]">
                 <Image
                   src={formation.image}
                   alt={formation.title}

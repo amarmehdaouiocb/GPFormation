@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle } from "@phosphor-icons/react";
 
 interface PricingTemplateProps {
   title: string;
@@ -126,7 +126,7 @@ export default function PricingTemplate({ title, content }: PricingTemplateProps
                     <ul className="flex flex-col gap-3">
                       {plan.features.map((feat: string, i: number) => (
                         <li key={i} className="flex items-start gap-3 text-zinc-700">
-                          <CheckCircle2 size={18} className="text-[#4CAF50] shrink-0 mt-0.5" strokeWidth={2} />
+                          <CheckCircle size={18} className="text-[#4CAF50] shrink-0 mt-0.5" weight="duotone" />
                           <span className="leading-snug">{feat}</span>
                         </li>
                       ))}

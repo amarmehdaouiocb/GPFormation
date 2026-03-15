@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { List, X, CaretDown } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import BookingWidget from "./BookingWidget";
 
@@ -40,7 +40,7 @@ export default function Navbar() {
 
       if (isHome && !mobileMenuOpen) {
         const atTop = currentY < 50;
-        const pastHero = currentY > window.innerHeight * 0.3;
+        const pastHero = currentY > window.innerHeight;
         setIsNavHidden(!atTop && !pastHero);
       }
 
@@ -91,7 +91,7 @@ export default function Navbar() {
                 "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
                 isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
               )}>
-                Formations TAXI <ChevronDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'taxi' ? "rotate-180" : "")} />
+                Formations TAXI <CaretDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'taxi' ? "rotate-180" : "")} />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'taxi' && (
@@ -123,7 +123,7 @@ export default function Navbar() {
                 "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
                 isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
               )}>
-                Formations VTC <ChevronDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'vtc' ? "rotate-180" : "")} />
+                Formations VTC <CaretDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'vtc' ? "rotate-180" : "")} />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'vtc' && (
@@ -172,7 +172,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X size={28} strokeWidth={1.5} className={cn(isTransparent && "text-black")} /> : <Menu size={28} strokeWidth={1.5} />}
+            {mobileMenuOpen ? <X size={28} weight="light" className={cn(isTransparent && "text-black")} /> : <List size={28} weight="light" />}
           </button>
         </div>
       </header>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ChevronRight, Clock, MapPin, Euro, Award } from "lucide-react";
+import { ArrowRight, CaretRight, Clock, MapPin, CurrencyEur, Certificate } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 
 interface FormationDetailTemplateProps {
@@ -37,7 +37,7 @@ export default function FormationDetailTemplate({
             <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
             {breadcrumbs.map((crumb, idx) => (
               <div key={idx} className="flex items-center gap-2 whitespace-nowrap">
-                <ChevronRight size={14} />
+                <CaretRight size={14} />
                 <Link 
                   href={crumb.href} 
                   className={idx === breadcrumbs.length - 1 ? "text-white" : "hover:text-white transition-colors"}
@@ -88,25 +88,25 @@ export default function FormationDetailTemplate({
             >
               <div className="bg-zinc-950 p-8 flex flex-col gap-3">
                 <span className="eyebrow text-zinc-500 flex items-center gap-2">
-                  <Clock size={16} className="text-[#4CAF50]" /> Durée
+                  <Clock size={16} className="text-[#4CAF50]" weight="duotone" /> Durée
                 </span>
                 <span className="text-xl font-bold">{duration}</span>
               </div>
               <div className="bg-zinc-950 p-8 flex flex-col gap-3">
                 <span className="eyebrow text-zinc-500 flex items-center gap-2">
-                  <Euro size={16} className="text-[#4CAF50]" /> Financement
+                  <CurrencyEur size={16} className="text-[#4CAF50]" weight="duotone" /> Financement
                 </span>
                 <span className="text-xl font-bold">{price}</span>
               </div>
               <div className="bg-zinc-950 p-8 flex flex-col gap-3">
                 <span className="eyebrow text-zinc-500 flex items-center gap-2">
-                  <MapPin size={16} className="text-[#4CAF50]" /> Lieu
+                  <MapPin size={16} className="text-[#4CAF50]" weight="duotone" /> Lieu
                 </span>
                 <span className="text-xl font-bold">{location}</span>
               </div>
               <div className="bg-zinc-950 p-8 flex flex-col gap-3">
                 <span className="eyebrow text-zinc-500 flex items-center gap-2">
-                  <Award size={16} className="text-[#4CAF50]" /> Validation
+                  <Certificate size={16} className="text-[#4CAF50]" weight="duotone" /> Validation
                 </span>
                 <span className="text-xl font-bold">{certification}</span>
               </div>

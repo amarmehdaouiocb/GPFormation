@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
+import { Envelope, Phone, MapPin, InstagramLogo, FacebookLogo } from "@phosphor-icons/react";
 
 export default function Footer() {
   return (
@@ -22,10 +24,10 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 border border-zinc-200 flex items-center justify-center text-zinc-950 hover:bg-[#4CAF50] hover:text-white hover:border-[#4CAF50] transition-colors">
-                <Instagram size={18} strokeWidth={1.5} />
+                <InstagramLogo size={18} weight="fill" />
               </a>
               <a href="#" className="w-10 h-10 border border-zinc-200 flex items-center justify-center text-zinc-950 hover:bg-[#4CAF50] hover:text-white hover:border-[#4CAF50] transition-colors">
-                <Facebook size={18} strokeWidth={1.5} />
+                <FacebookLogo size={18} weight="fill" />
               </a>
             </div>
           </div>
@@ -57,15 +59,15 @@ export default function Footer() {
             <h4 className="font-bold text-zinc-950 uppercase tracking-widest text-sm">Contact</h4>
             <ul className="space-y-4 text-sm text-zinc-600">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#4CAF50] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <MapPin size={18} className="text-[#4CAF50] shrink-0 mt-0.5" weight="duotone" />
                 <span>Centre implanté à Aulnay-sous-Bois, Île-de-France.</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-[#4CAF50] shrink-0" strokeWidth={1.5} />
+                <Phone size={18} className="text-[#4CAF50] shrink-0" weight="duotone" />
                 <a href="tel:0145090935" className="hover:text-[#4CAF50] transition-colors">01 45 09 09 35</a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-[#4CAF50] shrink-0" strokeWidth={1.5} />
+                <Envelope size={18} className="text-[#4CAF50] shrink-0" weight="duotone" />
                 <a href="mailto:contact@gpformation.fr" className="hover:text-[#4CAF50] transition-colors">contact@gpformation.fr</a>
               </li>
             </ul>

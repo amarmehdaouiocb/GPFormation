@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, ArrowRight } from "lucide-react";
+import { Envelope, Phone, MapPin, PaperPlaneTilt, ArrowRight } from "@phosphor-icons/react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -49,7 +49,7 @@ export default function ContactPage() {
           <div className="space-y-10 pt-4">
             <div className="flex items-start gap-6 group">
               <div className="mt-1">
-                <MapPin size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" strokeWidth={1.5} />
+                <MapPin size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
               </div>
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Notre Centre</h3>
@@ -62,7 +62,7 @@ export default function ContactPage() {
 
             <div className="flex items-start gap-6 group">
               <div className="mt-1">
-                <Phone size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" strokeWidth={1.5} />
+                <Phone size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
               </div>
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Téléphone</h3>
@@ -74,7 +74,7 @@ export default function ContactPage() {
 
             <div className="flex items-start gap-6 group">
               <div className="mt-1">
-                <Mail size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" strokeWidth={1.5} />
+                <Envelope size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
               </div>
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Email</h3>

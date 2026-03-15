@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { CaretDown } from "@phosphor-icons/react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -149,7 +149,7 @@ export default function HeroState1({ heroState }: { heroState: 1 | 2 }) {
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown size={24} className="text-white/40" strokeWidth={1.5} />
+          <CaretDown size={24} className="text-white/40" weight="light" />
         </motion.div>
       </motion.div>
     </div>

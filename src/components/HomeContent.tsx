@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, CheckCircle2 } from "lucide-react";
+import { ArrowRight, GraduationCap, CheckCircle } from "@phosphor-icons/react";
 import ScrollHeroSection from "./ScrollHeroSection";
 
 interface HomeContentProps {
@@ -121,7 +121,7 @@ const EditorialFormations = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
         <Link href="/recuperation-de-points" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
           <div>
-            <CheckCircle2 size={32} className="text-[#4CAF50] mb-6" strokeWidth={1.5} />
+            <CheckCircle size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
             <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
             <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
           </div>
@@ -132,7 +132,7 @@ const EditorialFormations = () => (
 
         <Link href="/formation-taxi/formation-passerelle" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
           <div>
-            <GraduationCap size={32} className="text-[#4CAF50] mb-6" strokeWidth={1.5} />
+            <GraduationCap size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
             <h3 className="text-2xl font-bold tracking-tight mb-3">Formations Passerelles</h3>
             <p className="text-zinc-600">Devenez Taxi si vous êtes VTC, ou VTC si vous êtes Taxi. Élargissez vos opportunités.</p>
           </div>
