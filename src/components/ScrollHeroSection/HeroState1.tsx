@@ -1,26 +1,62 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, MotionValue } from "framer-motion";
-import { CheckCircle2, Users } from "lucide-react";
+import { CheckCircle2, Users, ChevronDown } from "lucide-react";
 
 interface HeroState1Props {
   title1Opacity: MotionValue<number>;
   title1X: MotionValue<number>;
+  title1Y: MotionValue<number>;
   floatingCardOpacity: MotionValue<number>;
   floatingCardY: MotionValue<number>;
   notifOpacity: MotionValue<number>;
+  scrollIndicatorOpacity: MotionValue<number>;
   isActive: boolean;
+}
+
+function useAnimatedCounter(target: number, duration = 2000, delay = 400) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let startTime: number | null = null;
+    let rafId: number;
+
+    function step(timestamp: number) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) rafId = requestAnimationFrame(step);
+    }
+
+    const timeout = setTimeout(() => {
+      rafId = requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(rafId);
+    };
+  }, [target, duration, delay]);
+
+  return value;
 }
 
 export default function HeroState1({
   title1Opacity,
   title1X,
+  title1Y,
   floatingCardOpacity,
   floatingCardY,
   notifOpacity,
+  scrollIndicatorOpacity,
   isActive,
 }: HeroState1Props) {
+  const animatedPercent = useAnimatedCounter(92);
+
   return (
     <div
       className={`absolute inset-0 flex items-center ${
@@ -29,12 +65,13 @@ export default function HeroState1({
     >
       <div className="container-custom w-full">
         <div className="flex flex-col items-center md:flex-row md:items-center md:justify-between gap-12">
-          {/* Gauche : Titre + Sous-titre + CTA */}
+          {/* Gauche : Titre + Sous-titre + CTA (parallaxe Y) */}
           <motion.div
             className="max-w-3xl flex flex-col items-center md:items-start"
             style={{
               opacity: title1Opacity,
               x: title1X,
+              y: title1Y,
               willChange: "opacity, transform",
             }}
           >
@@ -59,7 +96,7 @@ export default function HeroState1({
             </Link>
           </motion.div>
 
-          {/* Droite : Carte glassmorphism flottante (desktop) */}
+          {/* Droite : Carte glassmorphism avec compteur animé (desktop) */}
           <motion.div
             className="hidden lg:flex flex-col gap-6 items-end"
             style={{
@@ -74,7 +111,8 @@ export default function HeroState1({
                 <span className="eyebrow text-white/60">Taux de réussite</span>
               </div>
               <p className="text-5xl font-bold font-mono tracking-tighter">
-                92<span className="text-[#7ED321]">%</span>
+                {animatedPercent}
+                <span className="text-[#7ED321]">%</span>
               </p>
               <p className="text-sm text-white/50 mt-2">Moyenne 2024</p>
             </div>
@@ -82,9 +120,9 @@ export default function HeroState1({
         </div>
       </div>
 
-      {/* Badge notification en bas (desktop) */}
+      {/* Badge notification (desktop) */}
       <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden md:flex items-center gap-4 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 hidden md:flex items-center gap-4 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl"
         style={{ opacity: notifOpacity, willChange: "opacity" }}
       >
         <div className="w-10 h-10 rounded-full bg-[#4CAF50]/10 flex items-center justify-center">
@@ -98,6 +136,19 @@ export default function HeroState1({
             Depuis 2013 — Aulnay-sous-Bois
           </p>
         </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center"
+        style={{ opacity: scrollIndicatorOpacity }}
+      >
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown size={24} className="text-white/40" strokeWidth={1.5} />
+        </motion.div>
       </motion.div>
     </div>
   );

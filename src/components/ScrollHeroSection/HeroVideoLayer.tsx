@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, MotionValue } from "framer-motion";
 
+const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
+
 interface HeroVideoLayerProps {
   videoOpacity: MotionValue<number>;
   videoScale: MotionValue<number>;
@@ -48,6 +50,20 @@ export default function HeroVideoLayer({
         />
         {/* Dark overlay pour contraste texte */}
         <div className="absolute inset-0 bg-black/35 pointer-events-none" />
+
+        {/* Grain cinématique */}
+        <div
+          className="absolute inset-0 pointer-events-none mix-blend-overlay"
+          style={{
+            backgroundImage: NOISE_SVG,
+            backgroundSize: "256px 256px",
+            opacity: 0.06,
+          }}
+        />
+
+        {/* Gradient bas pour contraste badge notification */}
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+
         {/* Overlay de fondu pour boucle vidéo fluide */}
         <div
           className={`absolute inset-0 bg-black pointer-events-none transition-opacity duration-700 ease-in-out ${

@@ -8,8 +8,12 @@ import { ArrowRight, Calendar, Sparkles, Clock } from "lucide-react";
 interface HeroState2Props {
   title2Opacity: MotionValue<number>;
   title2Y: MotionValue<number>;
-  cardsOpacity: MotionValue<number>;
-  cardsY: MotionValue<number>;
+  card1Opacity: MotionValue<number>;
+  card1Y: MotionValue<number>;
+  card2Opacity: MotionValue<number>;
+  card2Y: MotionValue<number>;
+  card3Opacity: MotionValue<number>;
+  card3Y: MotionValue<number>;
   centerCardScale: MotionValue<number>;
   sideCardScale: MotionValue<number>;
   isActive: boolean;
@@ -48,12 +52,19 @@ const formations = [
 export default function HeroState2({
   title2Opacity,
   title2Y,
-  cardsOpacity,
-  cardsY,
+  card1Opacity,
+  card1Y,
+  card2Opacity,
+  card2Y,
+  card3Opacity,
+  card3Y,
   centerCardScale,
   sideCardScale,
   isActive,
 }: HeroState2Props) {
+  const cardOpacities = [card1Opacity, card2Opacity, card3Opacity];
+  const cardYs = [card1Y, card2Y, card3Y];
+
   return (
     <div
       className={`absolute inset-0 flex flex-col items-center justify-center ${
@@ -85,78 +96,79 @@ export default function HeroState2({
         </Link>
       </motion.div>
 
-      {/* Cartes formation */}
+      {/* Desktop : 3 cartes staggerées */}
+      <div className="hidden md:flex items-end justify-center gap-6 px-6">
+        {formations.map((formation, i) => {
+          const isCenter = i === 1;
+          return (
+            <motion.div
+              key={formation.href}
+              style={{
+                opacity: cardOpacities[i],
+                y: cardYs[i],
+                scale: isCenter ? centerCardScale : sideCardScale,
+                willChange: "opacity, transform",
+              }}
+            >
+              <Link href={formation.href} className="group block">
+                <div
+                  className={`relative rounded-3xl overflow-hidden ${
+                    isCenter
+                      ? "w-[320px] h-[420px]"
+                      : "w-[280px] h-[360px]"
+                  } ${
+                    isCenter
+                      ? "ring-2 ring-[#4CAF50] ring-offset-4 ring-offset-white"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    src={formation.image}
+                    alt={formation.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                  {/* Stat en haut à gauche */}
+                  <div className="absolute top-5 left-5 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-semibold">
+                    {formation.stat}
+                  </div>
+
+                  {/* Titre en bas */}
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-xl font-bold text-white">
+                      {formation.title}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Badge notification sous la carte */}
+                <div className="flex items-center gap-3 bg-white rounded-2xl px-5 py-3 shadow-lg border border-zinc-100 mt-4">
+                  <formation.BadgeIcon
+                    size={16}
+                    className="text-[#4CAF50] shrink-0"
+                  />
+                  <span className="text-sm font-medium text-zinc-700 truncate">
+                    {formation.badge}
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Mobile : scroll horizontal (utilise le timing de la 1ère carte) */}
       <motion.div
-        className="w-full"
+        className="md:hidden w-full"
         style={{
-          opacity: cardsOpacity,
-          y: cardsY,
+          opacity: card1Opacity,
+          y: card1Y,
           willChange: "opacity, transform",
         }}
       >
-        {/* Desktop : 3 cartes en ligne */}
-        <div className="hidden md:flex items-end justify-center gap-6 px-6">
-          {formations.map((formation, i) => {
-            const isCenter = i === 1;
-            return (
-              <motion.div
-                key={formation.href}
-                style={{
-                  scale: isCenter ? centerCardScale : sideCardScale,
-                  willChange: "transform",
-                }}
-              >
-                <Link href={formation.href} className="group block">
-                  <div
-                    className={`relative rounded-3xl overflow-hidden ${
-                      isCenter
-                        ? "w-[320px] h-[420px]"
-                        : "w-[280px] h-[360px]"
-                    } ${
-                      isCenter
-                        ? "ring-2 ring-[#4CAF50] ring-offset-4 ring-offset-white"
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      src={formation.image}
-                      alt={formation.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-                    {/* Stat en haut à gauche */}
-                    <div className="absolute top-5 left-5 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-semibold">
-                      {formation.stat}
-                    </div>
-
-                    {/* Titre en bas */}
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-xl font-bold text-white">
-                        {formation.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Badge notification sous la carte */}
-                  <div className="flex items-center gap-3 bg-white rounded-2xl px-5 py-3 shadow-lg border border-zinc-100 mt-4">
-                    <formation.BadgeIcon
-                      size={16}
-                      className="text-[#4CAF50] shrink-0"
-                    />
-                    <span className="text-sm font-medium text-zinc-700 truncate">
-                      {formation.badge}
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Mobile : scroll horizontal */}
-        <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6">
           {formations.map((formation) => (
             <Link
               key={formation.href}
