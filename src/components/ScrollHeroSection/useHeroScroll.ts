@@ -7,12 +7,19 @@ export function useHeroScroll(containerRef: RefObject<HTMLDivElement | null>) {
   const heroStateRef = useRef<1 | 2>(1);
   const cooldownRef = useRef(false);
   const cooldownTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    // Attendre le prochain frame pour que le composant soit monté
+    const rafId = requestAnimationFrame(() => {
+      mountedRef.current = true;
+    });
+
     const triggerState = (newState: 1 | 2) => {
+      if (!mountedRef.current) return;
       if (cooldownRef.current || heroStateRef.current === newState) return;
       heroStateRef.current = newState;
       setHeroState(newState);
@@ -22,14 +29,12 @@ export function useHeroScroll(containerRef: RefObject<HTMLDivElement | null>) {
       }, 1500);
     };
 
-    // Desktop : premier scroll down détecté
     const handleWheel = (e: WheelEvent) => {
       if (e.deltaY > 5 && heroStateRef.current === 1) {
         triggerState(2);
       }
     };
 
-    // Mobile : premier swipe down détecté
     let touchStartY = 0;
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
@@ -41,7 +46,6 @@ export function useHeroScroll(containerRef: RefObject<HTMLDivElement | null>) {
       }
     };
 
-    // Retour état 1 uniquement quand scroll revient tout en haut
     const handleScroll = () => {
       if (window.scrollY < 30 && heroStateRef.current === 2) {
         triggerState(1);
@@ -54,6 +58,8 @@ export function useHeroScroll(containerRef: RefObject<HTMLDivElement | null>) {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
+      mountedRef.current = false;
+      cancelAnimationFrame(rafId);
       clearTimeout(cooldownTimer.current);
       container.removeEventListener("wheel", handleWheel);
       container.removeEventListener("touchstart", handleTouchStart);
