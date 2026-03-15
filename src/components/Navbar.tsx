@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,7 +29,6 @@ export default function Navbar() {
   const [isNavHidden, setIsNavHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
   const isHome = pathname === "/";
@@ -38,18 +37,14 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      const goingDown = currentY > lastScrollY.current;
 
       if (isHome && !mobileMenuOpen) {
-        if (goingDown && currentY > 80) {
-          setIsNavHidden(true);
-        } else if (!goingDown) {
-          setIsNavHidden(false);
-        }
+        const atTop = currentY < 50;
+        const pastHero = currentY > window.innerHeight * 2;
+        setIsNavHidden(!atTop && !pastHero);
       }
 
       setIsScrolled(currentY > window.innerHeight * 0.15);
-      lastScrollY.current = currentY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
