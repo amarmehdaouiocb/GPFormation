@@ -1,0 +1,7 @@
+import { getMarkdownContent } from "@/lib/markdown";
+import MarkdownPage from "@/components/MarkdownPage";
+
+export default async function Page() {
+  const { content, data } = getMarkdownContent("cgv");
+  return <MarkdownPage content={content} title={data.title} />;
+}
