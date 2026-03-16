@@ -46,7 +46,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
     >
       {/* Titre centré */}
       <motion.div
-        className="text-center mb-10 px-6"
+        className="text-center mb-6 px-6"
         initial={false}
         animate={
           heroState === 2
@@ -60,11 +60,11 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 mb-5">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 mb-3">
           Choisissez votre{" "}
           <span className="text-[#4CAF50]">formation</span>
         </h2>
-        <p className="text-base md:text-lg text-zinc-500 max-w-lg mx-auto mb-10 font-light tracking-[0.01em]">
+        <p className="text-base md:text-lg text-zinc-500 max-w-lg mx-auto mb-6 font-light tracking-[0.01em]">
           Des programmes certifiés Qualiopi, adaptés à votre rythme et vos
           objectifs.
         </p>
@@ -76,17 +76,18 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         </Link>
       </motion.div>
 
-      {/* Desktop : 3 cartes staggerées */}
-      <div className="hidden lg:flex items-end justify-center gap-6 px-6">
+      {/* Desktop : 3 cartes grand format cinématique */}
+      <div className="hidden lg:flex items-end justify-center gap-5 w-full max-w-[1500px] mx-auto px-10">
         {formations.map((formation, i) => {
           const isCenter = i === 1;
           return (
             <motion.div
               key={formation.href}
+              className={isCenter ? "flex-[1.12]" : "flex-1"}
               initial={false}
               animate={
                 heroState === 2
-                  ? { opacity: 1, y: 0, scale: isCenter ? 1 : 0.95 }
+                  ? { opacity: 1, y: 0, scale: isCenter ? 1 : 0.97 }
                   : { opacity: 0, y: 60, scale: isCenter ? 1.05 : 0.88 }
               }
               transition={
@@ -98,10 +99,8 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
             >
               <Link href={formation.href} className="group block">
                 <div
-                  className={`relative rounded-3xl overflow-hidden ${
-                    isCenter
-                      ? "w-[360px] h-[470px]"
-                      : "w-[320px] h-[420px]"
+                  className={`relative rounded-2xl overflow-hidden ${
+                    isCenter ? "h-[480px] xl:h-[520px]" : "h-[430px] xl:h-[470px]"
                   } ${
                     isCenter
                       ? "ring-2 ring-[#4CAF50] ring-offset-4 ring-offset-white"
@@ -112,26 +111,22 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
                     src={formation.image}
                     alt={formation.title}
                     fill
+                    sizes="(min-width: 1280px) 480px, 400px"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute top-5 left-5 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-semibold">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute top-5 left-5 bg-white/15 backdrop-blur-md rounded-full px-4 py-2 text-white text-sm font-semibold">
                     {formation.stat}
                   </div>
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-2xl font-bold text-white mb-2">
                       {formation.title}
                     </h3>
+                    <div className="flex items-center gap-2 text-white/60 text-sm">
+                      <formation.BadgeIcon size={14} weight="duotone" className="text-white/70" />
+                      <span>{formation.badge}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3 bg-white rounded-2xl px-5 py-3 shadow-lg border border-zinc-100 mt-4">
-                  <formation.BadgeIcon
-                    size={16}
-                    className="text-[#4CAF50] shrink-0"
-                  />
-                  <span className="text-sm font-medium text-zinc-700 truncate">
-                    {formation.badge}
-                  </span>
                 </div>
               </Link>
             </motion.div>
@@ -155,29 +150,32 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6 scrollbar-hide">
           {formations.map((formation) => (
             <Link
               key={formation.href}
               href={formation.href}
               className="group snap-center shrink-0"
             >
-              <div className="relative rounded-2xl overflow-hidden w-[280px] h-[370px]">
+              <div className="relative rounded-2xl overflow-hidden w-[300px] h-[400px]">
                 <Image
                   src={formation.image}
                   alt={formation.title}
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 text-white text-xs font-semibold">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute top-4 left-4 bg-white/15 backdrop-blur-md rounded-full px-3 py-1.5 text-white text-xs font-semibold">
                   {formation.stat}
                 </div>
                 <div className="absolute bottom-5 left-5 right-5">
-                  <h3 className="text-lg font-bold text-white mb-1">
+                  <h3 className="text-xl font-bold text-white mb-1">
                     {formation.title}
                   </h3>
-                  <p className="text-xs text-white/70">{formation.badge}</p>
+                  <div className="flex items-center gap-2 text-white/60 text-xs">
+                    <formation.BadgeIcon size={12} weight="duotone" className="text-white/70" />
+                    <span>{formation.badge}</span>
+                  </div>
                 </div>
               </div>
             </Link>
