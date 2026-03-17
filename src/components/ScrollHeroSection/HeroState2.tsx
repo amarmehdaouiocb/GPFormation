@@ -28,7 +28,7 @@ const formations = [
   },
   {
     title: "Récup. de points",
-    image: "/images/conduite-volant.jpg",
+    image: "/images/formation-salle.jpg",
     stat: "4 pts en 24h",
     badge: "Chaque mois — Places limitées",
     BadgeIcon: Clock,
