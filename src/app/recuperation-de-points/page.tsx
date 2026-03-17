@@ -6,5 +6,5 @@ export default async function Page() {
   const breadcrumbs = [
     { label: "Stage de Récupération de points", href: "#" }
   ];
-  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" />;
+  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" tag="PERMIS" />;
 }
