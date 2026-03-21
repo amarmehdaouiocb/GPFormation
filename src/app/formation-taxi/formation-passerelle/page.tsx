@@ -7,5 +7,5 @@ export default async function Page() {
     { label: "Formations TAXI", href: "/formation-taxi" },
     { label: data.title || "Formation", href: "#" }
   ];
-  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="35 heures (5 jours)"  />;
+  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="35 heures (5 jours)" tag="TAXI" />;
 }
