@@ -14,13 +14,13 @@ export default function Footer() {
           <div className="space-y-8">
             <Image
               src="/logo_gpformation_clean.png"
-              alt="GP Formation Logo"
+              alt="Grand Paris Formation Logo"
               width={320}
               height={90}
               className="w-auto h-20 object-contain"
             />
             <p className="text-zinc-600 text-sm leading-relaxed max-w-[280px]">
-              Le 1er centre de formation TAXI / VTC agréé en Île-de-France. Nous vous accompagnons vers la réussite de votre examen.
+              Centre de formation TAXI / VTC en Île-de-France. Nous vous accompagnons vers la réussite de votre examen.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 border border-zinc-200 flex items-center justify-center text-zinc-950 hover:bg-[#4CAF50] hover:text-white hover:border-[#4CAF50] transition-colors">
@@ -50,6 +50,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-zinc-600">
               <li><Link href="/tarifs" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Tarifs & Financements</Link></li>
               <li><Link href="/blog" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Actualités & Blog</Link></li>
+              <li><Link href="/services" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Services</Link></li>
               <li><Link href="/contact" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Contact</Link></li>
             </ul>
           </div>
@@ -60,7 +61,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-zinc-600">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#4CAF50] shrink-0 mt-0.5" weight="duotone" />
-                <span>Centre implanté à Aulnay-sous-Bois, Île-de-France.</span>
+                <span>Aulnay-sous-Bois, Île-de-France</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-[#4CAF50] shrink-0" weight="duotone" />

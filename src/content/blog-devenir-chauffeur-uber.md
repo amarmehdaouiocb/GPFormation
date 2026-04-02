@@ -1,6 +1,6 @@
 # Comment devenir chauffeur Uber ?
 
-**URL :** https://gpformation.fr/uncategorized/devenir-chauffeur-uber
+**URL :** https://ecolegallieni.fr/uncategorized/devenir-chauffeur-uber
 
 Depuis l'implantation en France de la plateforme Uber, le métier de conducteur VTC connaît une évolution considérable. Il attire de ce fait de plus en plus d'adeptes. De nombreux nouveaux prestataires en VTC avec chauffeur ont donc vu le jour ces dernières années. La plateforme Uber reste cependant la plus privilégiée par la plupart des Français grâce à ses services de qualité proposés aux clients et ses chauffeurs qualifiés. En réalité, elle vous permet de travailler en tant que chauffeur professionnel indépendant tout en choisissant votre emploi du temps. Si vous souhaitez vous lancer aussi dans ce secteur, voici tout l'essentiel à savoir pour devenir chauffeur VTC Uber.
 

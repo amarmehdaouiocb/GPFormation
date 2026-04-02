@@ -1,10 +1,10 @@
 # Politique de confidentialité
 
-**URL :** https://gpformation.fr/politique-de-confidentialite
+**URL :** https://ecolegallieni.fr/politique-de-confidentialite
 
 ## I. Introduction
 
-GP Formation s'engage à assurer la protection des données personnelles de ses utilisateurs. Aucune donnée transmise via le site ne pourra être consultée par un tiers non autorisé. L'établissement prend toutes les précautions utiles pour préserver la sécurité des données et impose ces mêmes précautions aux tiers.
+Ecole Gallieni s'engage à assurer la protection des données personnelles de ses utilisateurs. Aucune donnée transmise via le site ne pourra être consultée par un tiers non autorisé. L'établissement prend toutes les précautions utiles pour préserver la sécurité des données et impose ces mêmes précautions aux tiers.
 
 Le traitement des données respecte :
 
@@ -20,7 +20,7 @@ Le traitement des données respecte :
 
 ## III. Collecte et diffusion des données personnelles
 
-GP Formation traite les données fournies lors de la connexion au site et de l'utilisation des services. Les informations collectées concernent l'identité, les coordonnées postales/électroniques et les conditions d'exercice d'activité.
+Ecole Gallieni traite les données fournies lors de la connexion au site et de l'utilisation des services. Les informations collectées concernent l'identité, les coordonnées postales/électroniques et les conditions d'exercice d'activité.
 
 ## IV. Conservation des données personnelles
 
@@ -32,7 +32,7 @@ Les données sont conservées pendant 2 ans ou jusqu'à la demande du visiteur. 
 
 ## VI. Droits de l'utilisateur
 
-L'utilisateur dispose de droits d'accès, rectification, suppression et opposition concernant ses données. Contact : contact@gpformation.fr
+L'utilisateur dispose de droits d'accès, rectification, suppression et opposition concernant ses données. Contact : contact@ecolegallieni.fr
 
 En cas de non-respect, réclamation possible auprès de la CNIL, 3 Places de Fontenoy, 75007 Paris.
 

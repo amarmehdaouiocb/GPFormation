@@ -1,8 +1,8 @@
 # Formation VTC en cours du soir
 
-**URL :** https://gpformation.fr/formation-vtc/formation-vtc-cours-du-soir
+**URL :** https://ecolegallieni.fr/formation-vtc/formation-vtc-cours-du-soir
 
-Manque de temps en journée ? À l'GP Formation, il est possible de suivre une formation VTC en cours du soir.
+Manque de temps en journée ? À GP Formation, il est possible de suivre une formation VTC en cours du soir.
 
 **Nos formations VTC en cours du soir se déroulent de 18h00 à 20h00, du lundi au vendredi, sur une durée de 6 semaines.**
 
@@ -61,7 +61,7 @@ Nos formations VTC en cours du soir sont très efficaces et ont un taux quasi é
 
 ## Quelles sont les alternatives à la formation en cours du soir ?
 
-L'GP Formation propose 2 autres formations VTC :
+L'école Gallieni propose 2 autres formations VTC :
 
 - Formation VTC à temps plein
 - Formation VTC à distance

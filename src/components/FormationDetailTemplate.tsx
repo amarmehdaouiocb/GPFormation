@@ -12,6 +12,7 @@ import {
   Certificate,
   Phone,
   Coin,
+  CreditCard,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 import React, { useMemo, useEffect, useState } from "react";
@@ -69,6 +70,7 @@ interface FormationDetailTemplateProps {
   certification?: string;
   tag?: string;
   relatedFormations?: { title: string; href: string; tag?: string }[];
+  stripePaymentLink?: string;
 }
 
 function extractH2Headings(content: string): string[] {
@@ -87,6 +89,7 @@ export default function FormationDetailTemplate({
   certification = "Attestation de réussite",
   tag,
   relatedFormations,
+  stripePaymentLink,
 }: FormationDetailTemplateProps) {
   const headings = useMemo(() => extractH2Headings(content), [content]);
   const [activeHeading, setActiveHeading] = useState<string>("");
@@ -202,6 +205,17 @@ export default function FormationDetailTemplate({
                   <Phone size={18} weight="duotone" />
                   <span>01 45 09 09 35</span>
                 </a>
+                {stripePaymentLink && (
+                  <a
+                    href={stripePaymentLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 px-7 py-4 bg-white text-zinc-950 font-bold tracking-wide uppercase text-sm hover:bg-zinc-100 transition-all hover:scale-[0.98] group rounded-md"
+                  >
+                    <CreditCard size={18} weight="duotone" />
+                    <span>S&apos;inscrire et payer en ligne</span>
+                  </a>
+                )}
               </motion.div>
             </div>
 

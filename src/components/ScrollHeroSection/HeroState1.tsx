@@ -92,8 +92,8 @@ export default function HeroState1({ heroState }: { heroState: 1 | 2 }) {
             className="text-[1.0625rem] md:text-lg text-white/90 mb-10 max-w-md leading-[1.75] font-light tracking-[0.015em] text-center md:text-left"
             style={{ textShadow: "0 1px 8px rgba(0,0,0,0.3)" }}
           >
-            Le 1er centre agréé en Île-de-France. Formez-vous avec des
-            experts et donnez un nouvel élan à votre carrière.
+            Formez-vous avec des experts et donnez un nouvel élan
+            à votre carrière.
           </p>
 
           <Link

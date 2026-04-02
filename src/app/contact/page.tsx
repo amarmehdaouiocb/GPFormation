@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Envelope, Phone, MapPin, PaperPlaneTilt, ArrowRight } from "@phosphor-icons/react";
+import { Envelope, Phone, MapPin, PaperPlaneTilt, ArrowRight, Clock } from "@phosphor-icons/react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -81,6 +81,19 @@ export default function ContactPage() {
                 <a href="mailto:contact@gpformation.fr" className="text-zinc-600 text-lg hover:text-[#4CAF50] transition-colors">
                   contact@gpformation.fr
                 </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-6 group">
+              <div className="mt-1">
+                <Clock size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Horaires d&apos;ouverture</h3>
+                <p className="text-zinc-600 text-lg leading-relaxed">
+                  Lundi au vendredi : 09h30 – 12h30 et 13h30 – 17h30<br />
+                  <span className="text-sm text-zinc-500">Samedi & Dimanche : Fermé</span>
+                </p>
               </div>
             </div>
           </div>

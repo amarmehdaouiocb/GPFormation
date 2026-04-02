@@ -72,7 +72,7 @@ export default function Navbar() {
           <Link href="/" className="relative flex items-center gap-2 z-50 group">
             <Image
               src="/logo_gpformation_clean.png"
-              alt="GP Formation Logo"
+              alt="Grand Paris Formation Logo"
               width={320}
               height={90}
               className="w-auto h-20 md:h-24 object-contain transition-all duration-300 group-hover:scale-105 origin-left"
@@ -158,6 +158,12 @@ export default function Navbar() {
             )}>
               Tarifs
             </Link>
+            <Link href="/services" className={cn(
+              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
+              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
+            )}>
+              Services
+            </Link>
             <Link href="/contact" className={cn(
               "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
               isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
@@ -217,6 +223,7 @@ export default function Navbar() {
               <div className="flex flex-col gap-3">
                 <Link href="/recuperation-de-points" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Récupération de points</Link>
                 <Link href="/tarifs" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Tarifs</Link>
+                <Link href="/services" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Services</Link>
                 <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Contact</Link>
               </div>
             </div>

@@ -1,10 +1,10 @@
 # Formation TAXI
 
-**URL :** https://gpformation.fr/formation-taxi
+**URL :** https://ecolegallieni.fr/formation-taxi
 
 ## La formation Taxi
 
-L'GP Formation est spécialisée dans la formation TAXI à Aulnay sous Bois. Nous préparons plus de 200 candidats chaque année à l'examen de Taxi. GP Formation est le premier centre de formation Taxi / VTC agréé en Île-de-France.
+GP Formation est spécialisée dans la formation TAXI à Aulnay-sous-Bois. Nous préparons plus de 200 candidats chaque année à l'examen de Taxi.
 
 GP Formation est habilitée à vous former pour le métier de chauffeur de Taxi et à vous proposer des formations complémentaires, telles que la formation continue, la formation à la mobilité et la formation Passerelle (devenir VTC).
 

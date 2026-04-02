@@ -1,12 +1,12 @@
 # Formation continue TAXI
 
-**URL :** https://gpformation.fr/formation-taxi/formation-continue
+**URL :** https://ecolegallieni.fr/formation-taxi/formation-continue
 
 ## La formation continue est-elle obligatoire ?
 
 Depuis 2009, la formation continue Taxi est une obligation légale pour tous les chauffeurs de Taxi disposant d'une carte professionnelle de Taxi.
 
-La durée de la formation spécifiée par la réglementation est de 14 heures renouvelable tous les cinq ans auprès d'un Centre de formation agréé tel que l'GP Formation.
+La durée de la formation spécifiée par la réglementation est de 14 heures renouvelable tous les cinq ans auprès d'un Centre de formation agréé tel que GP Formation.
 
 ## Les avantages d'une formation continue
 
@@ -16,14 +16,13 @@ En effet, le transport de personnes est un secteur en perpétuelle évolution d'
 
 ## INFOS PRATIQUES
 
-### 4 modules enseignés
+### Module A — Droit du transport public particuliers de personnes (3h30)
 
-| Module | Durée |
-|--------|-------|
-| A - Droit du transport public particuliers de personnes | 3h30 |
-| B - Réglementation spécifique liée à l'activité de taxi | 3h30 |
-| C - Sécurité Routière | 3h30 |
-| D - Gestion | 3h30 |
+### Module B — Réglementation spécifique liée à l'activité de taxi (3h30)
+
+### Module C — Sécurité Routière (3h30)
+
+### Module D — Gestion (3h30)
 
 ### Conditions d'admission
 
@@ -32,6 +31,7 @@ En effet, le transport de personnes est un secteur en perpétuelle évolution d'
 
 ### Pièces à fournir
 
+- Pièce d'identité ou titre de séjour en cours de validité
 - Carte professionnelle de Taxi
 
 ### Durée de la formation

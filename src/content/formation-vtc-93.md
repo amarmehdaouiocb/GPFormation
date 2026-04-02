@@ -1,14 +1,14 @@
 # Formation VTC dans le 93 (Seine-Saint-Denis)
 
-**URL :** https://gpformation.fr/formation-vtc/formation-vtc-93
+**URL :** https://ecolegallieni.fr/formation-vtc/formation-vtc-93
 
-Vous souhaitez devenir chauffeur VTC dans le 93 ? Faites confiance à l'GP Formation. Située à Aulnay-sous-Bois, notre école est la première à avoir été agréée par la préfecture de Bobigny et possède l'expérience nécessaire pour vous former.
+Vous souhaitez devenir chauffeur VTC dans le 93 ? Faites confiance à GP Formation. Située à Aulnay-sous-Bois, notre école est la première à avoir été agréée par la préfecture de Bobigny et possède l'expérience nécessaire pour vous former.
 
 Chaque année, nous notons une augmentation du taux de réussite et accompagnons plus de 400 personnes pour les aider à obtenir leur carte VTC.
 
-## GP Formation, le 1er centre de formation VTC du 93 !
+## GP Formation, centre de formation VTC du 93
 
-À l'GP Formation, 1er centre de formation VTC et TAXI du 93 et de l'Île-de-France, vous bénéficierez d'une formation théorique et pratique adaptée à votre niveau et à vos besoins.
+À GP Formation, centre de formation VTC et TAXI du 93 et de l'Île-de-France, vous bénéficierez d'une formation théorique et pratique adaptée à votre niveau et à vos besoins.
 
 Les cours sont dispensés par des formateurs diplômés et expérimentés. La formation est éligible au CPF et notre organisme certifié par **QUALIOPI** vous garantit une prestation de qualité, quelle que soit la formule sélectionnée.
 
@@ -20,11 +20,11 @@ Nos formules sont accessibles à tous. Quelles que soient vos disponibilités, v
 
 ## Informations de contact
 
-Depuis le 1er janvier 2014, l'GP Formation est spécialisée dans la formation VTC en Seine-Saint-Denis (93) :
+Depuis 2014, GP Formation est spécialisée dans la formation VTC en Seine-Saint-Denis (93) :
 
 - **Adresse :** 18 boulevard Gallieni à Aulnay-sous-Bois
 - **Téléphone :** 01 45 09 09 35
-- **Mail :** contact@gpformation.fr
+- **Mail :** contact@ecolegallieni.fr
 
 Nos locaux sont adaptés aux personnes à mobilité réduite et sont équipés de sanitaires adaptés et d'une rampe d'accès.
 

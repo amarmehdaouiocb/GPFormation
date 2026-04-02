@@ -101,8 +101,7 @@ export default function PricingTemplate({ title, content }: PricingTemplateProps
         <section className="pb-32">
           <div className="container-custom">
             <div className="border-t-2 border-zinc-950 pt-8 mb-16">
-              <h2 className="text-2xl font-bold uppercase tracking-widest text-zinc-950 mb-2">Formation TAXI & VTC</h2>
-              <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest">Tronc commun & Formules initiales</p>
+              <h2 className="text-2xl font-bold uppercase tracking-widest text-zinc-950">Formation TAXI & VTC</h2>
             </div>
 
             <div className="flex flex-col">
@@ -196,7 +195,7 @@ export default function PricingTemplate({ title, content }: PricingTemplateProps
                         <h4 className="text-2xl font-bold text-zinc-950 mb-2">{plan.title}</h4>
                         {plan.subtitle && <p className="text-zinc-500 mb-4 max-w-sm">{plan.subtitle}</p>}
                         <div className="text-sm font-mono text-zinc-500 flex flex-col gap-1">
-                          {plan.features.slice(0,2).map((f:string, j:number) => <span key={j}>— {f}</span>)}
+                          {plan.features.map((f:string, j:number) => <span key={j}>— {f}</span>)}
                         </div>
                       </div>
                       <div className="text-right shrink-0">
@@ -230,7 +229,7 @@ export default function PricingTemplate({ title, content }: PricingTemplateProps
                         <h4 className="text-2xl font-bold text-zinc-950 mb-2">{plan.title}</h4>
                         {plan.subtitle && <p className="text-zinc-500 mb-4 max-w-sm">{plan.subtitle}</p>}
                         <div className="text-sm font-mono text-zinc-500 flex flex-col gap-1">
-                          {plan.features.slice(0,2).map((f:string, j:number) => <span key={j}>— {f}</span>)}
+                          {plan.features.map((f:string, j:number) => <span key={j}>— {f}</span>)}
                         </div>
                       </div>
                       <div className="text-right shrink-0">
@@ -295,7 +294,7 @@ export default function PricingTemplate({ title, content }: PricingTemplateProps
               href="/contact"
               className="flex items-center justify-center gap-4 px-10 py-6 bg-white text-zinc-950 font-bold uppercase tracking-widest hover:bg-[#4CAF50] hover:text-white transition-colors w-full"
             >
-              Monter un dossier <ArrowRight size={18} />
+              Demande de financement <ArrowRight size={18} />
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 # VTC : Quel véhicule choisir ?
 
-**URL :** https://gpformation.fr/uncategorized/vtc-quel-vehicule-choisir
+**URL :** https://ecolegallieni.fr/uncategorized/vtc-quel-vehicule-choisir
 
 ## Quelle voiture choisir en tant que VTC ?
 

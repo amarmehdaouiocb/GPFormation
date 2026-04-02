@@ -17,11 +17,9 @@ interface HomeContentProps {
 const StatsSection = () => (
   <section className="py-20 bg-zinc-50">
     <div className="container-custom">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-x-8 gap-y-12 max-w-2xl mx-auto">
         {[
-          { value: "11", suffix: "ans", label: "D'expérience dans la formation" },
-          { value: "6000", suffix: "+", label: "Candidats formés à l'examen" },
-          { value: "92", suffix: "%", label: "De réussite en moyenne (2024)" },
+          { value: "12", suffix: "ans", label: "D'expérience dans la formation" },
           { value: "100", suffix: "%", label: "Certifié et reconnu Qualiopi" },
         ].map((stat, i) => (
           <motion.div 
