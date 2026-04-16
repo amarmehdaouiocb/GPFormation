@@ -20,79 +20,79 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="container-custom py-20 md:py-32">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-        
+    <div className="container-custom pt-28 sm:pt-32 md:pt-36 pb-16 sm:pb-20 md:pb-32">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-start">
+
         {/* Contact Info Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-12"
+          className="space-y-10 sm:space-y-12"
         >
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px w-8 bg-[#4CAF50]"></div>
-              <span className="text-sm font-bold uppercase tracking-widest text-[#4CAF50]">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-6 sm:w-8 bg-[#4CAF50]"></div>
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#4CAF50]">
                 Nous contacter
               </span>
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 mb-8 leading-none">
+            <h1 className="text-[2.5rem] xs:text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 mb-6 sm:mb-8 leading-[0.95] sm:leading-none">
               Parlons de votre <br />
               projet.
             </h1>
-            <p className="text-lg text-zinc-600 max-w-md leading-relaxed">
+            <p className="text-base sm:text-lg text-zinc-600 max-w-md leading-relaxed">
               Une question sur nos formations ? Un besoin d'accompagnement spécifique ? Notre équipe pédagogique est à votre écoute.
             </p>
           </div>
 
-          <div className="space-y-10 pt-4">
-            <div className="flex items-start gap-6 group">
-              <div className="mt-1">
-                <MapPin size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
+          <div className="space-y-8 sm:space-y-10 pt-2 sm:pt-4">
+            <div className="flex items-start gap-4 sm:gap-6 group">
+              <div className="mt-1 shrink-0">
+                <MapPin size={24} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors sm:size-7" weight="light" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Notre Centre</h3>
-                <p className="text-zinc-600 text-lg leading-relaxed">
+              <div className="min-w-0">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-950 mb-1.5 sm:mb-2">Notre Centre</h3>
+                <p className="text-zinc-600 text-base sm:text-lg leading-relaxed">
                   Aulnay-sous-Bois, Île-de-France<br />
-                  <span className="text-sm text-zinc-500">Accessible aux personnes à mobilité réduite</span>
+                  <span className="text-xs sm:text-sm text-zinc-500">Accessible aux personnes à mobilité réduite</span>
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-6 group">
-              <div className="mt-1">
-                <Phone size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
+            <div className="flex items-start gap-4 sm:gap-6 group">
+              <div className="mt-1 shrink-0">
+                <Phone size={24} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors sm:size-7" weight="light" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Téléphone</h3>
-                <a href="tel:0145090935" className="text-zinc-600 text-lg hover:text-[#4CAF50] transition-colors">
+              <div className="min-w-0">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-950 mb-1.5 sm:mb-2">Téléphone</h3>
+                <a href="tel:0145090935" className="text-zinc-600 text-base sm:text-lg hover:text-[#4CAF50] transition-colors">
                   01 45 09 09 35
                 </a>
               </div>
             </div>
 
-            <div className="flex items-start gap-6 group">
-              <div className="mt-1">
-                <Envelope size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
+            <div className="flex items-start gap-4 sm:gap-6 group">
+              <div className="mt-1 shrink-0">
+                <Envelope size={24} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors sm:size-7" weight="light" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Email</h3>
-                <a href="mailto:contact@gpformation.fr" className="text-zinc-600 text-lg hover:text-[#4CAF50] transition-colors">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-950 mb-1.5 sm:mb-2">Email</h3>
+                <a href="mailto:contact@gpformation.fr" className="text-zinc-600 text-sm sm:text-lg hover:text-[#4CAF50] transition-colors break-all">
                   contact@gpformation.fr
                 </a>
               </div>
             </div>
 
-            <div className="flex items-start gap-6 group">
-              <div className="mt-1">
-                <Clock size={28} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors" weight="light" />
+            <div className="flex items-start gap-4 sm:gap-6 group">
+              <div className="mt-1 shrink-0">
+                <Clock size={24} className="text-zinc-400 group-hover:text-[#4CAF50] transition-colors sm:size-7" weight="light" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Horaires d&apos;ouverture</h3>
-                <p className="text-zinc-600 text-lg leading-relaxed">
+              <div className="min-w-0">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-950 mb-1.5 sm:mb-2">Horaires d&apos;ouverture</h3>
+                <p className="text-zinc-600 text-sm sm:text-lg leading-relaxed">
                   Lundi au vendredi : 09h30 – 12h30 et 13h30 – 17h30<br />
-                  <span className="text-sm text-zinc-500">Samedi & Dimanche : Fermé</span>
+                  <span className="text-xs sm:text-sm text-zinc-500">Samedi & Dimanche : Fermé</span>
                 </p>
               </div>
             </div>
@@ -100,14 +100,14 @@ export default function ContactPage() {
         </motion.div>
 
         {/* Contact Form Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-zinc-50 border border-zinc-200 p-8 md:p-12 lg:p-14"
+          className="bg-zinc-50 border border-zinc-200 p-6 sm:p-8 md:p-12 lg:p-14"
         >
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <div className="space-y-3">
                 <label htmlFor="prenom" className="text-sm font-bold uppercase tracking-widest text-zinc-950">Prénom</label>
                 <input 
@@ -134,7 +134,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <div className="space-y-3">
                 <label htmlFor="telephone" className="text-sm font-bold uppercase tracking-widest text-zinc-950">Téléphone</label>
                 <input 
@@ -190,7 +190,7 @@ export default function ContactPage() {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-between px-8 py-5 bg-zinc-950 text-white font-medium hover:bg-zinc-800 transition-colors group mt-8"
+              className="w-full flex items-center justify-between px-6 sm:px-8 py-4 sm:py-5 bg-zinc-950 text-white font-medium hover:bg-zinc-800 transition-colors group mt-6 sm:mt-8 text-sm sm:text-base"
             >
               <span>Envoyer le message</span>
               <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />

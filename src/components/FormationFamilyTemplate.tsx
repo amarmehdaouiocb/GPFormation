@@ -63,7 +63,7 @@ export default function FormationFamilyTemplate({
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="bg-zinc-950 pt-32 pb-24 md:pt-40 md:pb-32 border-b border-zinc-800 relative overflow-hidden">
+      <section className="bg-zinc-950 pt-24 sm:pt-28 md:pt-40 pb-16 sm:pb-20 md:pb-32 border-b border-zinc-800 relative overflow-hidden">
         <div className="absolute inset-0 noise-overlay opacity-[0.03]" />
         {heroImage && (
           <>
@@ -81,7 +81,7 @@ export default function FormationFamilyTemplate({
 
         <div className="container-custom relative z-10">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs font-bold font-mono tracking-widest text-zinc-500 uppercase mb-12 overflow-x-auto pb-2">
+          <nav className="flex items-center gap-2 text-[10px] sm:text-xs font-bold font-mono tracking-widest text-zinc-500 uppercase mb-8 sm:mb-12 overflow-x-auto pb-2 scrollbar-hide">
             <Link href="/" className="hover:text-white transition-colors">
               Accueil
             </Link>
@@ -108,7 +108,7 @@ export default function FormationFamilyTemplate({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tighter text-white mb-8 leading-[0.92]"
+              className="text-[2.5rem] xs:text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tighter text-white mb-6 sm:mb-8 leading-[0.92]"
             >
               {titleWords.map((word, i) => (
                 <span key={i}>
@@ -127,7 +127,7 @@ export default function FormationFamilyTemplate({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-xl md:text-2xl text-zinc-400 max-w-3xl leading-relaxed font-light mb-10"
+              className="text-base sm:text-xl md:text-2xl text-zinc-400 max-w-3xl leading-relaxed font-light mb-8 sm:mb-10"
             >
               {subtitle}
             </motion.p>
@@ -137,7 +137,7 @@ export default function FormationFamilyTemplate({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-3"
+              className="flex flex-wrap items-center gap-2 sm:gap-3"
             >
               {[
                 { icon: ShieldCheck, label: "Centre Agréé" },
@@ -146,9 +146,9 @@ export default function FormationFamilyTemplate({
               ].map((badge, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-700 bg-zinc-800/60 text-zinc-100 text-sm font-medium"
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-zinc-700 bg-zinc-800/60 text-zinc-100 text-xs sm:text-sm font-medium"
                 >
-                  <badge.icon size={16} className="text-[#4CAF50]" weight="duotone" />
+                  <badge.icon size={14} className="text-[#4CAF50] sm:size-4" weight="duotone" />
                   <span>{badge.label}</span>
                 </div>
               ))}
@@ -158,7 +158,7 @@ export default function FormationFamilyTemplate({
       </section>
 
       {/* Main Content — markdown + sidebar photos */}
-      <section className="py-16 md:py-28">
+      <section className="py-14 sm:py-16 md:py-28">
         <div className="container-custom">
           <div className="relative">
             <div className="max-w-3xl">
@@ -220,18 +220,18 @@ export default function FormationFamilyTemplate({
       </section>
 
       {/* Sub-formations Grid */}
-      <section className="py-16 md:py-28 bg-zinc-50">
+      <section className="py-14 sm:py-16 md:py-28 bg-zinc-50">
         <div className="container-custom">
-          <div className="mb-10">
+          <div className="mb-8 sm:mb-10">
             <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
               01
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
               Choisissez votre formule
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {subFormations.map((form, i) => {
               const num = String(i + 1).padStart(2, "0");
               return (
@@ -281,33 +281,33 @@ export default function FormationFamilyTemplate({
       {/* CTA Bottom */}
       <section className="border-t border-zinc-800 bg-zinc-950 text-white relative overflow-hidden">
         <div className="absolute inset-0 noise-overlay opacity-[0.03]" />
-        <div className="container-custom py-20 md:py-28 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div className="container-custom py-14 sm:py-20 md:py-28 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 items-center">
             <div className="lg:col-span-7">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-3 sm:mb-4">
                 Vous avez des questions ?
               </h2>
-              <p className="text-lg text-zinc-400 max-w-xl">
+              <p className="text-base sm:text-lg text-zinc-400 max-w-xl">
                 Nos conseillers sont là pour vous guider vers la meilleure formule selon
                 votre profil et vous accompagner sur les démarches de financement.
               </p>
             </div>
-            <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-4 lg:items-end">
+            <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:gap-4 lg:items-end">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-3 px-7 py-4 bg-[#4CAF50] text-white font-bold text-sm tracking-wide uppercase hover:bg-[#3d9640] transition-colors rounded-lg group"
+                className="inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3.5 sm:py-4 bg-[#4CAF50] text-white font-bold text-xs sm:text-sm tracking-wide uppercase hover:bg-[#3d9640] transition-colors rounded-lg group"
               >
                 <span>Prendre rendez-vous</span>
                 <ArrowRight
                   size={16}
-                  className="transition-transform group-hover:translate-x-1"
+                  className="transition-transform group-hover:translate-x-1 shrink-0"
                 />
               </Link>
               <a
                 href="tel:0145090935"
-                className="inline-flex items-center justify-center gap-3 px-7 py-4 border border-zinc-700 text-zinc-200 font-bold text-sm tracking-wide uppercase hover:border-white hover:text-white transition-colors rounded-lg"
+                className="inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3.5 sm:py-4 border border-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm tracking-wide uppercase hover:border-white hover:text-white transition-colors rounded-lg"
               >
-                <Phone size={18} weight="duotone" />
+                <Phone size={18} weight="duotone" className="shrink-0" />
                 <span>01 45 09 09 35</span>
               </a>
             </div>

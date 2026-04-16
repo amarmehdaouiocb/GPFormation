@@ -103,6 +103,17 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome, mobileMenuOpen]);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <header
@@ -113,10 +124,10 @@ export default function Navbar() {
             ? "-translate-y-full opacity-0"
             : "translate-y-0 opacity-100",
           isTransparent
-            ? "bg-transparent border-transparent py-8"
+            ? "bg-transparent border-transparent py-4 md:py-8"
             : isScrolled
-              ? "bg-white/95 backdrop-blur-sm border-zinc-200 py-3 shadow-sm"
-              : "bg-white border-transparent py-6"
+              ? "bg-white/95 backdrop-blur-sm border-zinc-200 py-2 md:py-3 shadow-sm"
+              : "bg-white border-transparent py-3 md:py-6"
         )}
       >
         <div className="container-custom flex items-center justify-between">
@@ -127,7 +138,7 @@ export default function Navbar() {
               alt="Grand Paris Formation Logo"
               width={320}
               height={90}
-              className="w-auto h-20 md:h-24 object-contain transition-all duration-300 group-hover:scale-105 origin-left"
+              className="w-auto h-14 sm:h-16 md:h-20 lg:h-24 object-contain transition-all duration-300 group-hover:scale-105 origin-left"
               priority
             />
           </Link>
@@ -225,14 +236,14 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-white flex flex-col pt-32 px-6 pb-6 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-white flex flex-col pt-24 sm:pt-28 px-5 sm:px-6 pb-8 overflow-y-auto overscroll-contain"
           >
-            <div className="flex flex-col gap-8 flex-1 max-w-lg mx-auto w-full">
+            <div className="flex flex-col gap-7 flex-1 max-w-lg mx-auto w-full">
               <div className="space-y-4">
                 <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-[0.15em]">TAXI</h3>
                 <div className="flex flex-col gap-3">
                   {formationsTaxi.map((item) => (
-                    <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">
+                    <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">
                       {item.name}
                     </Link>
                   ))}
@@ -245,7 +256,7 @@ export default function Navbar() {
                 <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-[0.15em]">VTC</h3>
                 <div className="flex flex-col gap-3">
                   {formationsVtc.map((item) => (
-                    <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">
+                    <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">
                       {item.name}
                     </Link>
                   ))}
@@ -255,10 +266,10 @@ export default function Navbar() {
               <div className="w-full h-px bg-zinc-100" />
 
               <div className="flex flex-col gap-3">
-                <Link href="/recuperation-de-points" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Récupération de points</Link>
-                <Link href="/tarifs" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Tarifs</Link>
-                <Link href="/services" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Services</Link>
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Contact</Link>
+                <Link href="/recuperation-de-points" onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Récupération de points</Link>
+                <Link href="/tarifs" onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Tarifs</Link>
+                <Link href="/services" onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Services</Link>
+                <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Contact</Link>
               </div>
             </div>
           </motion.div>

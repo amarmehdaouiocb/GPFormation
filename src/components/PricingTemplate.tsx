@@ -155,9 +155,9 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
       {/* ──────────────────────────────────────────────────────── */}
       {/*  HERO — Editorial Magazine                                */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section className="relative pt-32 md:pt-44 pb-20 md:pb-28 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 md:pt-44 pb-14 sm:pb-20 md:pb-28 overflow-hidden">
         <div className="absolute inset-0 dot-grid-pattern opacity-50 pointer-events-none" />
-        <div className="absolute top-32 right-4 md:right-12 text-right hidden sm:block">
+        <div className="absolute top-32 right-4 md:right-12 text-right hidden md:block">
           <div className="eyebrow text-zinc-400 mb-1">Édition 2026</div>
           <div className="font-mono text-[10px] text-zinc-400">
             — Vol.01 · Tarifs & Formules —
@@ -170,14 +170,14 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-10 h-px bg-[#4CAF50]" />
-              <span className="eyebrow text-[#4CAF50]">
+            <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
+              <div className="w-8 sm:w-10 h-px bg-[#4CAF50]" />
+              <span className="eyebrow text-[#4CAF50] text-[0.65rem] sm:text-xs">
                 Grille tarifaire · GP Formation
               </span>
             </div>
 
-            <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-10 text-[clamp(3.2rem,12vw,11rem)] font-[family-name:var(--font-bricolage)]">
+            <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-6 sm:mb-10 text-[clamp(2.4rem,12vw,11rem)] font-[family-name:var(--font-bricolage)]">
               Tarifs <span className="text-zinc-300">&</span>
               <br />
               <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]">
@@ -186,8 +186,8 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               <span className="text-zinc-950">.</span>
             </h1>
 
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
-              <p className="text-xl md:text-2xl text-zinc-600 leading-relaxed font-light max-w-2xl">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 sm:gap-10">
+              <p className="text-base sm:text-xl md:text-2xl text-zinc-600 leading-relaxed font-light max-w-2xl">
                 Une grille transparente, sans frais cachés. Éligible aux
                 financements CPF, OPCO, Pôle Emploi — et payable en 3 ou 4 fois
                 sans frais.
@@ -201,12 +201,12 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 ].map((b) => (
                   <div
                     key={b.label}
-                    className="flex items-baseline gap-2 px-4 py-2.5 border border-zinc-200 rounded-full bg-white"
+                    className="flex items-baseline gap-2 px-3 sm:px-4 py-2 sm:py-2.5 border border-zinc-200 rounded-full bg-white"
                   >
-                    <span className="font-bold text-zinc-950 text-sm">
+                    <span className="font-bold text-zinc-950 text-xs sm:text-sm">
                       {b.label}
                     </span>
-                    <span className="eyebrow text-zinc-400">{b.sub}</span>
+                    <span className="eyebrow text-zinc-400 text-[0.6rem] sm:text-xs">{b.sub}</span>
                   </div>
                 ))}
               </div>
@@ -223,15 +223,15 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
         className="sticky top-0 z-30 bg-white/90 backdrop-blur-xl border-y border-zinc-200"
       >
         <div className="container-custom">
-          <ul className="flex items-center gap-6 md:gap-10 overflow-x-auto h-14 text-sm">
-            <li className="eyebrow text-zinc-400 shrink-0">Sommaire</li>
+          <ul className="flex items-center gap-5 sm:gap-6 md:gap-10 overflow-x-auto h-12 sm:h-14 text-xs sm:text-sm scrollbar-hide">
+            <li className="eyebrow text-zinc-400 shrink-0 text-[0.65rem] sm:text-xs">Sommaire</li>
             {TOC_ITEMS.map((it) => (
               <li key={it.id} className="shrink-0">
                 <a
                   href={`#${it.id}`}
                   className="group flex items-baseline gap-2 text-zinc-600 hover:text-zinc-950 transition-colors"
                 >
-                  <span className="font-mono text-[11px] text-zinc-400 group-hover:text-[#4CAF50] transition-colors">
+                  <span className="font-mono text-[10px] sm:text-[11px] text-zinc-400 group-hover:text-[#4CAF50] transition-colors">
                     /{it.num}
                   </span>
                   <span className="whitespace-nowrap">{it.label}</span>
@@ -248,19 +248,19 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
       {mainCategory && (
         <section
           id="principal"
-          className="scroll-mt-20 py-24 md:py-32 bg-white"
+          className="scroll-mt-20 py-14 sm:py-20 md:py-32 bg-white"
         >
           <div className="container-custom">
-            <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-8 mb-14 border-b-2 border-zinc-950">
+            <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 sm:gap-6 pb-6 sm:pb-8 mb-10 sm:mb-14 border-b-2 border-zinc-950">
               <div>
-                <div className="eyebrow text-zinc-500 mb-3">Section · 01</div>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
+                <div className="eyebrow text-zinc-500 mb-2 sm:mb-3 text-[0.65rem] sm:text-xs">Section · 01</div>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
                   Formation initiale
                   <br />
                   <span className="text-zinc-400">Taxi &amp; VTC</span>
                 </h2>
               </div>
-              <p className="md:text-right text-zinc-500 max-w-sm leading-relaxed">
+              <p className="md:text-right text-sm sm:text-base text-zinc-500 max-w-sm leading-relaxed">
                 Quatre formules au choix.
                 <br />
                 Toutes éligibles au CPF et incluant l&apos;accès à
@@ -284,14 +284,14 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                     }}
                     className="group relative"
                   >
-                    <div className="grid grid-cols-12 gap-x-6 gap-y-6 py-10 md:py-14 transition-colors duration-300 group-hover:bg-zinc-50 -mx-4 md:-mx-8 px-4 md:px-8 rounded-2xl">
+                    <div className="grid grid-cols-12 gap-x-4 sm:gap-x-6 gap-y-5 sm:gap-y-6 py-8 sm:py-10 md:py-14 transition-colors duration-300 group-hover:bg-zinc-50 -mx-3 sm:-mx-4 md:-mx-8 px-3 sm:px-4 md:px-8 rounded-2xl">
                       {/* Numéro éditorial */}
-                      <div className="col-span-6 md:col-span-1 flex md:flex-col items-start gap-3">
-                        <span className="font-mono text-xs text-zinc-400 pt-2">
+                      <div className="col-span-12 md:col-span-1 flex md:flex-col items-center md:items-start gap-3 flex-wrap">
+                        <span className="font-mono text-[11px] sm:text-xs text-zinc-400 md:pt-2">
                           /{String(idx + 1).padStart(2, "0")}
                         </span>
                         {isElearning && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#4CAF50] text-white font-mono text-[10px] uppercase tracking-widest whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#4CAF50] text-white font-mono text-[9px] sm:text-[10px] uppercase tracking-widest whitespace-nowrap">
                             <Lightning size={10} weight="fill" /> Best-seller
                           </span>
                         )}
@@ -299,11 +299,11 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
 
                       {/* Title / subtitle */}
                       <div className="col-span-12 md:col-span-4 order-2 md:order-none">
-                        <h3 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-zinc-950 mb-4 leading-[0.95]">
+                        <h3 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.03em] text-zinc-950 mb-3 sm:mb-4 leading-[0.95]">
                           {plan.title.replace(/^Formule\s+/i, "")}
                         </h3>
                         {plan.subtitle && (
-                          <p className="text-zinc-500 font-light leading-relaxed max-w-xs">
+                          <p className="text-sm sm:text-base text-zinc-500 font-light leading-relaxed max-w-xs">
                             {plan.subtitle}
                           </p>
                         )}
@@ -311,12 +311,12 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
 
                       {/* Features */}
                       <div className="col-span-12 md:col-span-4 order-4 md:order-none">
-                        <div className="eyebrow text-zinc-400 mb-4">Inclus</div>
-                        <ul className="flex flex-col gap-2.5 text-zinc-700">
+                        <div className="eyebrow text-zinc-400 mb-3 sm:mb-4 text-[0.65rem] sm:text-xs">Inclus</div>
+                        <ul className="flex flex-col gap-2 sm:gap-2.5 text-zinc-700">
                           {plan.features.map((f, i) => (
                             <li
                               key={i}
-                              className="flex items-start gap-2.5 text-sm md:text-[15px] leading-snug"
+                              className="flex items-start gap-2 sm:gap-2.5 text-[13px] sm:text-sm md:text-[15px] leading-snug"
                             >
                               <CheckCircle
                                 size={16}
@@ -328,7 +328,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                           ))}
                         </ul>
                         {plan.forfaits.length > 0 && (
-                          <div className="mt-5 pt-4 border-t border-zinc-200 text-xs text-zinc-500 font-mono">
+                          <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-zinc-200 text-[11px] sm:text-xs text-zinc-500 font-mono">
                             {plan.forfaits.map((f, i) => (
                               <div
                                 key={i}
@@ -345,21 +345,21 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                       </div>
 
                       {/* Prix & CTA */}
-                      <div className="col-span-6 md:col-span-3 order-3 md:order-none flex flex-col justify-between gap-6 md:items-end md:text-right">
+                      <div className="col-span-12 md:col-span-3 order-3 md:order-none flex flex-row md:flex-col justify-between items-end gap-4 sm:gap-6 md:text-right">
                         <div>
                           {plan.isFromPrice && (
-                            <div className="eyebrow text-zinc-400 mb-1">
+                            <div className="eyebrow text-zinc-400 mb-1 text-[0.6rem] sm:text-xs">
                               À partir de
                             </div>
                           )}
-                          <div className="font-bold font-[family-name:var(--font-bricolage)] text-5xl md:text-6xl lg:text-7xl tracking-[-0.04em] leading-[0.85] text-zinc-950">
+                          <div className="font-bold font-[family-name:var(--font-bricolage)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[-0.04em] leading-[0.85] text-zinc-950">
                             {plan.price}
                           </div>
                         </div>
 
                         <Link
                           href="/contact"
-                          className="inline-flex items-center gap-2 font-bold uppercase tracking-[0.2em] text-[11px] text-zinc-950 border-b-2 border-zinc-950 pb-1.5 self-start md:self-end group-hover:border-[#4CAF50] group-hover:text-[#4CAF50] transition-colors"
+                          className="inline-flex items-center gap-2 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-[11px] text-zinc-950 border-b-2 border-zinc-950 pb-1.5 self-end md:self-end group-hover:border-[#4CAF50] group-hover:text-[#4CAF50] transition-colors"
                         >
                           S&apos;inscrire
                           <ArrowUpRight
@@ -383,16 +383,16 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
       {/* ──────────────────────────────────────────────────────── */}
       <section
         id="specifiques"
-        className="scroll-mt-20 py-24 md:py-32 bg-zinc-950 text-white relative overflow-hidden"
+        className="scroll-mt-20 py-14 sm:py-20 md:py-32 bg-zinc-950 text-white relative overflow-hidden"
       >
         <div className="noise-overlay opacity-[0.04]" />
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#4CAF50]/10 blur-3xl pointer-events-none" />
 
         <div className="container-custom relative">
-          <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14">
+          <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 sm:gap-8 mb-10 sm:mb-14">
             <div>
-              <div className="eyebrow text-[#4CAF50] mb-3">Section · 02</div>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[0.9] font-[family-name:var(--font-bricolage)]">
+              <div className="eyebrow text-[#4CAF50] mb-2 sm:mb-3 text-[0.65rem] sm:text-xs">Section · 02</div>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[0.9] font-[family-name:var(--font-bricolage)]">
                 Formations
                 <br />
                 <span className="text-zinc-500">spécifiques</span>
@@ -417,7 +417,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 role="tab"
                 aria-selected={specificTab === "taxi"}
                 onClick={() => setSpecificTab("taxi")}
-                className={`relative z-10 px-6 md:px-8 py-2.5 rounded-full font-mono text-xs uppercase tracking-[0.2em] transition-colors ${
+                className={`relative z-10 px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] transition-colors ${
                   specificTab === "taxi" ? "text-zinc-950" : "text-zinc-400"
                 }`}
               >
@@ -427,7 +427,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 role="tab"
                 aria-selected={specificTab === "vtc"}
                 onClick={() => setSpecificTab("vtc")}
-                className={`relative z-10 px-6 md:px-8 py-2.5 rounded-full font-mono text-xs uppercase tracking-[0.2em] transition-colors ${
+                className={`relative z-10 px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] transition-colors ${
                   specificTab === "vtc" ? "text-zinc-950" : "text-zinc-400"
                 }`}
               >
@@ -451,18 +451,18 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05, duration: 0.5 }}
-                    className="group border-b border-zinc-800 py-8 md:py-10 cursor-default transition-colors hover:bg-white/[0.02]"
+                    className="group border-b border-zinc-800 py-6 sm:py-8 md:py-10 cursor-default transition-colors hover:bg-white/[0.02]"
                   >
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6">
-                      <div className="flex items-baseline gap-4 min-w-0 flex-1">
-                        <span className="font-mono text-xs text-zinc-500 shrink-0">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-3 md:gap-6">
+                      <div className="flex items-baseline gap-3 sm:gap-4 min-w-0 flex-1 flex-wrap">
+                        <span className="font-mono text-[11px] sm:text-xs text-zinc-500 shrink-0">
                           /{String(i + 1).padStart(2, "0")}
                         </span>
-                        <h3 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-white leading-tight">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-[-0.02em] text-white leading-tight">
                           {plan.title}
                         </h3>
                         {plan.badge && (
-                          <span className="hidden md:inline-block px-2 py-1 bg-[#4CAF50] text-zinc-950 font-mono text-[10px] uppercase tracking-[0.18em] shrink-0">
+                          <span className="inline-block px-2 py-1 bg-[#4CAF50] text-zinc-950 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] shrink-0">
                             <Sparkle size={10} weight="fill" className="inline mr-1" />
                             {plan.badge}
                           </span>
@@ -477,25 +477,25 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                       {/* Prices */}
                       <div className="flex items-baseline gap-3 shrink-0">
                         {plan.priceOriginal && (
-                          <span className="text-zinc-500 line-through font-mono text-base">
+                          <span className="text-zinc-500 line-through font-mono text-sm sm:text-base">
                             {plan.priceOriginal}
                           </span>
                         )}
-                        <span className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.03em] text-white group-hover:text-[#4CAF50] transition-colors">
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.03em] text-white group-hover:text-[#4CAF50] transition-colors">
                           {plan.price}
                         </span>
                       </div>
                     </div>
 
                     {(plan.subtitle || plan.features.length > 0) && (
-                      <div className="md:ml-10 mt-3 space-y-2">
+                      <div className="md:ml-10 mt-2 sm:mt-3 space-y-2">
                         {plan.subtitle && (
-                          <p className="text-zinc-400 font-light max-w-3xl leading-relaxed">
+                          <p className="text-sm sm:text-base text-zinc-400 font-light max-w-3xl leading-relaxed">
                             {plan.subtitle}
                           </p>
                         )}
                         {plan.features.length > 0 && (
-                          <ul className="flex flex-wrap gap-x-5 gap-y-1 text-xs md:text-sm text-zinc-500 font-mono">
+                          <ul className="flex flex-wrap gap-x-4 sm:gap-x-5 gap-y-1 text-[11px] sm:text-xs md:text-sm text-zinc-500 font-mono">
                             {plan.features.map((f, j) => (
                               <li key={j}>— {f}</li>
                             ))}
@@ -509,13 +509,13 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             </AnimatePresence>
           </div>
 
-          <div className="mt-10 flex items-center justify-between gap-6 flex-wrap">
-            <p className="text-zinc-500 text-sm font-light">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+            <p className="text-zinc-500 text-xs sm:text-sm font-light">
               Besoin d&apos;un conseil pour choisir votre formation ?
             </p>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 rounded-full hover:border-[#4CAF50] hover:bg-[#4CAF50] hover:text-zinc-950 transition-colors font-mono text-xs uppercase tracking-[0.2em]"
+              className="group inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-2.5 sm:py-3 border border-zinc-700 rounded-full hover:border-[#4CAF50] hover:bg-[#4CAF50] hover:text-zinc-950 transition-colors font-mono text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] self-start sm:self-auto"
             >
               Parler à un conseiller
               <ArrowRight
@@ -531,25 +531,25 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
       {/*  SECTION 03 — AUTRES FORMATIONS                           */}
       {/* ──────────────────────────────────────────────────────── */}
       {otherFormations && (
-        <section id="autres" className="scroll-mt-20 py-24 md:py-32 bg-white">
+        <section id="autres" className="scroll-mt-20 py-14 sm:py-20 md:py-32 bg-white">
           <div className="container-custom">
-            <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-8 mb-14 border-b-2 border-zinc-950">
+            <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 sm:gap-6 pb-6 sm:pb-8 mb-10 sm:mb-14 border-b-2 border-zinc-950">
               <div>
-                <div className="eyebrow text-zinc-500 mb-3">Section · 03</div>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
+                <div className="eyebrow text-zinc-500 mb-2 sm:mb-3 text-[0.65rem] sm:text-xs">Section · 03</div>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
                   Autres
                   <br />
                   <span className="text-zinc-400">formations</span>.
                 </h2>
               </div>
-              <p className="md:text-right text-zinc-500 max-w-sm leading-relaxed">
+              <p className="md:text-right text-sm sm:text-base text-zinc-500 max-w-sm leading-relaxed">
                 Stages de récupération de points
                 <br />
                 et perfectionnement en anglais.
               </p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
               {otherFormations.plans.map((plan, i) => {
                 const isPoints = /points/i.test(plan.title);
                 return (
@@ -559,12 +559,12 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ delay: i * 0.1, duration: 0.7 }}
-                    className={`group relative p-8 md:p-10 border-2 border-zinc-950 overflow-hidden transition-all ${
+                    className={`group relative p-6 sm:p-8 md:p-10 border-2 border-zinc-950 overflow-hidden transition-all ${
                       isPoints ? "bg-white" : "bg-zinc-950 text-white"
                     }`}
                   >
                     <div
-                      className={`absolute -top-8 -right-8 font-[family-name:var(--font-bricolage)] font-bold text-[10rem] leading-none tracking-tighter pointer-events-none select-none ${
+                      className={`absolute -top-6 sm:-top-8 -right-6 sm:-right-8 font-[family-name:var(--font-bricolage)] font-bold text-[6rem] sm:text-[8rem] md:text-[10rem] leading-none tracking-tighter pointer-events-none select-none ${
                         isPoints ? "text-zinc-100" : "text-white/5"
                       }`}
                     >
@@ -572,9 +572,9 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                     </div>
 
                     <div className="relative">
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <span
-                          className={`eyebrow ${
+                          className={`eyebrow text-[0.65rem] sm:text-xs ${
                             isPoints ? "text-[#4CAF50]" : "text-[#4CAF50]"
                           }`}
                         >
@@ -583,7 +583,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                       </div>
 
                       <h3
-                        className={`text-3xl md:text-4xl font-bold tracking-[-0.03em] mb-3 leading-tight ${
+                        className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.03em] mb-2 sm:mb-3 leading-tight ${
                           isPoints ? "text-zinc-950" : "text-white"
                         }`}
                       >
@@ -592,7 +592,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
 
                       {plan.subtitle && (
                         <p
-                          className={`mb-8 font-light max-w-sm leading-relaxed ${
+                          className={`mb-6 sm:mb-8 text-sm sm:text-base font-light max-w-sm leading-relaxed ${
                             isPoints ? "text-zinc-500" : "text-zinc-400"
                           }`}
                         >
@@ -600,11 +600,11 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                         </p>
                       )}
 
-                      <ul className="flex flex-col gap-2.5 mb-10">
+                      <ul className="flex flex-col gap-2 sm:gap-2.5 mb-8 sm:mb-10">
                         {plan.features.map((f, j) => (
                           <li
                             key={j}
-                            className={`flex items-start gap-2.5 text-sm leading-snug ${
+                            className={`flex items-start gap-2 sm:gap-2.5 text-[13px] sm:text-sm leading-snug ${
                               isPoints ? "text-zinc-700" : "text-zinc-300"
                             }`}
                           >
@@ -619,20 +619,20 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                       </ul>
 
                       <div
-                        className={`flex items-end justify-between gap-4 pt-6 border-t ${
+                        className={`flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pt-5 sm:pt-6 border-t ${
                           isPoints ? "border-zinc-200" : "border-zinc-800"
                         }`}
                       >
                         <div>
                           <div
-                            className={`eyebrow mb-1 ${
+                            className={`eyebrow mb-1 text-[0.6rem] sm:text-xs ${
                               isPoints ? "text-zinc-400" : "text-zinc-500"
                             }`}
                           >
                             Tarif
                           </div>
                           <div
-                            className={`text-5xl md:text-6xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.04em] leading-none ${
+                            className={`text-4xl sm:text-5xl md:text-6xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.04em] leading-none ${
                               isPoints ? "text-zinc-950" : "text-white"
                             }`}
                           >
@@ -641,7 +641,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                         </div>
                         <Link
                           href="/contact"
-                          className={`inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
+                          className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] sm:tracking-[0.2em] transition-colors self-start sm:self-auto ${
                             isPoints
                               ? "bg-zinc-950 text-white hover:bg-[#4CAF50]"
                               : "bg-[#4CAF50] text-zinc-950 hover:bg-white"
@@ -674,33 +674,33 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
         <div className="noise-overlay opacity-[0.08]" />
         <div className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full bg-white/5 blur-3xl pointer-events-none" />
 
-        <div className="container-custom relative py-24 md:py-32">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-end">
+        <div className="container-custom relative py-14 sm:py-20 md:py-32">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 md:gap-16 items-end">
             <div className="md:col-span-8">
-              <div className="eyebrow text-white/70 mb-6">
+              <div className="eyebrow text-white/70 mb-4 sm:mb-6 text-[0.65rem] sm:text-xs">
                 Section · 04 — Financement
               </div>
-              <h3 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-10 font-[family-name:var(--font-bricolage)]">
+              <h3 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-6 sm:mb-10 font-[family-name:var(--font-bricolage)]">
                 100% éligible
                 <br />
                 <span className="text-white/75">CPF &amp; OPCO</span>.
               </h3>
-              <p className="text-lg md:text-xl text-white/85 font-light max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-white/85 font-light max-w-xl leading-relaxed">
                 Qualiopi, CPF, Pôle Emploi, OPCO… On construit avec vous un plan
                 adapté. Et le reste ? En 3 ou 4 fois sans frais, directement
                 avec notre organisme.
               </p>
             </div>
 
-            <div className="md:col-span-4 flex flex-col gap-5 md:items-end">
+            <div className="md:col-span-4 flex flex-col gap-4 sm:gap-5 md:items-end">
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-between gap-4 w-full md:w-auto bg-zinc-950 text-white px-7 py-5 md:px-8 md:py-6 hover:bg-white hover:text-zinc-950 transition-colors font-mono text-xs md:text-sm uppercase tracking-[0.2em]"
+                className="group inline-flex items-center justify-between gap-3 sm:gap-4 w-full md:w-auto bg-zinc-950 text-white px-5 sm:px-7 py-4 sm:py-5 md:px-8 md:py-6 hover:bg-white hover:text-zinc-950 transition-colors font-mono text-[11px] sm:text-xs md:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]"
               >
                 Demande de financement
                 <ArrowRight
                   size={18}
-                  className="group-hover:translate-x-1 transition-transform"
+                  className="group-hover:translate-x-1 transition-transform shrink-0"
                 />
               </Link>
 
@@ -709,7 +709,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                   (tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1.5 border border-white/30 rounded-full font-mono text-[10px] uppercase tracking-[0.2em] text-white/85"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/30 rounded-full font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.2em] text-white/85"
                     >
                       {tag}
                     </span>
@@ -722,8 +722,8 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
 
         {/* Sub-banner — numéros CPF */}
         <div className="border-t border-white/20 bg-[#2E7D32]/30">
-          <div className="container-custom py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm">
-            <div className="font-mono text-white/70 uppercase tracking-[0.18em]">
+          <div className="container-custom py-4 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-[11px] sm:text-xs md:text-sm">
+            <div className="font-mono text-white/70 uppercase tracking-[0.16em] sm:tracking-[0.18em]">
               Certifié Qualiopi
             </div>
             <div className="font-light text-white/85 text-center">
@@ -732,7 +732,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             </div>
             <Link
               href="/contact"
-              className="font-mono text-white/90 hover:text-white transition-colors uppercase tracking-[0.18em] inline-flex items-center gap-2"
+              className="font-mono text-white/90 hover:text-white transition-colors uppercase tracking-[0.16em] sm:tracking-[0.18em] inline-flex items-center gap-2"
             >
               Contact
               <ArrowUpRight size={12} weight="bold" />
