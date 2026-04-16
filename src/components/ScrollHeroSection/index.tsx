@@ -11,7 +11,7 @@ export default function ScrollHeroSection() {
   const heroState = useHeroScroll(containerRef);
 
   return (
-    <div ref={containerRef} style={{ height: "130vh" }}>
+    <div ref={containerRef} className="h-[130dvh]">
       <div className="sticky top-0 h-[100dvh] overflow-hidden">
         <HeroVideoLayer heroState={heroState} />
         <HeroState1 heroState={heroState} />

@@ -1,6 +1,6 @@
 # Conditions Générales de Vente (CGV)
 
-**URL :** https://gpformation.fr/cgv
+**URL :** https://ecolegallieni.fr/cgv
 
 ## Article 1. Généralités
 
@@ -8,7 +8,7 @@ Les CGV s'appliquent à tous les stagiaires (entreprises et particuliers) et tou
 
 ## Article 2. Souscription
 
-L'inscription se fait dans les locaux de l'école ou sur www.gpformation.fr. Après sélection de la formation et fourniture des documents requis, le souscripteur reçoit une confirmation par email et une facture.
+L'inscription se fait dans les locaux de l'école ou sur www.ecolegallieni.fr. Après sélection de la formation et fourniture des documents requis, le souscripteur reçoit une confirmation par email et une facture.
 
 ## Article 3. Obligations du stagiaire
 

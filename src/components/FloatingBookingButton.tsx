@@ -43,9 +43,12 @@ export default function FloatingBookingButton({ onClick }: FloatingBookingButton
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           onClick={onClick}
+          style={{
+            bottom: "max(1rem, env(safe-area-inset-bottom))",
+          }}
           className={cn(
-            "fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8",
-            "flex items-center gap-3 px-6 py-4 rounded-full",
+            "fixed right-4 sm:right-6 md:right-8 z-40",
+            "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-full",
             "bg-gradient-to-r from-[#7ED321] to-[#4CAF50] text-white",
             "shadow-[0_10px_40px_-10px_rgba(126,211,33,0.6)]",
             "border border-white/20",
@@ -54,9 +57,9 @@ export default function FloatingBookingButton({ onClick }: FloatingBookingButton
         >
           {/* Shine effect */}
           <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
-          
-          <Calendar01Icon size={24} className="relative z-10" />
-          <span className="font-semibold tracking-wide relative z-10 hidden md:block">
+
+          <Calendar01Icon size={22} className="relative z-10 sm:size-6" />
+          <span className="font-semibold tracking-wide text-sm sm:text-base relative z-10 hidden md:block">
             Prendre RDV
           </span>
         </motion.button>

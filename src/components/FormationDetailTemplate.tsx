@@ -12,6 +12,7 @@ import {
   Certificate,
   Phone,
   Coin,
+  CreditCard,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 import React, { useMemo, useEffect, useState } from "react";
@@ -69,6 +70,7 @@ interface FormationDetailTemplateProps {
   certification?: string;
   tag?: string;
   relatedFormations?: { title: string; href: string; tag?: string }[];
+  stripePaymentLink?: string;
 }
 
 function extractH2Headings(content: string): string[] {
@@ -87,6 +89,7 @@ export default function FormationDetailTemplate({
   certification = "Attestation de réussite",
   tag,
   relatedFormations,
+  stripePaymentLink,
 }: FormationDetailTemplateProps) {
   const headings = useMemo(() => extractH2Headings(content), [content]);
   const [activeHeading, setActiveHeading] = useState<string>("");
@@ -119,7 +122,7 @@ export default function FormationDetailTemplate({
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="bg-zinc-950 text-white pt-32 pb-28 md:pt-40 md:pb-36 border-b border-zinc-800 relative overflow-hidden">
+      <section className="bg-zinc-950 text-white pt-24 sm:pt-28 md:pt-40 pb-16 sm:pb-20 md:pb-36 border-b border-zinc-800 relative overflow-hidden">
         <div className="absolute inset-0 noise-overlay opacity-[0.03]" />
         <Image
           src={TAG_HERO_IMAGES[tag?.toUpperCase() ?? ""] ?? "/images/formation-salle.jpg"}
@@ -155,16 +158,16 @@ export default function FormationDetailTemplate({
             ))}
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
             <div className="lg:col-span-7">
               {tag && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="mb-6"
+                  className="mb-4 sm:mb-6"
                 >
-                  <span className="inline-block px-3.5 py-1.5 bg-[#4CAF50] text-white text-xs font-bold tracking-widest uppercase rounded-md">
+                  <span className="inline-block px-3 py-1.5 bg-[#4CAF50] text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase rounded-md">
                     {tag}
                   </span>
                 </motion.div>
@@ -174,7 +177,7 @@ export default function FormationDetailTemplate({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-8 leading-[0.95] font-[family-name:var(--font-bricolage)]"
+                className="text-[2rem] xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 sm:mb-8 leading-[0.95] font-[family-name:var(--font-bricolage)]"
               >
                 {title}
               </motion.h1>
@@ -183,25 +186,36 @@ export default function FormationDetailTemplate({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.15 }}
-                className="flex flex-wrap items-center gap-4"
+                className="flex flex-wrap items-center gap-3 sm:gap-4"
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-3 px-7 py-4 bg-[#4CAF50] text-white font-bold tracking-wide uppercase text-sm hover:bg-[#3d9640] transition-all hover:scale-[0.98] group rounded-md"
+                  className="inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 bg-[#4CAF50] text-white font-bold tracking-wide uppercase text-xs sm:text-sm hover:bg-[#3d9640] transition-all hover:scale-[0.98] group rounded-md w-full sm:w-auto"
                 >
                   <span>Demander une inscription</span>
                   <ArrowRight
                     size={18}
-                    className="transition-transform group-hover:translate-x-1"
+                    className="transition-transform group-hover:translate-x-1 shrink-0"
                   />
                 </Link>
                 <a
                   href="tel:0145090935"
-                  className="inline-flex items-center gap-2.5 px-6 py-4 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 font-medium text-sm transition-colors rounded-md"
+                  className="inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-3 sm:py-4 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 font-medium text-xs sm:text-sm transition-colors rounded-md w-full sm:w-auto"
                 >
-                  <Phone size={18} weight="duotone" />
+                  <Phone size={18} weight="duotone" className="shrink-0" />
                   <span>01 45 09 09 35</span>
                 </a>
+                {stripePaymentLink && (
+                  <a
+                    href={stripePaymentLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3 sm:py-4 bg-white text-zinc-950 font-bold tracking-wide uppercase text-xs sm:text-sm hover:bg-zinc-100 transition-all hover:scale-[0.98] group rounded-md w-full sm:w-auto"
+                  >
+                    <CreditCard size={18} weight="duotone" className="shrink-0" />
+                    <span>S&apos;inscrire et payer en ligne</span>
+                  </a>
+                )}
               </motion.div>
             </div>
 
@@ -237,26 +251,26 @@ export default function FormationDetailTemplate({
                 <div
                   key={i}
                   className={cn(
-                    "bg-zinc-900/80 border border-zinc-800 p-6 flex items-center gap-5 rounded-xl",
+                    "bg-zinc-900/80 border border-zinc-800 p-4 sm:p-6 flex items-center gap-4 sm:gap-5 rounded-xl",
                     i === 0 && "rounded-t-2xl",
                     i === 3 && "rounded-b-2xl"
                   )}
                 >
-                  <div className="w-11 h-11 bg-[#4CAF50]/15 rounded-full flex items-center justify-center shrink-0">
-                    <item.icon size={22} className="text-[#4CAF50]" weight="duotone" />
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 bg-[#4CAF50]/15 rounded-full flex items-center justify-center shrink-0">
+                    <item.icon size={20} className="text-[#4CAF50] sm:size-[22px]" weight="duotone" />
                   </div>
-                  <div>
-                    <span className="eyebrow text-zinc-400 block text-[0.65rem] mb-0.5">
+                  <div className="min-w-0 flex-1">
+                    <span className="eyebrow text-zinc-400 block text-[0.6rem] sm:text-[0.65rem] mb-0.5">
                       {item.label}
                     </span>
-                    <span className="text-lg font-bold text-white">{item.value}</span>
+                    <span className="text-base sm:text-lg font-bold text-white break-words">{item.value}</span>
                   </div>
                 </div>
               ))}
 
               <Link
                 href="/contact"
-                className="mt-1 flex items-center justify-center gap-3 px-6 py-4 bg-white text-zinc-950 font-bold text-sm tracking-wide uppercase hover:bg-zinc-100 transition-colors rounded-xl group"
+                className="mt-1 flex items-center justify-center gap-3 px-5 sm:px-6 py-3.5 sm:py-4 bg-white text-zinc-950 font-bold text-xs sm:text-sm tracking-wide uppercase hover:bg-zinc-100 transition-colors rounded-xl group"
               >
                 <span>Demander une inscription</span>
                 <ArrowRight
@@ -270,11 +284,11 @@ export default function FormationDetailTemplate({
       </section>
 
       {/* Programme Section */}
-      <section className="py-16 md:py-28 bg-white">
+      <section className="py-14 sm:py-16 md:py-28 bg-white">
         <div className="container-custom">
-          <div className="mb-12 md:mb-16">
+          <div className="mb-10 sm:mb-12 md:mb-16">
             <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">02</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
               Programme détaillé
             </h2>
           </div>
@@ -352,22 +366,22 @@ export default function FormationDetailTemplate({
               <MarkdownRendererWithIds content={content} tag={tag} />
 
               {/* Info Box Financement */}
-              <div className="mt-16 bg-[#4CAF50]/5 border border-[#4CAF50]/20 border-l-4 border-l-[#4CAF50] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div className="w-12 h-12 bg-[#4CAF50]/10 rounded-full flex items-center justify-center shrink-0">
-                  <Coin size={24} className="text-[#4CAF50]" weight="duotone" />
+              <div className="mt-12 sm:mt-16 bg-[#4CAF50]/5 border border-[#4CAF50]/20 border-l-4 border-l-[#4CAF50] rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[#4CAF50]/10 rounded-full flex items-center justify-center shrink-0">
+                  <Coin size={22} className="text-[#4CAF50] sm:size-6" weight="duotone" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-lg font-bold text-zinc-950 mb-1">
+                  <h4 className="text-base sm:text-lg font-bold text-zinc-950 mb-1">
                     Besoin d&apos;aide pour le financement ?
                   </h4>
-                  <p className="text-zinc-600 text-[0.95rem]">
+                  <p className="text-sm sm:text-[0.95rem] text-zinc-600">
                     Nos équipes vous accompagnent dans le montage de votre dossier CPF ou
                     Pôle Emploi.
                   </p>
                 </div>
                 <Link
                   href="/contact"
-                  className="shrink-0 px-6 py-3 bg-zinc-950 text-white font-medium hover:bg-zinc-800 transition-colors rounded-lg whitespace-nowrap text-sm"
+                  className="shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 text-white font-medium hover:bg-zinc-800 transition-colors rounded-lg whitespace-nowrap text-xs sm:text-sm text-center"
                 >
                   Nous contacter
                 </Link>
@@ -497,15 +511,15 @@ const mdComponents = {
   h1: () => null,
   h2: () => null,
   h3: ({ node, ...props }: any) => (
-    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
-        <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
+    <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-4 sm:mb-5 flex items-center gap-3">
+      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
+        <CaretRight className="text-[#4CAF50]" size={16} weight="bold" />
       </div>
-      {props.children}
+      <span className="flex-1 min-w-0">{props.children}</span>
     </h3>
   ),
   p: ({ node, children, ...props }: any) => (
-    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light" {...props}>
+    <p className="text-base sm:text-lg md:text-xl text-zinc-600 leading-[1.7] sm:leading-[1.8] mb-4 sm:mb-5 font-light" {...props}>
       {children}
     </p>
   ),
@@ -612,18 +626,18 @@ function MarkdownRendererInner({
             key={sectionIndex}
             className={cn(
               "w-full",
-              sectionIndex > 0 && h2Title && "pt-14 mt-14 border-t border-zinc-200",
-              isAlternateSection && "bg-zinc-50 rounded-3xl p-8 -mx-4 md:-mx-8"
+              sectionIndex > 0 && h2Title && "pt-10 sm:pt-14 mt-10 sm:mt-14 border-t border-zinc-200",
+              isAlternateSection && "bg-zinc-50 rounded-2xl sm:rounded-3xl p-5 sm:p-8 -mx-1 sm:-mx-4 md:-mx-8"
             )}
           >
             {h2Title ? (
               <div
-                className="relative mb-10 scroll-mt-36"
+                className="relative mb-8 sm:mb-10 scroll-mt-28 sm:scroll-mt-36"
                 id={headingSlug}
                 data-heading-id={headingSlug}
               >
                 <span
-                  className="absolute -top-6 -left-2 text-[5rem] md:text-[7rem] font-black text-[#4CAF50]/[0.12] leading-none select-none pointer-events-none font-[family-name:var(--font-bricolage)]"
+                  className="absolute -top-4 sm:-top-6 -left-1 sm:-left-2 text-[3.5rem] sm:text-[5rem] md:text-[7rem] font-black text-[#4CAF50]/[0.12] leading-none select-none pointer-events-none font-[family-name:var(--font-bricolage)]"
                   aria-hidden="true"
                 >
                   {formattedNumber}
@@ -632,7 +646,7 @@ function MarkdownRendererInner({
                   <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
                     {formattedNumber}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
                     {h2Title}
                   </h2>
                 </div>

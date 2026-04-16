@@ -1,6 +1,6 @@
 # Formation initiale VTC
 
-**URL :** https://gpformation.fr/formation-vtc/formation-initiale-vtc
+**URL :** https://ecolegallieni.fr/formation-vtc/formation-initiale-vtc
 
 ## INFOS PRATIQUES
 
@@ -27,20 +27,42 @@
 
 ## Tronc commun : épreuves écrites d'admissibilité communes Taxis-VTC
 
-| Épreuves | Désignation | Durée | Noté sur | Coefficient | Note éliminatoire | Modalités |
-|----------|-------------|-------|----------|-------------|-------------------|-----------|
-| Réglementation T3P | A | 45' | 20 points | 3 | 6/20 | QRC : 2 notées sur 2 points / QCM : 16 notées sur 1 point |
-| Gestion | B | 45' | 20 points | 2 | 6/20 | QRC : 2 notées sur 2 points / QCM : 16 notées sur 1 point |
-| Sécurité routière | C | 30' | 20 points | 3 | 6/20 | QCM de 20 questions communes notées sur 1 point |
-| Français | D | 30' | 20 points | 2 | 6/20 | QRC : 3 notées sur 2 points / QCM : 7 notées sur 2 points |
-| Anglais niveau A2 | E | 30' | 20 points | 1 | 4/20 | QCM de 20 questions communes notées sur 1 point |
+### A — Réglementation T3P (45 min, coeff 3)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- QRC : 2 notées sur 2 points / QCM : 16 notées sur 1 point
+
+### B — Gestion (45 min, coeff 2)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- QRC : 2 notées sur 2 points / QCM : 16 notées sur 1 point
+
+### C — Sécurité routière (30 min, coeff 3)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- QCM de 20 questions communes notées sur 1 point
+
+### D — Français (30 min, coeff 2)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- QRC : 3 notées sur 2 points / QCM : 7 notées sur 2 points
+
+### E — Anglais niveau A2 (30 min, coeff 1)
+
+- Noté sur 20 points — Note éliminatoire : 4/20
+- QCM de 20 questions communes notées sur 1 point
 
 ## Épreuves écrites d'admissibilité spécifiques VTC
 
-| Épreuve | Code | Durée | Points | Coefficient | Note éliminatoire | Modalités |
-|---------|------|-------|--------|-------------|-------------------|-----------|
-| Développement commercial | F(V) | 20' | 20 points | 3 | 6/20 | 2 QRC notées sur 4 points / 6 QCM notées sur 2 points |
-| Réglementation nationale spécifique / Gestion | G(V) | 30' | 20 points | 3 | 6/20 | 2 QRC notées sur 4 points / 6 QCM notées sur 2 points |
+### F(V) — Développement commercial (20 min, coeff 3)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- 2 QRC notées sur 4 points / 6 QCM notées sur 2 points
+
+### G(V) — Réglementation nationale spécifique / Gestion (30 min, coeff 3)
+
+- Noté sur 20 points — Note éliminatoire : 6/20
+- 2 QRC notées sur 4 points / 6 QCM notées sur 2 points
 
 ## Épreuve pratique d'admission
 
@@ -50,7 +72,7 @@ Mise en situation pratique de réalisation d'une course de VTC.
 
 **Seuil d'admission à l'examen :** 12/20 à l'épreuve pratique
 
-## Conditions d'admission
+## Pré requis
 
 - Être titulaire du permis de conduire de catégorie B en cours de validité et non affecté par le délai probatoire prévu à l'article L.223-1 du code de la route
 - Délai d'accès à la formation entre 72 heures et 15 jours
@@ -67,6 +89,7 @@ Mise en situation pratique de réalisation d'une course de VTC.
 
 - **Formule Temps plein :** 90 heures sur 3 semaines
 - **Formule Cours du soir :** 40 heures sur 4 semaines
+- **Formule Accélérée :** 18 heures sur 6 jours
 - **Formule E-learning :** 60 jours d'accès
 
 ## Objectif de la formation

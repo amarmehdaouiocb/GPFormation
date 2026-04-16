@@ -30,29 +30,29 @@ const baseMarkdownComponents = {
   h1: () => null,
   h2: () => null,
   h3: ({ node, ...props }: any) => (
-    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
-        <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
+    <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-4 sm:mb-5 flex items-center gap-3">
+      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
+        <CaretRight className="text-[#4CAF50]" size={16} weight="bold" />
       </div>
-      {props.children}
+      <span className="flex-1 min-w-0">{props.children}</span>
     </h3>
   ),
   p: ({ node, children, ...props }: any) => (
-    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light" {...props}>
+    <p className="text-base sm:text-lg md:text-xl text-zinc-600 leading-[1.7] sm:leading-[1.8] mb-4 sm:mb-5 font-light" {...props}>
       {children}
     </p>
   ),
   ul: ({ node, ...props }: any) => (
-    <ul className="flex flex-col gap-0 my-5 pl-0 list-none divide-y divide-zinc-100">
+    <ul className="flex flex-col gap-0 my-4 sm:my-5 pl-0 list-none divide-y divide-zinc-100">
       {props.children}
     </ul>
   ),
   li: ({ node, ...props }: any) => (
-    <li className="flex items-start gap-3 py-3 group">
-      <div className="mt-1 shrink-0 text-[#4CAF50]">
-        <CheckCircle size={20} weight="duotone" />
+    <li className="flex items-start gap-2.5 sm:gap-3 py-2.5 sm:py-3 group">
+      <div className="mt-0.5 sm:mt-1 shrink-0 text-[#4CAF50]">
+        <CheckCircle size={18} weight="duotone" className="sm:size-5" />
       </div>
-      <span className="text-zinc-800 group-hover:text-zinc-950 leading-relaxed font-medium transition-colors text-[1.05rem]">
+      <span className="text-zinc-800 group-hover:text-zinc-950 leading-relaxed font-medium transition-colors text-[0.95rem] sm:text-[1.05rem]">
         {props.children}
       </span>
     </li>
@@ -70,12 +70,12 @@ const baseMarkdownComponents = {
     </thead>
   ),
   th: ({ node, ...props }: any) => (
-    <th className="py-4 px-5 font-semibold uppercase tracking-widest text-xs whitespace-nowrap" {...props}>
+    <th className="py-3 sm:py-4 px-4 sm:px-5 font-semibold uppercase tracking-widest text-[10px] sm:text-xs whitespace-nowrap" {...props}>
       {props.children}
     </th>
   ),
   td: ({ node, ...props }: any) => (
-    <td className="py-3.5 px-5 border-t border-zinc-100 text-zinc-600 align-middle" {...props}>
+    <td className="py-3 sm:py-3.5 px-4 sm:px-5 border-t border-zinc-100 text-xs sm:text-sm md:text-base text-zinc-600 align-middle" {...props}>
       {props.children}
     </td>
   ),
@@ -85,9 +85,9 @@ const baseMarkdownComponents = {
     </tr>
   ),
   blockquote: ({ node, ...props }: any) => (
-    <blockquote className="my-8 p-5 md:p-6 bg-[#4CAF50]/5 border-l-4 border-[#4CAF50] flex gap-4 items-start rounded-r-lg">
-      <Info className="text-[#4CAF50] shrink-0 mt-0.5" size={20} weight="duotone" />
-      <div className="text-zinc-800 font-medium text-base leading-relaxed [&>p]:mb-0">
+    <blockquote className="my-6 sm:my-8 p-4 sm:p-5 md:p-6 bg-[#4CAF50]/5 border-l-4 border-[#4CAF50] flex gap-3 sm:gap-4 items-start rounded-r-lg">
+      <Info className="text-[#4CAF50] shrink-0 mt-0.5" size={18} weight="duotone" />
+      <div className="text-zinc-800 font-medium text-sm sm:text-base leading-relaxed [&>p]:mb-0">
         {props.children}
       </div>
     </blockquote>
@@ -134,14 +134,14 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
             key={sectionIndex}
             className={cn(
               "w-full",
-              sectionIndex > 0 && h2Title && "pt-14 mt-14 border-t border-zinc-200",
-              isAlternateSection && "bg-zinc-50 rounded-3xl p-8 -mx-4 md:-mx-8"
+              sectionIndex > 0 && h2Title && "pt-10 sm:pt-14 mt-10 sm:mt-14 border-t border-zinc-200",
+              isAlternateSection && "bg-zinc-50 rounded-2xl sm:rounded-3xl p-5 sm:p-8 -mx-1 sm:-mx-4 md:-mx-8"
             )}
           >
             {h2Title ? (
-              <div className="relative mb-10">
+              <div className="relative mb-8 sm:mb-10">
                 <span
-                  className="absolute -top-6 -left-2 text-[5rem] md:text-[7rem] font-black text-[#4CAF50]/[0.12] leading-none select-none pointer-events-none font-[family-name:var(--font-bricolage)]"
+                  className="absolute -top-4 sm:-top-6 -left-1 sm:-left-2 text-[3.5rem] sm:text-[5rem] md:text-[7rem] font-black text-[#4CAF50]/[0.12] leading-none select-none pointer-events-none font-[family-name:var(--font-bricolage)]"
                   aria-hidden="true"
                 >
                   {formattedNumber}
@@ -150,7 +150,7 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
                   <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
                     {formattedNumber}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-zinc-950">
                     {h2Title}
                   </h2>
                 </div>
@@ -162,14 +162,14 @@ export default function MarkdownRenderer({ content, className }: MarkdownRendere
             </ReactMarkdown>
 
             {h3Cards.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-5 sm:mt-6 w-full">
                 {h3Cards.map((cardContent, cardIndex) => {
                   const isLastOdd = isOddCards && cardIndex === h3Cards.length - 1;
                   return (
                     <div
                       key={cardIndex}
                       className={cn(
-                        "border rounded-2xl p-7 md:p-8",
+                        "border rounded-xl sm:rounded-2xl p-5 sm:p-7 md:p-8",
                         isAlternateSection
                           ? "bg-white border-zinc-200"
                           : "bg-zinc-50 border-zinc-300",

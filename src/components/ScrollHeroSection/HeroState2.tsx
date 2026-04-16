@@ -46,7 +46,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
     >
       {/* Titre centré */}
       <motion.div
-        className="text-center mb-6 px-6"
+        className="text-center mb-5 sm:mb-6 px-5 sm:px-6"
         initial={false}
         animate={
           heroState === 2
@@ -60,17 +60,16 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 mb-3">
+        <h2 className="text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 mb-2 sm:mb-3 leading-[1.05]">
           Choisissez votre{" "}
           <span className="text-[#4CAF50]">formation</span>
         </h2>
-        <p className="text-base md:text-lg text-zinc-500 max-w-lg mx-auto mb-6 font-light tracking-[0.01em]">
-          Des programmes certifiés Qualiopi, adaptés à votre rythme et vos
-          objectifs.
+        <p className="text-sm sm:text-base md:text-lg text-zinc-500 max-w-lg mx-auto mb-5 sm:mb-6 font-light tracking-[0.01em]">
+          Des programmes certifiés Qualiopi, adaptés à votre rythme.
         </p>
         <Link
           href="/tarifs"
-          className="inline-flex items-center gap-2 px-8 py-3.5 bg-zinc-950 text-white font-medium uppercase tracking-[0.12em] text-[13px] rounded-full hover:bg-zinc-800 transition-colors"
+          className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-zinc-950 text-white font-medium uppercase tracking-[0.12em] text-xs sm:text-[13px] rounded-full hover:bg-zinc-800 transition-colors"
         >
           Voir les tarifs <ArrowRight size={16} />
         </Link>
@@ -150,18 +149,19 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6 scrollbar-hide">
+        <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-5 sm:px-6 scrollbar-hide">
           {formations.map((formation) => (
             <Link
               key={formation.href}
               href={formation.href}
               className="group snap-center shrink-0"
             >
-              <div className="relative rounded-2xl overflow-hidden w-[300px] h-[400px]">
+              <div className="relative rounded-2xl overflow-hidden w-[260px] sm:w-[300px] h-[360px] sm:h-[400px]">
                 <Image
                   src={formation.image}
                   alt={formation.title}
                   fill
+                  sizes="(max-width: 640px) 260px, 300px"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -169,7 +169,7 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
                   {formation.stat}
                 </div>
                 <div className="absolute bottom-5 left-5 right-5">
-                  <h3 className="text-xl font-bold text-white mb-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
                     {formation.title}
                   </h3>
                   <div className="flex items-center gap-2 text-white/60 text-xs">

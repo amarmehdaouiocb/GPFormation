@@ -7,5 +7,5 @@ export default async function Page() {
     { label: "Formations VTC", href: "/formation-vtc" },
     { label: data.title || "Formation", href: "#" }
   ];
-  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" tag="VTC" />;
+  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" certification="Attestation de suivi" tag="VTC" />;
 }

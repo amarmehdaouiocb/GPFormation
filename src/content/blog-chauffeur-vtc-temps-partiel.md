@@ -1,6 +1,6 @@
 # Chauffeur VTC à temps partiel : est-ce possible ?
 
-**URL :** https://gpformation.fr/uncategorized/chauffeur-vtc-a-temps-partiel-est-ce-possible
+**URL :** https://ecolegallieni.fr/uncategorized/chauffeur-vtc-a-temps-partiel-est-ce-possible
 
 Peut-on être chauffeur VTC à temps partiel ?
 

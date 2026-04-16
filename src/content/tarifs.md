@@ -1,10 +1,10 @@
 # Formules & Tarifs
 
-**URL :** https://gpformation.fr/tarifs
+**URL :** https://ecolegallieni.fr/tarifs
 
 ## Nos tarifs
 
-Les formations initiales TAXI & VTC dispensées par l'GP Formation sont référencées et éligibles au CPF.
+Les formations initiales TAXI & VTC dispensées par GP Formation sont référencées et éligibles au CPF.
 
 ---
 
@@ -16,14 +16,10 @@ Lundi au vendredi — 09h30 à 16h30
 **À partir de 1500€**
 
 - Durée : 3 semaines
-- Cours théorique en salle
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
 Inclus 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
-
-**Forfait 2 : 2250€**
-Inclus 8 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen) ainsi que les frais d'inscription aux examens d'un montant de 241€.
 
 ### Formule Cours du Soir
 
@@ -31,11 +27,9 @@ Lundi au vendredi — 18h00 à 20h30
 **À partir de 1500€**
 
 - Durée : 4 semaines
-- Cours théorique en salle
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
-**Forfait 2 : 2250€**
 
 ### Formule Accélérée
 
@@ -44,11 +38,9 @@ Lundi au vendredi — 18h00 à 21h00
 
 - Durée : 6 jours
 - Examen blanc la veille de l'examen officiel
-- Cours théorique en salle
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
-**Forfait 2 : 2250€**
 
 ### Formule E-learning
 
@@ -137,11 +129,10 @@ Pour les chauffeurs de Taxi souhaitant obtenir la carte de VTC
 ### Récupération de points de permis
 
 Pour récupérer jusqu'à 4 points
-**239€ / 219€**
+**219€**
 
 - Dans la limite d'un stage par an et d'un permis de conduire toujours valide
 - 14 heures de formation sur 2 jours consécutifs : vendredi & samedi de 09h00 à 12h00 et 13h00 à 17h00
-- Cours théorique en salle
 
 ### Formation Anglais
 
@@ -149,7 +140,6 @@ Pour toutes personnes souhaitant se perfectionner en anglais
 **950€**
 
 - 5 jours de formation : du lundi au vendredi de 09h30 à 12h30 et de 13h30 à 16h30
-- Cours théorique en salle
 - Support de cours
 - Chauffeurs en activité : Anglais professionnel et touristique
 - Grand public : Perfectionner son anglais

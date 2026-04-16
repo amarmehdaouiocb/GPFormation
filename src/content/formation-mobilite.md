@@ -1,24 +1,16 @@
 # Formation à la mobilité
 
-**URL :** https://gpformation.fr/formation-taxi/formation-a-la-mobilite
+**URL :** https://ecolegallieni.fr/formation-taxi/formation-a-la-mobilite
 
 ## Qu'est-ce que la formation mobilité ?
 
-La formation mobilité permet d'élargir son activité en cumulant plusieurs départements (jusqu'à 5 maximum). Elle est destinée aux titulaires d'une carte professionnelle de conducteur taxi. Cette formation n'est pas sanctionnée par un examen. À l'issue de 14h ou 35h de formation, une attestation est délivrée pour demander l'extension auprès de la préfecture.
-
-## Les thèmes abordés durant la formation
-
-- La réglementation locale
-- Les connaissances du territoire
+La formation mobilité permet d'élargir son activité en cumulant plusieurs départements (jusqu'à 5 maximum). Elle est destinée aux titulaires d'une carte professionnelle de conducteur taxi. Cette formation n'est pas sanctionnée par un examen. À l'issue de la formation, une attestation est délivrée pour demander l'extension auprès de la préfecture.
 
 ## INFOS PRATIQUES
 
-### 2 modules enseignés
+### Module A — La réglementation locale
 
-| Module |
-|--------|
-| A — La réglementation locale |
-| B — La connaissance du territoire |
+### Module B — La connaissance du territoire
 
 ### Conditions d'admission
 
@@ -27,11 +19,12 @@ La formation mobilité permet d'élargir son activité en cumulant plusieurs dé
 
 ### Pièces à fournir
 
+- Pièce d'identité ou titre de séjour en cours de validité
 - Carte professionnelle de Taxi
 
 ### Durée de la formation
 
-- Formation de 35 heures pour Paris (75) ou 14 heures pour les autres départements
+- 14 heures pour les départements en banlieue ou 35 heures pour Paris (75)
 
 ### Objectif de la formation
 

@@ -1,10 +1,10 @@
 # Formation VTC à distance
 
-**URL :** https://gpformation.fr/formation-vtc/formation-vtc-a-distance
+**URL :** https://ecolegallieni.fr/formation-vtc/formation-vtc-a-distance
 
 ## Peut-on suivre une formation VTC à distance ?
 
-Devenir chauffeur VTC en suivant une formation en E-Learning est possible au centre de formation GP Formation. Cette formule permet de suivre des cours en ligne depuis un smartphone. L'application offre des supports de cours numériques en format PDF ainsi que des vidéos expliquant chaque thématique abordée pour chaque module.
+Devenir chauffeur VTC en suivant une formation en E-Learning est possible au centre de formation ECOLE GALLIENI. Cette formule permet de suivre des cours en ligne depuis un smartphone. L'application offre des supports de cours numériques en format PDF ainsi que des vidéos expliquant chaque thématique abordée pour chaque module.
 
 Vous pouvez tester vos connaissances grâce à des tests en ligne (QCM) sous forme de parcours.
 

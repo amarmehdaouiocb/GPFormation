@@ -1,10 +1,10 @@
 # Formation continue VTC
 
-**URL :** https://gpformation.fr/formation-vtc/formation-continue-vtc
+**URL :** https://ecolegallieni.fr/formation-vtc/formation-continue-vtc
 
 ## La formation continue est-elle obligatoire ?
 
-La formation continue VTC constitue une obligation légale pour tous les chauffeurs VTC disposant d'une carte professionnelle. La réglementation exige 14 heures de formation, renouvelables tous les cinq ans auprès d'un Centre de formation agréé tel que l'GP Formation.
+La formation continue VTC constitue une obligation légale pour tous les chauffeurs VTC disposant d'une carte professionnelle. La réglementation exige 14 heures de formation, renouvelables tous les cinq ans auprès d'un Centre de formation agréé tel que GP Formation.
 
 ## Les avantages d'une formation continue
 
@@ -12,14 +12,13 @@ Suivre une formation continue permet de rester à jour sur la réglementation ap
 
 ## INFOS PRATIQUES
 
-### 4 modules enseignés
+### Module A — Droit du transport public particuliers de personnes (3h30)
 
-| Module | Durée |
-|--------|-------|
-| A – Droit du transport public particuliers de personnes | 3h30 |
-| B – Réglementation spécifique liée à l'activité de taxi | 3h30 |
-| C – Sécurité Routière | 3h30 |
-| D – Anglais | 3h30 |
+### Module B — Réglementation spécifique liée à l'activité de VTC (3h30)
+
+### Module C — Sécurité Routière (3h30)
+
+### Module D — Anglais (3h30)
 
 ### Conditions d'admission
 
@@ -28,6 +27,7 @@ Suivre une formation continue permet de rester à jour sur la réglementation ap
 
 ### Pièces à fournir
 
+- Pièce d'identité ou titre de séjour en cours de validité
 - Carte professionnelle de VTC
 
 ### Durée de la formation

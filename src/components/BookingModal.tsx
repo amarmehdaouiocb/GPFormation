@@ -39,7 +39,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -47,23 +47,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             onClick={onClose}
             className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
           />
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className="relative w-full max-w-4xl h-[85vh] sm:h-[80vh] bg-white dark:bg-zinc-900 rounded-[2rem] shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 flex flex-col"
+            className="relative w-full max-w-4xl h-[90dvh] sm:h-[85vh] md:h-[80vh] bg-white dark:bg-zinc-900 rounded-t-2xl sm:rounded-[2rem] shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 flex flex-col"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
-              <h3 className="font-semibold text-zinc-900 dark:text-zinc-50 text-lg">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+              <h3 className="font-semibold text-zinc-900 dark:text-zinc-50 text-base sm:text-lg">
                 Prendre un rendez-vous gratuit
               </h3>
               <button
                 onClick={onClose}
+                aria-label="Fermer"
                 className="p-2 -mr-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
-                <Cancel01Icon size={24} />
+                <Cancel01Icon size={22} />
               </button>
             </div>
 
