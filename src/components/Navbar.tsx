@@ -133,18 +133,18 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-7">
             <div
               className="relative"
               onMouseEnter={() => setActiveDropdown('taxi')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className={cn(
-                "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
-                isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-              )}>
-                Formations TAXI <CaretDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'taxi' ? "rotate-180" : "")} />
-              </button>
+              <NavTrigger
+                label="Formations TAXI"
+                open={activeDropdown === 'taxi'}
+                active={pathname.startsWith('/formation-taxi')}
+                isTransparent={isTransparent}
+              />
               <AnimatePresence>
                 {activeDropdown === 'taxi' && (
                   <FormationsDropdown
@@ -162,12 +162,12 @@ export default function Navbar() {
               onMouseEnter={() => setActiveDropdown('vtc')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className={cn(
-                "flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] transition-colors py-2",
-                isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-              )}>
-                Formations VTC <CaretDown size={12} className={cn("transition-transform duration-300", activeDropdown === 'vtc' ? "rotate-180" : "")} />
-              </button>
+              <NavTrigger
+                label="Formations VTC"
+                open={activeDropdown === 'vtc'}
+                active={pathname.startsWith('/formation-vtc')}
+                isTransparent={isTransparent}
+              />
               <AnimatePresence>
                 {activeDropdown === 'vtc' && (
                   <FormationsDropdown
@@ -180,30 +180,30 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            <Link href="/recuperation-de-points" className={cn(
-              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
-              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-            )}>
-              Récupération de points
-            </Link>
-            <Link href="/tarifs" className={cn(
-              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
-              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-            )}>
-              Tarifs
-            </Link>
-            <Link href="/services" className={cn(
-              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
-              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-            )}>
-              Services
-            </Link>
-            <Link href="/contact" className={cn(
-              "text-[13px] font-normal uppercase tracking-[0.12em] transition-colors",
-              isTransparent ? "text-white/80 hover:text-white" : "text-zinc-500 hover:text-zinc-900"
-            )}>
-              Contact
-            </Link>
+            <NavItem
+              href="/recuperation-de-points"
+              label="Récupération de points"
+              active={pathname === '/recuperation-de-points'}
+              isTransparent={isTransparent}
+            />
+            <NavItem
+              href="/tarifs"
+              label="Tarifs"
+              active={pathname === '/tarifs'}
+              isTransparent={isTransparent}
+            />
+            <NavItem
+              href="/services"
+              label="Services"
+              active={pathname === '/services'}
+              isTransparent={isTransparent}
+            />
+            <NavItem
+              href="/contact"
+              label="Contact"
+              active={pathname === '/contact'}
+              isTransparent={isTransparent}
+            />
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -471,5 +471,123 @@ function Stat({ label, value }: { label: string; value: string }) {
         {value}
       </span>
     </div>
+  );
+}
+
+const SPLIT_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+function SplitLabel({ label }: { label: string }) {
+  return (
+    <span className="relative inline-block overflow-hidden align-middle py-[3px] -my-[3px]">
+      <span
+        className="block transition-transform duration-[520ms] will-change-transform group-hover/nav:-translate-y-full"
+        style={{ transitionTimingFunction: SPLIT_EASE }}
+      >
+        {label}
+      </span>
+      <span
+        className="absolute inset-0 flex items-center translate-y-full transition-transform duration-[520ms] will-change-transform group-hover/nav:translate-y-0"
+        style={{ transitionTimingFunction: SPLIT_EASE }}
+        aria-hidden
+      >
+        {label}
+      </span>
+    </span>
+  );
+}
+
+function ActiveDot({
+  active,
+  isTransparent,
+}: {
+  active: boolean;
+  isTransparent: boolean;
+}) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "absolute -left-3 top-1/2 -translate-y-1/2 h-1 w-1 rounded-full transition-all duration-500",
+        active
+          ? isTransparent
+            ? "bg-white opacity-100 scale-100"
+            : "bg-[#4CAF50] opacity-100 scale-100"
+          : "opacity-0 scale-0"
+      )}
+      style={{ transitionTimingFunction: SPLIT_EASE }}
+    />
+  );
+}
+
+function NavItem({
+  href,
+  label,
+  active,
+  isTransparent,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  isTransparent: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group/nav relative inline-flex items-center text-[13px] font-normal uppercase tracking-[0.12em] py-2 transition-colors duration-300",
+        isTransparent
+          ? active
+            ? "text-white"
+            : "text-white/70 hover:text-white"
+          : active
+            ? "text-zinc-950"
+            : "text-zinc-500 hover:text-zinc-950"
+      )}
+    >
+      <ActiveDot active={active} isTransparent={isTransparent} />
+      <SplitLabel label={label} />
+    </Link>
+  );
+}
+
+function NavTrigger({
+  label,
+  open,
+  active,
+  isTransparent,
+}: {
+  label: string;
+  open: boolean;
+  active: boolean;
+  isTransparent: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      aria-haspopup="menu"
+      aria-expanded={open}
+      className={cn(
+        "group/nav relative inline-flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] py-2 transition-colors duration-300",
+        isTransparent
+          ? open || active
+            ? "text-white"
+            : "text-white/70 hover:text-white"
+          : open || active
+            ? "text-zinc-950"
+            : "text-zinc-500 hover:text-zinc-950"
+      )}
+    >
+      <ActiveDot active={active} isTransparent={isTransparent} />
+      <SplitLabel label={label} />
+      <CaretDown
+        size={11}
+        weight="bold"
+        className={cn(
+          "transition-all duration-[520ms]",
+          open ? "rotate-180 translate-y-[1px]" : "group-hover/nav:translate-y-[1px]"
+        )}
+        style={{ transitionTimingFunction: SPLIT_EASE }}
+      />
+    </button>
   );
 }
