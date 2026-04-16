@@ -496,7 +496,7 @@ function SplitLabel({ label }: { label: string }) {
   );
 }
 
-function ActiveDot({
+function NavUnderline({
   active,
   isTransparent,
 }: {
@@ -507,12 +507,9 @@ function ActiveDot({
     <span
       aria-hidden
       className={cn(
-        "absolute -left-3 top-1/2 -translate-y-1/2 h-1 w-1 rounded-full transition-all duration-500",
-        active
-          ? isTransparent
-            ? "bg-white opacity-100 scale-100"
-            : "bg-[#4CAF50] opacity-100 scale-100"
-          : "opacity-0 scale-0"
+        "pointer-events-none absolute left-0 right-0 bottom-[3px] h-[1.5px] origin-left transition-transform duration-[520ms] will-change-transform",
+        active ? "scale-x-100" : "scale-x-0 group-hover/nav:scale-x-100",
+        isTransparent ? "bg-white" : "bg-[#4CAF50]"
       )}
       style={{ transitionTimingFunction: SPLIT_EASE }}
     />
@@ -533,6 +530,7 @@ function NavItem({
   return (
     <Link
       href={href}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "group/nav relative inline-flex items-center text-[13px] font-normal uppercase tracking-[0.12em] py-2 transition-colors duration-300",
         isTransparent
@@ -544,8 +542,8 @@ function NavItem({
             : "text-zinc-500 hover:text-zinc-950"
       )}
     >
-      <ActiveDot active={active} isTransparent={isTransparent} />
       <SplitLabel label={label} />
+      <NavUnderline active={active} isTransparent={isTransparent} />
     </Link>
   );
 }
@@ -561,6 +559,7 @@ function NavTrigger({
   active: boolean;
   isTransparent: boolean;
 }) {
+  const underlineActive = open || active;
   return (
     <button
       type="button"
@@ -569,15 +568,14 @@ function NavTrigger({
       className={cn(
         "group/nav relative inline-flex items-center gap-1.5 text-[13px] font-normal uppercase tracking-[0.12em] py-2 transition-colors duration-300",
         isTransparent
-          ? open || active
+          ? underlineActive
             ? "text-white"
             : "text-white/70 hover:text-white"
-          : open || active
+          : underlineActive
             ? "text-zinc-950"
             : "text-zinc-500 hover:text-zinc-950"
       )}
     >
-      <ActiveDot active={active} isTransparent={isTransparent} />
       <SplitLabel label={label} />
       <CaretDown
         size={11}
@@ -588,6 +586,7 @@ function NavTrigger({
         )}
         style={{ transitionTimingFunction: SPLIT_EASE }}
       />
+      <NavUnderline active={underlineActive} isTransparent={isTransparent} />
     </button>
   );
 }
