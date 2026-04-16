@@ -177,11 +177,8 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               </span>
             </div>
 
-            <h1 className="font-bold tracking-[-0.05em] leading-[0.88] text-zinc-950 mb-10 text-[clamp(3.2rem,12vw,11rem)]">
-              Tarifs{" "}
-              <span className="text-zinc-300 font-[family-name:var(--font-syne)]">
-                &
-              </span>
+            <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-10 text-[clamp(3.2rem,12vw,11rem)] font-[family-name:var(--font-bricolage)]">
+              Tarifs <span className="text-zinc-300">&</span>
               <br />
               <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]">
                 formules
@@ -191,12 +188,9 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
               <p className="text-xl md:text-2xl text-zinc-600 leading-relaxed font-light max-w-2xl">
-                Une grille{" "}
-                <span className="italic font-[family-name:var(--font-instrument-serif)] text-zinc-950">
-                  transparente
-                </span>
-                , sans frais cachés. Éligible aux financements CPF, OPCO, Pôle
-                Emploi — et payable en 3 ou 4 fois sans frais.
+                Une grille transparente, sans frais cachés. Éligible aux
+                financements CPF, OPCO, Pôle Emploi — et payable en 3 ou 4 fois
+                sans frais.
               </p>
 
               <div className="flex flex-wrap gap-2 lg:shrink-0">
@@ -260,12 +254,10 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-8 mb-14 border-b-2 border-zinc-950">
               <div>
                 <div className="eyebrow text-zinc-500 mb-3">Section · 01</div>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] text-zinc-950 leading-[0.9]">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
                   Formation initiale
                   <br />
-                  <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-zinc-400">
-                    Taxi & VTC
-                  </span>
+                  <span className="text-zinc-400">Taxi &amp; VTC</span>
                 </h2>
               </div>
               <p className="md:text-right text-zinc-500 max-w-sm leading-relaxed">
@@ -360,7 +352,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                               À partir de
                             </div>
                           )}
-                          <div className="font-bold font-[family-name:var(--font-syne)] text-5xl md:text-6xl lg:text-7xl tracking-[-0.04em] leading-[0.85] text-zinc-950">
+                          <div className="font-bold font-[family-name:var(--font-bricolage)] text-5xl md:text-6xl lg:text-7xl tracking-[-0.04em] leading-[0.85] text-zinc-950">
                             {plan.price}
                           </div>
                         </div>
@@ -400,12 +392,10 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
           <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14">
             <div>
               <div className="eyebrow text-[#4CAF50] mb-3">Section · 02</div>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.9]">
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[0.9] font-[family-name:var(--font-bricolage)]">
                 Formations
                 <br />
-                <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-zinc-500">
-                  spécifiques
-                </span>
+                <span className="text-zinc-500">spécifiques</span>
                 <span className="text-white">.</span>
               </h2>
             </div>
@@ -491,7 +481,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                             {plan.priceOriginal}
                           </span>
                         )}
-                        <span className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-syne)] tracking-[-0.03em] text-white group-hover:text-[#4CAF50] transition-colors">
+                        <span className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.03em] text-white group-hover:text-[#4CAF50] transition-colors">
                           {plan.price}
                         </span>
                       </div>
@@ -546,13 +536,10 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-8 mb-14 border-b-2 border-zinc-950">
               <div>
                 <div className="eyebrow text-zinc-500 mb-3">Section · 03</div>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] text-zinc-950 leading-[0.9]">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
                   Autres
                   <br />
-                  <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-zinc-400">
-                    formations
-                  </span>
-                  .
+                  <span className="text-zinc-400">formations</span>.
                 </h2>
               </div>
               <p className="md:text-right text-zinc-500 max-w-sm leading-relaxed">
@@ -577,7 +564,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                     }`}
                   >
                     <div
-                      className={`absolute -top-8 -right-8 font-[family-name:var(--font-syne)] font-bold text-[10rem] leading-none tracking-tighter pointer-events-none select-none ${
+                      className={`absolute -top-8 -right-8 font-[family-name:var(--font-bricolage)] font-bold text-[10rem] leading-none tracking-tighter pointer-events-none select-none ${
                         isPoints ? "text-zinc-100" : "text-white/5"
                       }`}
                     >
@@ -645,7 +632,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                             Tarif
                           </div>
                           <div
-                            className={`text-5xl md:text-6xl font-bold font-[family-name:var(--font-syne)] tracking-[-0.04em] leading-none ${
+                            className={`text-5xl md:text-6xl font-bold font-[family-name:var(--font-bricolage)] tracking-[-0.04em] leading-none ${
                               isPoints ? "text-zinc-950" : "text-white"
                             }`}
                           >
@@ -693,18 +680,10 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               <div className="eyebrow text-white/70 mb-6">
                 Section · 04 — Financement
               </div>
-              <h3 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[0.88] mb-10">
-                100%{" "}
-                <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-white/75">
-                  éligible
-                </span>
+              <h3 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-10 font-[family-name:var(--font-bricolage)]">
+                100% éligible
                 <br />
-                CPF
-                <span className="text-white/60"> &amp; </span>
-                <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-white/75">
-                  OPCO
-                </span>
-                .
+                <span className="text-white/75">CPF &amp; OPCO</span>.
               </h3>
               <p className="text-lg md:text-xl text-white/85 font-light max-w-xl leading-relaxed">
                 Qualiopi, CPF, Pôle Emploi, OPCO… On construit avec vous un plan
