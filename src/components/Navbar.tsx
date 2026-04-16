@@ -5,23 +5,75 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { List, X, CaretDown } from "@phosphor-icons/react";
+import { List, X, CaretDown, ArrowUpRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import BookingWidget from "./BookingWidget";
 
-const formationsTaxi = [
-  { name: "Formation Initiale TAXI", href: "/formation-taxi/formation-initiale" },
-  { name: "Formation Continue TAXI", href: "/formation-taxi/formation-continue" },
-  { name: "Formation à la mobilité", href: "/formation-taxi/formation-mobilite" },
-  { name: "Passerelle VTC vers TAXI", href: "/formation-taxi/formation-passerelle" },
+type FormationItem = {
+  name: string;
+  href: string;
+  description: string;
+  meta: string;
+};
+
+const formationsTaxi: FormationItem[] = [
+  {
+    name: "Formation Initiale TAXI",
+    href: "/formation-taxi/formation-initiale",
+    description: "Obtenir la carte professionnelle et réussir l'examen.",
+    meta: "140 h",
+  },
+  {
+    name: "Formation Continue TAXI",
+    href: "/formation-taxi/formation-continue",
+    description: "Stage obligatoire de renouvellement tous les 5 ans.",
+    meta: "14 h",
+  },
+  {
+    name: "Formation à la mobilité",
+    href: "/formation-taxi/formation-mobilite",
+    description: "Spécialisation au transport de personnes à mobilité réduite.",
+    meta: "7 h",
+  },
+  {
+    name: "Passerelle VTC → TAXI",
+    href: "/formation-taxi/formation-passerelle",
+    description: "Convertir votre carte VTC en carte professionnelle TAXI.",
+    meta: "Express",
+  },
 ];
 
-const formationsVtc = [
-  { name: "Formation Initiale VTC", href: "/formation-vtc/formation-initiale" },
-  { name: "Formation Continue VTC", href: "/formation-vtc/formation-continue" },
-  { name: "Formation VTC à distance", href: "/formation-vtc/formation-distance" },
-  { name: "Formation VTC cours du soir", href: "/formation-vtc/cours-du-soir" },
-  { name: "Passerelle TAXI vers VTC", href: "/formation-vtc/formation-passerelle" },
+const formationsVtc: FormationItem[] = [
+  {
+    name: "Formation Initiale VTC",
+    href: "/formation-vtc/formation-initiale",
+    description: "Préparation complète à l'examen et à la carte VTC.",
+    meta: "105 h",
+  },
+  {
+    name: "Formation Continue VTC",
+    href: "/formation-vtc/formation-continue",
+    description: "Renouvellement quinquennal obligatoire des chauffeurs.",
+    meta: "14 h",
+  },
+  {
+    name: "Formation VTC à distance",
+    href: "/formation-vtc/formation-distance",
+    description: "Format 100 % en ligne, progression à votre rythme.",
+    meta: "e-learning",
+  },
+  {
+    name: "Formation VTC cours du soir",
+    href: "/formation-vtc/cours-du-soir",
+    description: "Compatible avec une activité salariée en journée.",
+    meta: "18 h — 22 h",
+  },
+  {
+    name: "Passerelle TAXI → VTC",
+    href: "/formation-vtc/formation-passerelle",
+    description: "Obtenez votre carte VTC rapidement en tant que taxi.",
+    meta: "Express",
+  },
 ];
 
 export default function Navbar() {
@@ -83,7 +135,7 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
             <div
-              className="relative group"
+              className="relative"
               onMouseEnter={() => setActiveDropdown('taxi')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -95,27 +147,18 @@ export default function Navbar() {
               </button>
               <AnimatePresence>
                 {activeDropdown === 'taxi' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 pt-3 w-72"
-                  >
-                    <div className="bg-white border border-zinc-200 shadow-xl rounded-xl p-2 flex flex-col gap-0.5">
-                      {formationsTaxi.map((item) => (
-                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-normal tracking-[0.01em] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
+                  <FormationsDropdown
+                    kind="taxi"
+                    title="Formations TAXI"
+                    tagline="Centre agréé Préfecture — 98 % de réussite à l'examen."
+                    items={formationsTaxi}
+                  />
                 )}
               </AnimatePresence>
             </div>
 
             <div
-              className="relative group"
+              className="relative"
               onMouseEnter={() => setActiveDropdown('vtc')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -127,21 +170,12 @@ export default function Navbar() {
               </button>
               <AnimatePresence>
                 {activeDropdown === 'vtc' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 pt-3 w-72"
-                  >
-                    <div className="bg-white border border-zinc-200 shadow-xl rounded-xl p-2 flex flex-col gap-0.5">
-                      {formationsVtc.map((item) => (
-                        <Link key={item.href} href={item.href} className="block px-4 py-2.5 text-[13px] font-normal tracking-[0.01em] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
+                  <FormationsDropdown
+                    kind="vtc"
+                    title="Formations VTC"
+                    tagline="Présentiel, distanciel ou cours du soir — vous choisissez."
+                    items={formationsVtc}
+                  />
                 )}
               </AnimatePresence>
             </div>
@@ -232,5 +266,210 @@ export default function Navbar() {
       </AnimatePresence>
       <BookingWidget />
     </>
+  );
+}
+
+type DropdownKind = "taxi" | "vtc";
+
+function FormationsDropdown({
+  kind,
+  title,
+  tagline,
+  items,
+}: {
+  kind: DropdownKind;
+  title: string;
+  tagline: string;
+  items: FormationItem[];
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
+  const indexLabel = kind === "taxi" ? "01 — TAXI" : "02 — VTC";
+  const rootHref = kind === "taxi" ? "/formation-taxi" : "/formation-vtc";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 6 }}
+      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+      className="absolute top-full left-0 pt-4 w-[640px] z-50"
+    >
+      {/* Pont invisible pour garder le hover actif */}
+      <div className="absolute inset-x-0 top-0 h-4" aria-hidden />
+
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-zinc-200/80 shadow-[0_24px_60px_-30px_rgba(9,9,11,0.35),0_10px_24px_-20px_rgba(9,9,11,0.2)]">
+        {/* Dot grid atmosphérique */}
+        <div
+          aria-hidden
+          className="dot-grid-pattern absolute inset-0 opacity-40 [mask-image:radial-gradient(circle_at_top_right,black,transparent_55%)]"
+        />
+        {/* Barre d'accent supérieure */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#4CAF50]/60 to-transparent" />
+
+        <div className="relative grid grid-cols-[1fr_240px]">
+          {/* Colonne principale — liste éditoriale */}
+          <div className="p-6 pr-4">
+            <div className="flex items-baseline justify-between mb-5">
+              <span
+                className="text-[10px] uppercase tracking-[0.24em] text-zinc-400"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {indexLabel}
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">
+                {items.length} parcours
+              </span>
+            </div>
+
+            <ul className="flex flex-col">
+              {items.map((item, i) => {
+                const isActive = hoveredIndex === i;
+                return (
+                  <li key={item.href} className="relative">
+                    <motion.div
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: 0.32,
+                        delay: 0.04 + i * 0.04,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <Link
+                        href={item.href}
+                        onMouseEnter={() => setHoveredIndex(i)}
+                        className="group/item relative block pl-5 pr-3 py-3.5 -mx-2 rounded-lg transition-colors duration-300"
+                      >
+                        {/* Indicateur vertical */}
+                        <span
+                          className={cn(
+                            "absolute left-0 top-1/2 -translate-y-1/2 w-[2px] rounded-full bg-[#4CAF50] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                            isActive ? "h-8 opacity-100" : "h-0 opacity-0"
+                          )}
+                        />
+
+                        <div className="flex items-start gap-4">
+                          {/* Numéro */}
+                          <span
+                            className={cn(
+                              "text-[10px] leading-[1.7] tracking-[0.15em] transition-colors duration-300 pt-[3px]",
+                              isActive ? "text-[#4CAF50]" : "text-zinc-300"
+                            )}
+                            style={{ fontFamily: "var(--font-mono)" }}
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-3">
+                              <h4
+                                className={cn(
+                                  "text-[15px] font-medium tracking-[-0.01em] transition-colors duration-300",
+                                  isActive ? "text-zinc-950" : "text-zinc-700"
+                                )}
+                              >
+                                {item.name}
+                              </h4>
+                              <ArrowUpRight
+                                size={14}
+                                weight="regular"
+                                className={cn(
+                                  "shrink-0 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                                  isActive
+                                    ? "opacity-100 translate-x-0 -translate-y-0 text-[#4CAF50]"
+                                    : "opacity-0 -translate-x-1 translate-y-1 text-zinc-400"
+                                )}
+                              />
+                            </div>
+                            <p
+                              className={cn(
+                                "text-[12.5px] leading-relaxed mt-1 transition-colors duration-300",
+                                isActive ? "text-zinc-500" : "text-zinc-400"
+                              )}
+                            >
+                              {item.description}
+                            </p>
+                            <span
+                              className={cn(
+                                "inline-block mt-1.5 text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
+                                isActive ? "text-zinc-500" : "text-zinc-300"
+                              )}
+                              style={{ fontFamily: "var(--font-mono)" }}
+                            >
+                              {item.meta}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Colonne latérale — contexte & CTA */}
+          <aside
+            className="relative border-l border-zinc-100 bg-gradient-to-b from-zinc-50/60 via-white to-white p-6 flex flex-col"
+            onMouseEnter={() => setHoveredIndex(null)}
+          >
+            <div className="flex-1">
+              <span
+                className="text-[10px] uppercase tracking-[0.24em] text-[#4CAF50]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Centre agréé
+              </span>
+              <h3
+                className="mt-3 text-[22px] leading-[1.05] tracking-[-0.03em] font-semibold text-zinc-950"
+                style={{ fontFamily: "var(--font-bricolage), var(--font-sans)" }}
+              >
+                {title}
+              </h3>
+              <p className="mt-2.5 text-[12.5px] leading-relaxed text-zinc-500">
+                {tagline}
+              </p>
+
+              <div className="mt-5 pt-5 border-t border-dashed border-zinc-200 space-y-2.5">
+                <Stat label="Réussite" value="98 %" />
+                <Stat label="Financements" value="CPF · OPCO" />
+                <Stat label="Sessions" value="Chaque semaine" />
+              </div>
+            </div>
+
+            <Link
+              href={rootHref}
+              className="group/cta mt-6 relative inline-flex items-center justify-between gap-2 px-4 py-3 rounded-lg bg-zinc-950 text-white overflow-hidden"
+            >
+              <span className="relative z-10 text-[11.5px] uppercase tracking-[0.18em] font-medium">
+                Voir tout
+              </span>
+              <ArrowUpRight
+                size={14}
+                weight="bold"
+                className="relative z-10 transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
+              />
+              <span className="absolute inset-0 bg-[#4CAF50] translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/cta:translate-y-0" />
+            </Link>
+          </aside>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline justify-between gap-3">
+      <span
+        className="text-[10px] uppercase tracking-[0.18em] text-zinc-400"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        {label}
+      </span>
+      <span className="text-[12px] font-medium tracking-[-0.01em] text-zinc-800">
+        {value}
+      </span>
+    </div>
   );
 }
