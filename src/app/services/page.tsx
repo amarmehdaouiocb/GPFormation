@@ -1,10 +1,12 @@
-import { getMarkdownContent } from "@/lib/markdown";
-import FormationDetailTemplate from "@/components/FormationDetailTemplate";
+import type { Metadata } from "next";
+import ServicesShowcase from "@/components/ServicesShowcase";
 
-export default async function Page() {
-  const { content, data } = getMarkdownContent("services");
-  const breadcrumbs = [
-    { label: "Services", href: "#" }
-  ];
-  return <FormationDetailTemplate title="Nos Services" content={content} breadcrumbs={breadcrumbs} location="Aulnay-sous-Bois" />;
+export const metadata: Metadata = {
+  title: "Campus & Services | GP Formation Aulnay-sous-Bois",
+  description:
+    "Découvrez les services proposés par GP Formation : accessibilité PMR, parking sécurisé EIFFIA et cantine municipale à tarif réduit à Aulnay-sous-Bois.",
+};
+
+export default function ServicesPage() {
+  return <ServicesShowcase />;
 }
