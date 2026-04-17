@@ -20,7 +20,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="container-custom py-20 md:py-32">
+    <div className="container-custom pt-32 md:pt-44 pb-20 md:pb-32">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
         
         {/* Contact Info Section */}

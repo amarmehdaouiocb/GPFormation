@@ -87,6 +87,12 @@ export default function Navbar() {
   const isTransparent = isHome && !isScrolled;
 
   useEffect(() => {
+    if (!isHome) {
+      setIsNavHidden(false);
+    }
+  }, [isHome]);
+
+  useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
 
@@ -94,6 +100,8 @@ export default function Navbar() {
         const atTop = currentY < 50;
         const pastHero = currentY > window.innerHeight;
         setIsNavHidden(!atTop && !pastHero);
+      } else if (!isHome) {
+        setIsNavHidden(false);
       }
 
       setIsScrolled(currentY > window.innerHeight * 0.15);
