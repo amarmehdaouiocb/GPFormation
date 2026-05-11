@@ -1,6 +1,6 @@
 # Prix d'une formation VTC
 
-**URL :** https://ecolegallieni.fr/uncategorized/prix-formation-vtc
+**URL :** https://gpformation.fr/uncategorized/prix-formation-vtc
 
 ## Tarif moyen d'une formation VTC en France
 

@@ -1,6 +1,6 @@
 # Formation continue TAXI
 
-**URL :** https://ecolegallieni.fr/formation-taxi/formation-continue
+**URL :** https://gpformation.fr/formation-taxi/formation-continue
 
 ## La formation continue est-elle obligatoire ?
 

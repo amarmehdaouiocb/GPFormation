@@ -1,6 +1,6 @@
 # Formation initiale TAXI
 
-**URL :** https://ecolegallieni.fr/formation-taxi/formation-initiale
+**URL :** https://gpformation.fr/formation-taxi/formation-initiale
 
 ## INFOS PRATIQUES
 

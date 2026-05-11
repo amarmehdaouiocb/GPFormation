@@ -1,6 +1,6 @@
 # Formation VTC à distance (article de blog)
 
-**URL :** https://ecolegallieni.fr/uncategorized/formation-vtc-a-distance
+**URL :** https://gpformation.fr/uncategorized/formation-vtc-a-distance
 
 ## Peut-on suivre une formation VTC à distance ?
 

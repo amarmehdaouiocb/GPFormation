@@ -1,6 +1,6 @@
 # Formation passerelle : TAXI vers VTC
 
-**URL :** https://ecolegallieni.fr/formation-vtc/formation-passerelle
+**URL :** https://gpformation.fr/formation-vtc/formation-passerelle
 
 ## Qu'est-ce que la formation passerelle VTC ?
 

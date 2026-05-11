@@ -1,6 +1,6 @@
 # Visite médicale en VTC : est-elle obligatoire ?
 
-**URL :** https://ecolegallieni.fr/uncategorized/visite-medicale-en-vtc-est-elle-obligatoire
+**URL :** https://gpformation.fr/uncategorized/visite-medicale-en-vtc-est-elle-obligatoire
 
 ## Pourquoi est-elle obligatoire ?
 

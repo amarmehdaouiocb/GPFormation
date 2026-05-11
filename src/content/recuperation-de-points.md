@@ -1,6 +1,6 @@
 # Récupération de points
 
-**URL :** https://ecolegallieni.fr/recuperation-de-points
+**URL :** https://gpformation.fr/recuperation-de-points
 
 ## Stage de récupération de points au permis de conduire
 

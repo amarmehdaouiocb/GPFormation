@@ -1,6 +1,6 @@
 # Comment obtenir sa vignette VTC ?
 
-**URL :** https://ecolegallieni.fr/uncategorized/comment-obtenir-sa-vignette-vtc
+**URL :** https://gpformation.fr/uncategorized/comment-obtenir-sa-vignette-vtc
 
 La vignette VTC est une signalétique indispensable à tout chauffeur VTC en activité. Elle permet de se distinguer des taxis et autres usagers de la route. Toutefois, avant d'acquérir cette vignette, il est primordial de suivre certaines étapes.
 

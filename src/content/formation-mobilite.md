@@ -1,6 +1,6 @@
 # Formation à la mobilité
 
-**URL :** https://ecolegallieni.fr/formation-taxi/formation-a-la-mobilite
+**URL :** https://gpformation.fr/formation-taxi/formation-a-la-mobilite
 
 ## Qu'est-ce que la formation mobilité ?
 

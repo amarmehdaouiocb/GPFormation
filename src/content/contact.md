@@ -1,12 +1,12 @@
 # Nous contacter
 
-**URL :** https://ecolegallieni.fr/contact
+**URL :** https://gpformation.fr/contact
 
 ## Coordonnées
 
 - **Téléphone :** 01 45 09 09 35
-- **Email :** contact@ecolegallieni.fr
-- **Adresse :** 18 Boulevard du Général Gallieni, 93600 Aulnay-sous-Bois, France
+- **Email :** contact@gpformation.fr
+- **Adresse :** 18 Boulevard du Général Galliéni, 93600 Aulnay-sous-Bois, France
 
 ## Horaires d'ouverture
 

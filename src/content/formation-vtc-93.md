@@ -1,6 +1,6 @@
 # Formation VTC dans le 93 (Seine-Saint-Denis)
 
-**URL :** https://ecolegallieni.fr/formation-vtc/formation-vtc-93
+**URL :** https://gpformation.fr/formation-vtc/formation-vtc-93
 
 Vous souhaitez devenir chauffeur VTC dans le 93 ? Faites confiance à GP Formation. Située à Aulnay-sous-Bois, notre école est la première à avoir été agréée par la préfecture de Bobigny et possède l'expérience nécessaire pour vous former.
 
@@ -24,7 +24,7 @@ Depuis 2014, GP Formation est spécialisée dans la formation VTC en Seine-Saint
 
 - **Adresse :** 18 boulevard Gallieni à Aulnay-sous-Bois
 - **Téléphone :** 01 45 09 09 35
-- **Mail :** contact@ecolegallieni.fr
+- **Mail :** contact@gpformation.fr
 
 Nos locaux sont adaptés aux personnes à mobilité réduite et sont équipés de sanitaires adaptés et d'une rampe d'accès.
 
@@ -41,7 +41,7 @@ Nos locaux sont adaptés aux personnes à mobilité réduite et sont équipés d
 "Accueil au top et suivi également. Pour ma part une formation taxi qui s'est super bien passé avec des formateurs au top et un encadrement idéal. Tout ce qu'il faut pour réussir. D'ailleurs quasi 100% de réussite à l'examen."
 
 **S. Samad :**
-"L'GP Formation n'est pas simplement à conseiller ! Elle doit être imposée ! Tant son enseignement, son cadre, et ses intervenants sont exceptionnels ! Je ne peux que vous recommander de passer par ce centre de formation Taxi/VTC pour être assuré d'avoir toutes les bases nécessaires à l'obtention de votre carte professionnelle."
+"GP Formation n'est pas simplement à conseiller ! Elle doit être imposée ! Tant son enseignement, son cadre, et ses intervenants sont exceptionnels ! Je ne peux que vous recommander de passer par ce centre de formation Taxi/VTC pour être assuré d'avoir toutes les bases nécessaires à l'obtention de votre carte professionnelle."
 
 **Mo.u :**
 "Centre de formation au top et très professionnel ! Je recommande fortement ce centre à toutes les personnes voulant apprendre et réussir leurs examens ! Je tenais à tous vous remercier pour votre écoute, votre aide et surtout votre patience !"
