@@ -1,6 +1,6 @@
 # Devenir chauffeur VTC
 
-**URL :** https://ecolegallieni.fr/devenir-chauffeur-vtc
+**URL :** https://gpformation.fr/devenir-chauffeur-vtc
 
 ## La formation VTC
 

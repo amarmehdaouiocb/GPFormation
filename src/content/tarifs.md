@@ -1,6 +1,6 @@
 # Formules & Tarifs
 
-**URL :** https://ecolegallieni.fr/tarifs
+**URL :** https://gpformation.fr/tarifs
 
 ## Nos tarifs
 

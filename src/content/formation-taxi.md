@@ -1,6 +1,6 @@
 # Formation TAXI
 
-**URL :** https://ecolegallieni.fr/formation-taxi
+**URL :** https://gpformation.fr/formation-taxi
 
 ## La formation Taxi
 

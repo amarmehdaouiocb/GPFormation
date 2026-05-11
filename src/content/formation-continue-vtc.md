@@ -1,6 +1,6 @@
 # Formation continue VTC
 
-**URL :** https://ecolegallieni.fr/formation-vtc/formation-continue-vtc
+**URL :** https://gpformation.fr/formation-vtc/formation-continue-vtc
 
 ## La formation continue est-elle obligatoire ?
 

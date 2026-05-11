@@ -1,6 +1,6 @@
 # Accueil — GP Formation
 
-**URL :** https://ecolegallieni.fr/
+**URL :** https://gpformation.fr/
 
 ## GP FORMATION
 
@@ -41,11 +41,11 @@ GP Formation forme depuis 2014 les chauffeurs de TAXI / VTC de demain à travers
 
 ## Certifications et Financement
 
-En tant que premier centre de formation TAXI / VTC agréé en Île-de-France, les formations dispensées par l'Ecole Gallieni sont reconnues et certifiées par **Qualiopi**.
+En tant que premier centre de formation TAXI / VTC agréé en Île-de-France, les formations dispensées par GP Formation sont reconnues et certifiées par **Qualiopi**.
 
 En tant que personne active, vous acquérez chaque année des droits à la formation.
 
-Vous souhaitez un nouveau départ professionnel en devenant chauffeur de TAXI ou VTC ? Ecole Gallieni vous accompagne à chaque étape de vos projets.
+Vous souhaitez un nouveau départ professionnel en devenant chauffeur de TAXI ou VTC ? GP Formation vous accompagne à chaque étape de vos projets.
 
 **Financement possible via :** CPF, Pôle emploi, et autres dispositifs
 
@@ -63,7 +63,7 @@ Votre conseiller vous présentera la formation ainsi que toute la procédure, de
 
 ## Réseaux Sociaux
 
-Rejoignez la Team Ecole Gallieni sur Instagram et profitez de nombreux avantages !
+Rejoignez la Team GP Formation sur Instagram et profitez de nombreux avantages !
 
 - Retrouvez des astuces et informations utiles sur nos services.
 - Une question ? Notre équipe vous répond sur Insta !
@@ -83,7 +83,7 @@ Notre centre de formation est adapté aux personnes à mobilité réduite.
 **Référent handicap :**
 M. MICOOGULLARI Suleyman
 Tél : 06 08 68 03 81
-Email : m.suleyman@ecolegallieni.fr
+Email : m.suleyman@gpformation.fr
 
 ---
 
@@ -91,7 +91,7 @@ Email : m.suleyman@ecolegallieni.fr
 
 ### Parking
 
-Situé en face de l'Ecole Gallieni, vous avez la possibilité de vous garer, pour un tarif unique, dans le parking sécurisé EIFFIA, et ce, pendant toute la durée de votre formation.
+Situé en face de GP Formation, vous avez la possibilité de vous garer, pour un tarif unique, dans le parking sécurisé EIFFIA, et ce, pendant toute la durée de votre formation.
 
 ### Cantine
 
@@ -108,5 +108,5 @@ Déjeunez à la cantine municipale d'Aulnay-Sous-Bois à tarif réduit.
 ## Contact
 
 - Tél : 01 45 09 09 35
-- Email : contact@ecolegallieni.fr
-- Web : www.ecolegallieni.fr
+- Email : contact@gpformation.fr
+- Web : www.gpformation.fr

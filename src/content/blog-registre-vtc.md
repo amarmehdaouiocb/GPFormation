@@ -1,6 +1,6 @@
 # Comment faire son inscription au registre des VTC ?
 
-**URL :** https://ecolegallieni.fr/uncategorized/registre-vtc
+**URL :** https://gpformation.fr/uncategorized/registre-vtc
 
 ## Obtenir un certificat d'inscription au registre VTC
 

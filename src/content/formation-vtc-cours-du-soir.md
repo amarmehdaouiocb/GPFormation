@@ -1,6 +1,6 @@
 # Formation VTC en cours du soir
 
-**URL :** https://ecolegallieni.fr/formation-vtc/formation-vtc-cours-du-soir
+**URL :** https://gpformation.fr/formation-vtc/formation-vtc-cours-du-soir
 
 Manque de temps en journée ? À GP Formation, il est possible de suivre une formation VTC en cours du soir.
 

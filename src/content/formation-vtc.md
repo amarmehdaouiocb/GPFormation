@@ -1,6 +1,6 @@
 # Formation VTC
 
-**URL :** https://ecolegallieni.fr/formation-vtc
+**URL :** https://gpformation.fr/formation-vtc
 
 ## La formation VTC
 
@@ -42,4 +42,4 @@ Il faut être titulaire du permis de conduire de catégorie B non affecté par l
 
 La formation est une bonne base pour maîtriser les compétences nécessaires de n'importe quel domaine d'activité. Même si dans le cadre de l'obtention de la carte VTC, vous avez la possibilité de vous en passer, il est important de se rapprocher d'un centre de formation agréé pour préparer l'examen VTC.
 
-L'GP Formation offre la possibilité de suivre la formation à temps plein sur 3 semaines ou en cours du soir sur 4 semaines. Après avoir réussi à l'examen théorique et pratique, les conducteurs pourront procéder à la demande de carte professionnelle auprès de la préfecture de leurs départements respectifs.
+GP Formation offre la possibilité de suivre la formation à temps plein sur 3 semaines ou en cours du soir sur 4 semaines. Après avoir réussi à l'examen théorique et pratique, les conducteurs pourront procéder à la demande de carte professionnelle auprès de la préfecture de leurs départements respectifs.

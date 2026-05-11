@@ -1,6 +1,6 @@
 # Formation initiale VTC
 
-**URL :** https://ecolegallieni.fr/formation-vtc/formation-initiale-vtc
+**URL :** https://gpformation.fr/formation-vtc/formation-initiale-vtc
 
 ## INFOS PRATIQUES
 
