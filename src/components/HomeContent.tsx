@@ -73,16 +73,16 @@ const EditorialFormations = () => (
         {/* TAXI */}
         <Link href="/formation-taxi" className="group flex flex-col border border-zinc-200 hover:border-zinc-950 transition-colors">
           <div className="relative aspect-[16/9] md:aspect-[3/2] overflow-hidden bg-zinc-100">
-            <Image 
-              src="/images/taxi-parisien.jpg" 
-              alt="Formation TAXI" 
-              fill 
-              className="object-cover transition-transform duration-700 group-hover:scale-105" 
+            <Image
+              src="/images/home/chauffeur-taxi.jpg"
+              alt="Formation TAXI"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </div>
           <div className="p-8 md:p-10 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation Initiale & Continue</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation initiale en centre & à distance</span>
               <ArrowRight size={20} className="text-zinc-400 group-hover:text-zinc-950 group-hover:translate-x-2 transition-all" />
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de TAXI</h3>
@@ -95,16 +95,16 @@ const EditorialFormations = () => (
         {/* VTC */}
         <Link href="/formation-vtc" className="group flex flex-col border border-zinc-200 hover:border-zinc-950 transition-colors">
           <div className="relative aspect-[16/9] md:aspect-[3/2] overflow-hidden bg-zinc-100">
-            <Image 
-              src="/images/vtc-berline-noire.jpg" 
-              alt="Formation VTC" 
-              fill 
-              className="object-cover transition-transform duration-700 group-hover:scale-105" 
+            <Image
+              src="/images/vtc-berline-noire.jpg"
+              alt="Formation VTC"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </div>
           <div className="p-8 md:p-10 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">En centre & À distance</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation initiale en centre & à distance</span>
               <ArrowRight size={20} className="text-zinc-400 group-hover:text-zinc-950 group-hover:translate-x-2 transition-all" />
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de VTC</h3>
@@ -117,25 +117,45 @@ const EditorialFormations = () => (
 
       {/* Autres Formations (Ligne inférieure) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <Link href="/recuperation-de-points" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
-          <div>
-            <CheckCircle size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
-            <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
-            <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
+        <Link href="/recuperation-de-points" className="group flex flex-col border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white overflow-hidden">
+          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100">
+            <Image
+              src="/images/home/recuperation-points.jpg"
+              alt="Récupération de points"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
           </div>
-          <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
-            En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          <div className="p-8 md:p-10 flex flex-col justify-between flex-1 min-h-[200px]">
+            <div>
+              <CheckCircle size={32} className="text-[#4CAF50] mb-5" weight="duotone" />
+              <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
+              <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
+            </div>
+            <div className="flex items-center gap-2 mt-6 text-sm font-bold tracking-widest uppercase text-zinc-950">
+              En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
         </Link>
 
-        <Link href="/formation-taxi/formation-passerelle" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
-          <div>
-            <GraduationCap size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
-            <h3 className="text-2xl font-bold tracking-tight mb-3">Formations Passerelles</h3>
-            <p className="text-zinc-600">Devenez Taxi si vous êtes VTC, ou VTC si vous êtes Taxi. Élargissez vos opportunités.</p>
+        <Link href="/formation-taxi/formation-passerelle" className="group flex flex-col border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white overflow-hidden">
+          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100">
+            <Image
+              src="/images/home/formations-passerelles.jpg"
+              alt="Formations passerelles"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
           </div>
-          <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
-            Voir le programme <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          <div className="p-8 md:p-10 flex flex-col justify-between flex-1 min-h-[200px]">
+            <div>
+              <GraduationCap size={32} className="text-[#4CAF50] mb-5" weight="duotone" />
+              <h3 className="text-2xl font-bold tracking-tight mb-3">Formations Passerelles</h3>
+              <p className="text-zinc-600">Devenez Taxi si vous êtes VTC, ou VTC si vous êtes Taxi. Élargissez vos opportunités.</p>
+            </div>
+            <div className="flex items-center gap-2 mt-6 text-sm font-bold tracking-widest uppercase text-zinc-950">
+              Voir le programme <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
         </Link>
       </div>
@@ -156,7 +176,7 @@ const AboutSection = () => (
           </h2>
           <div className="w-16 h-1 bg-[#4CAF50] mb-8"></div>
           <p className="text-zinc-400 text-lg leading-relaxed mb-8">
-            Implanté à Aulnay-sous-Bois, notre centre accompagne plus de 400 personnes chaque année pour les aider à atteindre leurs objectifs professionnels dans le secteur du transport privé.
+            Implanté à Aulnay-sous-Bois, notre centre vous accompagne chaque année à atteindre vos objectifs professionnels dans le secteur du transport privé.
           </p>
           <Link href="/contact" className="inline-flex items-center gap-2 text-white font-medium hover:text-[#4CAF50] transition-colors pb-1 border-b border-white hover:border-[#4CAF50]">
             Prendre un rendez-vous gratuit
@@ -168,7 +188,7 @@ const AboutSection = () => (
             {[
               { title: "Financement sur-mesure", desc: "CPF, Pôle emploi, et autres dispositifs pour vous aider à financer votre projet." },
               { title: "Infrastructures adaptées", desc: "Centre accessible PMR, parking sécurisé EIFFIA, et cantine à tarif réduit." },
-              { title: "Accompagnement complet", desc: "De l'inscription à la préparation de l'examen théorique et pratique." }
+              { title: "Accompagnement complet", desc: "De l'inscription à l'obtention de la carte professionnelle." }
             ].map((item, i) => (
               <li key={i} className="bg-zinc-950 py-6 md:py-8 border-b border-zinc-800 last:border-0">
                 <h4 className="text-xl font-bold mb-3 flex items-center gap-4">
