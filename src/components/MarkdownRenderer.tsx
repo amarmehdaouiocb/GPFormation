@@ -2,9 +2,14 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Link from "next/link";
 import { CheckCircle, CaretRight, Info } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import React from "react";
+
+function isInternalHref(href: unknown): href is string {
+  return typeof href === "string" && (href.startsWith("/") || href.startsWith("#"));
+}
 
 interface MarkdownRendererProps {
   content: string;
@@ -29,14 +34,34 @@ function extractH2Title(section: string): string | null {
 const baseMarkdownComponents = {
   h1: () => null,
   h2: () => null,
-  h3: ({ node, ...props }: any) => (
-    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
-        <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
-      </div>
-      {props.children}
-    </h3>
-  ),
+  h3: ({ node, ...props }: any) => {
+    const children = React.Children.toArray(props.children);
+    const firstChild = children[0] as any;
+    const isLinkedHeading =
+      React.isValidElement(firstChild) &&
+      (firstChild.type === "a" || (firstChild.props as any)?.href);
+
+    return (
+      <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3 group/h3">
+        <div
+          className={cn(
+            "w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0 transition-colors",
+            isLinkedHeading && "group-hover/h3:bg-[#4CAF50]/25"
+          )}
+        >
+          <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
+        </div>
+        <span
+          className={cn(
+            isLinkedHeading &&
+              "[&_a]:no-underline [&_a]:text-zinc-900 [&_a]:hover:text-[#4CAF50] [&_a]:transition-colors"
+          )}
+        >
+          {props.children}
+        </span>
+      </h3>
+    );
+  },
   p: ({ node, children, ...props }: any) => (
     <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light" {...props}>
       {children}
@@ -92,16 +117,31 @@ const baseMarkdownComponents = {
       </div>
     </blockquote>
   ),
-  a: ({ node, ...props }: any) => (
-    <a
-      className="font-semibold text-[#4CAF50] hover:text-zinc-950 underline decoration-2 decoration-[#4CAF50]/30 hover:decoration-zinc-950 underline-offset-4 transition-all"
-      target="_blank"
-      rel="noopener noreferrer"
-      {...props}
-    >
-      {props.children}
-    </a>
-  ),
+  a: ({ node, ...props }: any) => {
+    const { href, children, ...rest } = props;
+    if (isInternalHref(href)) {
+      return (
+        <Link
+          href={href}
+          className="font-semibold text-[#4CAF50] hover:text-zinc-950 underline decoration-2 decoration-[#4CAF50]/30 hover:decoration-zinc-950 underline-offset-4 transition-all"
+          {...rest}
+        >
+          {children}
+        </Link>
+      );
+    }
+    return (
+      <a
+        href={href}
+        className="font-semibold text-[#4CAF50] hover:text-zinc-950 underline decoration-2 decoration-[#4CAF50]/30 hover:decoration-zinc-950 underline-offset-4 transition-all"
+        target="_blank"
+        rel="noopener noreferrer"
+        {...rest}
+      >
+        {children}
+      </a>
+    );
+  },
   strong: ({ node, ...props }: any) => (
     <strong className="font-bold text-zinc-950" {...props}>
       {props.children}

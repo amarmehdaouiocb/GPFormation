@@ -13,6 +13,7 @@ import {
   Phone,
   Coin,
   CreditCard,
+  DownloadSimple,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 import React, { useMemo, useEffect, useState } from "react";
@@ -60,6 +61,11 @@ const DEFAULT_PHOTOS = [
   "/images/stock/succes-diplome.jpg",
 ];
 
+interface DownloadItem {
+  label: string;
+  href: string;
+}
+
 interface FormationDetailTemplateProps {
   title: string;
   content: string;
@@ -71,6 +77,18 @@ interface FormationDetailTemplateProps {
   tag?: string;
   relatedFormations?: { title: string; href: string; tag?: string }[];
   stripePaymentLink?: string;
+  financementProviders?: string;
+  downloads?: DownloadItem[];
+  photos?: string[];
+}
+
+function expandPhotos(photos: string[], minLength: number): string[] {
+  if (photos.length >= minLength) return photos;
+  const out: string[] = [];
+  for (let i = 0; i < minLength; i++) {
+    out.push(photos[i % photos.length]);
+  }
+  return out;
 }
 
 function extractH2Headings(content: string): string[] {
@@ -90,9 +108,20 @@ export default function FormationDetailTemplate({
   tag,
   relatedFormations,
   stripePaymentLink,
+  financementProviders = "CPF ou Pôle Emploi",
+  downloads,
+  photos: customPhotos,
 }: FormationDetailTemplateProps) {
   const headings = useMemo(() => extractH2Headings(content), [content]);
   const [activeHeading, setActiveHeading] = useState<string>("");
+
+  const resolvedPhotos = useMemo(() => {
+    const source =
+      customPhotos && customPhotos.length > 0
+        ? customPhotos
+        : TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+    return expandPhotos(source, 6);
+  }, [customPhotos, tag]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -322,7 +351,7 @@ export default function FormationDetailTemplate({
 
                   {/* Mini-galerie sidebar */}
                   {(() => {
-                    const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+                    const photos = resolvedPhotos;
                     return (
                       <div className="mt-8 pt-6 border-t border-zinc-200 space-y-3">
                         <Image
@@ -363,7 +392,7 @@ export default function FormationDetailTemplate({
                   : "lg:col-span-12 max-w-4xl mx-auto"
               )}
             >
-              <MarkdownRendererWithIds content={content} tag={tag} />
+              <MarkdownRendererWithIds content={content} tag={tag} photos={resolvedPhotos} />
 
               {/* Info Box Financement */}
               <div className="mt-16 bg-[#4CAF50]/5 border border-[#4CAF50]/20 border-l-4 border-l-[#4CAF50] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
@@ -375,8 +404,7 @@ export default function FormationDetailTemplate({
                     Besoin d&apos;aide pour le financement ?
                   </h4>
                   <p className="text-zinc-600 text-[0.95rem]">
-                    Nos équipes vous accompagnent dans le montage de votre dossier CPF ou
-                    Pôle Emploi.
+                    Nos équipes vous accompagnent dans la constitution de votre dossier {financementProviders}.
                   </p>
                 </div>
                 <Link
@@ -386,6 +414,38 @@ export default function FormationDetailTemplate({
                   Nous contacter
                 </Link>
               </div>
+
+              {/* Documents à télécharger */}
+              {downloads && downloads.length > 0 && (
+                <div className="mt-10">
+                  <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
+                    Documents
+                  </span>
+                  <h3 className="text-2xl font-bold tracking-tight text-zinc-950 mb-5">
+                    À télécharger
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {downloads.map((doc) => (
+                      <a
+                        key={doc.href}
+                        href={doc.href}
+                        download
+                        className="group flex items-center justify-between gap-3 px-5 py-4 bg-white border border-zinc-200 hover:border-[#4CAF50] hover:bg-[#4CAF50]/5 transition-colors rounded-xl"
+                      >
+                        <span className="flex items-center gap-3 min-w-0">
+                          <span className="w-10 h-10 shrink-0 bg-zinc-100 group-hover:bg-white rounded-lg flex items-center justify-center transition-colors">
+                            <DownloadSimple size={18} className="text-zinc-700 group-hover:text-[#4CAF50] transition-colors" weight="bold" />
+                          </span>
+                          <span className="text-sm font-semibold text-zinc-900 group-hover:text-[#4CAF50] transition-colors truncate">
+                            {doc.label}
+                          </span>
+                        </span>
+                        <ArrowRight size={16} className="text-zinc-400 group-hover:text-[#4CAF50] group-hover:translate-x-1 transition-all shrink-0" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -393,7 +453,7 @@ export default function FormationDetailTemplate({
 
       {/* Photo Mosaic Section */}
       {(() => {
-        const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+        const photos = resolvedPhotos;
         return (
           <section className="py-4 md:py-6 bg-zinc-100">
             <div className="container-custom">
@@ -473,7 +533,15 @@ export default function FormationDetailTemplate({
 }
 
 /* MarkdownRenderer wrapper that injects data-heading-id for scroll spy */
-function MarkdownRendererWithIds({ content, tag }: { content: string; tag?: string }) {
+function MarkdownRendererWithIds({
+  content,
+  tag,
+  photos,
+}: {
+  content: string;
+  tag?: string;
+  photos: string[];
+}) {
   const slugify = (text: string) =>
     text
       .toLowerCase()
@@ -484,7 +552,7 @@ function MarkdownRendererWithIds({ content, tag }: { content: string; tag?: stri
 
   return (
     <div>
-      <MarkdownRendererInner content={content} slugify={slugify} tag={tag} />
+      <MarkdownRendererInner content={content} slugify={slugify} tag={tag} photos={photos} />
     </div>
   );
 }
@@ -593,14 +661,14 @@ const mdComponents = {
 function MarkdownRendererInner({
   content,
   slugify,
-  tag,
+  photos,
 }: {
   content: string;
   slugify: (text: string) => string;
   tag?: string;
+  photos: string[];
 }) {
   const sections = parseMarkdownIntoSections(content);
-  const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
   let h2Counter = 0;
   let photoIndex = 0;
 

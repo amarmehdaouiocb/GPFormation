@@ -9,39 +9,72 @@ import { List, X, CaretDown, ArrowUpRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import BookingWidget from "./BookingWidget";
 
+type FormationDetails = {
+  success: string;
+  financing: string;
+  sessions: string;
+};
+
 type FormationItem = {
   name: string;
   href: string;
   description: string;
   meta: string;
+  details: FormationDetails;
 };
 
 const formationsTaxi: FormationItem[] = [
   {
     name: "Formation Initiale TAXI",
     href: "/formation-taxi/formation-initiale",
-    description: "Obtenir la carte professionnelle et réussir l'examen.",
-    meta: "140 h",
+    description: "Préparation à la réussite à l'examen.",
+    meta: "90 h",
+    details: {
+      success: "92 %",
+      financing: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
   {
     name: "Formation Continue TAXI",
     href: "/formation-taxi/formation-continue",
     description: "Stage obligatoire de renouvellement tous les 5 ans.",
     meta: "14 h",
+    details: {
+      success: "100 %",
+      financing: "FAFCEA · Pôle Emploi",
+      sessions: "Chaque semaine",
+    },
   },
   {
-    name: "Formation à la mobilité",
+    name: "Formation à la mobilité TAXI",
     href: "/formation-taxi/formation-mobilite",
-    description: "Spécialisation au transport de personnes à mobilité réduite.",
-    meta: "7 h",
+    description: "Stage permettant l'obtention d'un nouveau département.",
+    meta: "14 h",
+    details: {
+      success: "100 %",
+      financing: "FAFCEA · Pôle Emploi",
+      sessions: "Chaque mois",
+    },
   },
   {
-    name: "Passerelle VTC → TAXI",
+    name: "Formation Passerelle VTC > TAXI",
     href: "/formation-taxi/formation-passerelle",
-    description: "Convertir votre carte VTC en carte professionnelle TAXI.",
-    meta: "Express",
+    description: "Préparation à la réussite à l'examen TAXI.",
+    meta: "18 h",
+    details: {
+      success: "95 %",
+      financing: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
 ];
+
+const DEFAULT_VTC_DETAILS: FormationDetails = {
+  success: "95 %",
+  financing: "CPF · OPCO",
+  sessions: "Chaque mois",
+};
 
 const formationsVtc: FormationItem[] = [
   {
@@ -49,36 +82,40 @@ const formationsVtc: FormationItem[] = [
     href: "/formation-vtc/formation-initiale",
     description: "Préparation complète à l'examen et à la carte VTC.",
     meta: "105 h",
+    details: DEFAULT_VTC_DETAILS,
   },
   {
     name: "Formation Continue VTC",
     href: "/formation-vtc/formation-continue",
     description: "Renouvellement quinquennal obligatoire des chauffeurs.",
     meta: "14 h",
+    details: DEFAULT_VTC_DETAILS,
   },
   {
     name: "Formation VTC à distance",
     href: "/formation-vtc/formation-distance",
     description: "Format 100 % en ligne, progression à votre rythme.",
     meta: "e-learning",
+    details: DEFAULT_VTC_DETAILS,
   },
   {
     name: "Formation VTC cours du soir",
     href: "/formation-vtc/cours-du-soir",
     description: "Compatible avec une activité salariée en journée.",
     meta: "18 h — 22 h",
+    details: DEFAULT_VTC_DETAILS,
   },
   {
     name: "Passerelle TAXI → VTC",
     href: "/formation-vtc/formation-passerelle",
     description: "Obtenez votre carte VTC rapidement en tant que taxi.",
     meta: "Express",
+    details: DEFAULT_VTC_DETAILS,
   },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isNavHidden, setIsNavHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
@@ -87,39 +124,21 @@ export default function Navbar() {
   const isTransparent = isHome && !isScrolled;
 
   useEffect(() => {
-    if (!isHome) {
-      setIsNavHidden(false);
-    }
-  }, [isHome]);
-
-  useEffect(() => {
     const handleScroll = () => {
-      const currentY = window.scrollY;
-
-      if (isHome && !mobileMenuOpen) {
-        const atTop = currentY < 50;
-        const pastHero = currentY > window.innerHeight;
-        setIsNavHidden(!atTop && !pastHero);
-      } else if (!isHome) {
-        setIsNavHidden(false);
-      }
-
-      setIsScrolled(currentY > window.innerHeight * 0.15);
+      setIsScrolled(window.scrollY > window.innerHeight * 0.15);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome, mobileMenuOpen]);
+  }, []);
 
   return (
     <>
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 border-b",
-          "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          isNavHidden && !mobileMenuOpen
-            ? "-translate-y-full opacity-0"
-            : "translate-y-0 opacity-100",
+          "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           isTransparent
             ? "bg-transparent border-transparent py-8"
             : isScrolled
@@ -290,9 +309,11 @@ function FormationsDropdown({
   tagline: string;
   items: FormationItem[];
 }) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(0);
   const indexLabel = kind === "taxi" ? "01 — TAXI" : "02 — VTC";
   const rootHref = kind === "taxi" ? "/formation-taxi" : "/formation-vtc";
+  const activeItem = items[hoveredIndex] ?? items[0];
+  const activeDetails = activeItem?.details;
 
   return (
     <motion.div
@@ -417,10 +438,7 @@ function FormationsDropdown({
           </div>
 
           {/* Colonne latérale — contexte & CTA */}
-          <aside
-            className="relative border-l border-zinc-100 bg-gradient-to-b from-zinc-50/60 via-white to-white p-6 flex flex-col"
-            onMouseEnter={() => setHoveredIndex(null)}
-          >
+          <aside className="relative border-l border-zinc-100 bg-gradient-to-b from-zinc-50/60 via-white to-white p-6 flex flex-col">
             <div className="flex-1">
               <span
                 className="text-[10px] uppercase tracking-[0.24em] text-[#4CAF50]"
@@ -432,16 +450,19 @@ function FormationsDropdown({
                 className="mt-3 text-[22px] leading-[1.05] tracking-[-0.03em] font-semibold text-zinc-950"
                 style={{ fontFamily: "var(--font-bricolage), var(--font-sans)" }}
               >
-                {title}
+                {activeItem?.name ?? title}
               </h3>
               <p className="mt-2.5 text-[12.5px] leading-relaxed text-zinc-500">
-                {tagline}
+                {activeItem?.description ?? tagline}
               </p>
 
-              <div className="mt-5 pt-5 border-t border-dashed border-zinc-200 space-y-2.5">
-                <Stat label="Réussite" value="98 %" />
-                <Stat label="Financements" value="CPF · OPCO" />
-                <Stat label="Sessions" value="Chaque semaine" />
+              <div
+                key={activeItem?.href ?? "default"}
+                className="mt-5 pt-5 border-t border-dashed border-zinc-200 space-y-2.5 animate-[fadeIn_0.32s_ease-out]"
+              >
+                <Stat label="Réussite" value={activeDetails?.success ?? "98 %"} />
+                <Stat label="Financements" value={activeDetails?.financing ?? "CPF · OPCO"} />
+                <Stat label="Sessions" value={activeDetails?.sessions ?? "Chaque semaine"} />
               </div>
             </div>
 

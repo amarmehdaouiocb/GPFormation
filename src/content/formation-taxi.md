@@ -4,25 +4,25 @@
 
 ## La formation Taxi
 
-GP Formation est spécialisée dans la formation TAXI à Aulnay-sous-Bois. Nous préparons plus de 200 candidats chaque année à l'examen de Taxi.
+GP Formation est spécialisée dans la formation TAXI à Aulnay-sous-Bois. Nous préparons les chauffeurs de Taxi de demain…
 
 GP Formation est habilitée à vous former pour le métier de chauffeur de Taxi et à vous proposer des formations complémentaires, telles que la formation continue, la formation à la mobilité et la formation Passerelle (devenir VTC).
 
 ## Types de formations proposées
 
-### Initiale
+### [Initiale →](/formation-taxi/formation-initiale)
 
 GP Formation vous prépare à l'examen Taxi grâce à une formation dispensée par nos formateurs expérimentés et titulaires des diplômes requis dans chacun de leurs domaines.
 
-### Continue
+### [Continue →](/formation-taxi/formation-continue)
 
 En France, les chauffeurs de Taxi doivent suivre une formation obligatoire de 14 heures tous les 5 ans pour renouveller leur carte professionnelle de conducteur de Taxi.
 
-### Mobilité
+### [Mobilité →](/formation-taxi/formation-mobilite)
 
 Vous souhaitez exercer votre activité dans plusieurs départements (5 maximum) ? GP Formation vous forme sur la connaissance du territoire et la réglementation locale.
 
-### Passerelle
+### [Passerelle →](/formation-taxi/formation-passerelle)
 
 Vous êtes déjà chauffeur VTC et vous souhaitez obtenir la carte TAXI ? GP Formation vous prépare en 3 jours à l'examen TAXI.
 
