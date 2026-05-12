@@ -69,6 +69,8 @@ interface FormationDetailTemplateProps {
   location?: string;
   certification?: string;
   tag?: string;
+  heroImage?: string;
+  photos?: string[];
   relatedFormations?: { title: string; href: string; tag?: string }[];
   stripePaymentLink?: string;
 }
@@ -88,11 +90,18 @@ export default function FormationDetailTemplate({
   location = "Aulnay-sous-Bois",
   certification = "Attestation de réussite",
   tag,
+  heroImage,
+  photos,
   relatedFormations,
   stripePaymentLink,
 }: FormationDetailTemplateProps) {
   const headings = useMemo(() => extractH2Headings(content), [content]);
   const [activeHeading, setActiveHeading] = useState<string>("");
+  const defaultPhotos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+  const resolvedPhotos = photos?.length ? photos : defaultPhotos;
+  const photoAt = (index: number) =>
+    resolvedPhotos[index % resolvedPhotos.length] ??
+    defaultPhotos[index % defaultPhotos.length];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -125,7 +134,7 @@ export default function FormationDetailTemplate({
       <section className="bg-zinc-950 text-white pt-32 pb-28 md:pt-40 md:pb-36 border-b border-zinc-800 relative overflow-hidden">
         <div className="absolute inset-0 noise-overlay opacity-[0.03]" />
         <Image
-          src={TAG_HERO_IMAGES[tag?.toUpperCase() ?? ""] ?? "/images/formation-salle.jpg"}
+          src={heroImage ?? TAG_HERO_IMAGES[tag?.toUpperCase() ?? ""] ?? "/images/formation-salle.jpg"}
           alt=""
           fill
           className="object-cover opacity-[0.08] pointer-events-none"
@@ -321,36 +330,31 @@ export default function FormationDetailTemplate({
                   })}
 
                   {/* Mini-galerie sidebar */}
-                  {(() => {
-                    const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
-                    return (
-                      <div className="mt-8 pt-6 border-t border-zinc-200 space-y-3">
-                        <Image
-                          src={photos[0]}
-                          alt=""
-                          width={280}
-                          height={180}
-                          className="rounded-xl object-cover w-full h-36"
-                        />
-                        <div className="grid grid-cols-2 gap-2">
-                          <Image
-                            src={photos[1]}
-                            alt=""
-                            width={136}
-                            height={96}
-                            className="rounded-lg object-cover w-full h-24"
-                          />
-                          <Image
-                            src={photos[2]}
-                            alt=""
-                            width={136}
-                            height={96}
-                            className="rounded-lg object-cover w-full h-24"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })()}
+                  <div className="mt-8 pt-6 border-t border-zinc-200 space-y-3">
+                    <Image
+                      src={photoAt(0)}
+                      alt=""
+                      width={280}
+                      height={180}
+                      className="rounded-xl object-cover w-full h-36"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <Image
+                        src={photoAt(1)}
+                        alt=""
+                        width={136}
+                        height={96}
+                        className="rounded-lg object-cover w-full h-24"
+                      />
+                      <Image
+                        src={photoAt(2)}
+                        alt=""
+                        width={136}
+                        height={96}
+                        className="rounded-lg object-cover w-full h-24"
+                      />
+                    </div>
+                  </div>
                 </div>
               </nav>
             )}
@@ -363,7 +367,7 @@ export default function FormationDetailTemplate({
                   : "lg:col-span-12 max-w-4xl mx-auto"
               )}
             >
-              <MarkdownRendererWithIds content={content} tag={tag} />
+              <MarkdownRendererWithIds content={content} tag={tag} photos={resolvedPhotos} />
 
               {/* Info Box Financement */}
               <div className="mt-16 bg-[#4CAF50]/5 border border-[#4CAF50]/20 border-l-4 border-l-[#4CAF50] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
@@ -392,43 +396,38 @@ export default function FormationDetailTemplate({
       </section>
 
       {/* Photo Mosaic Section */}
-      {(() => {
-        const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
-        return (
-          <section className="py-4 md:py-6 bg-zinc-100">
-            <div className="container-custom">
-              <div className="grid grid-cols-6 md:grid-cols-12 gap-3 md:gap-4">
-                {/* Grande photo principale */}
-                <div className="col-span-6 md:col-span-5 relative rounded-2xl overflow-hidden h-48 md:h-72">
-                  <Image src={photos[0]} alt="" fill className="object-cover" />
-                </div>
-                {/* Deux petites empilées */}
-                <div className="col-span-3 md:col-span-3 flex flex-col gap-3 md:gap-4">
-                  <div className="relative rounded-xl overflow-hidden flex-1 min-h-[5.5rem] md:min-h-0">
-                    <Image src={photos[3]} alt="" fill className="object-cover" />
-                  </div>
-                  <div className="relative rounded-xl overflow-hidden flex-1 min-h-[5.5rem] md:min-h-0">
-                    <Image src={photos[4]} alt="" fill className="object-cover" />
-                  </div>
-                </div>
-                {/* Photo + overlay CTA */}
-                <div className="col-span-3 md:col-span-4 relative rounded-2xl overflow-hidden h-48 md:h-72">
-                  <Image src={photos[5]} alt="" fill className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                    <p className="text-white font-bold text-sm md:text-lg mb-2">
-                      Rejoignez nos promotions
-                    </p>
-                    <p className="text-zinc-300 text-xs md:text-sm">
-                      +95% de taux de réussite
-                    </p>
-                  </div>
-                </div>
+      <section className="py-4 md:py-6 bg-zinc-100">
+        <div className="container-custom">
+          <div className="grid grid-cols-6 md:grid-cols-12 gap-3 md:gap-4">
+            {/* Grande photo principale */}
+            <div className="col-span-6 md:col-span-5 relative rounded-2xl overflow-hidden h-48 md:h-72">
+              <Image src={photoAt(0)} alt="" fill className="object-cover" />
+            </div>
+            {/* Deux petites empilées */}
+            <div className="col-span-3 md:col-span-3 flex flex-col gap-3 md:gap-4">
+              <div className="relative rounded-xl overflow-hidden flex-1 min-h-[5.5rem] md:min-h-0">
+                <Image src={photoAt(1)} alt="" fill className="object-cover" />
+              </div>
+              <div className="relative rounded-xl overflow-hidden flex-1 min-h-[5.5rem] md:min-h-0">
+                <Image src={photoAt(2)} alt="" fill className="object-cover" />
               </div>
             </div>
-          </section>
-        );
-      })()}
+            {/* Photo + overlay CTA */}
+            <div className="col-span-3 md:col-span-4 relative rounded-2xl overflow-hidden h-48 md:h-72">
+              <Image src={photoAt(0)} alt="" fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                <p className="text-white font-bold text-sm md:text-lg mb-2">
+                  Rejoignez nos promotions
+                </p>
+                <p className="text-zinc-300 text-xs md:text-sm">
+                  +95% de taux de réussite
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Formations associées */}
       {relatedFormations && relatedFormations.length > 0 && (
@@ -473,7 +472,15 @@ export default function FormationDetailTemplate({
 }
 
 /* MarkdownRenderer wrapper that injects data-heading-id for scroll spy */
-function MarkdownRendererWithIds({ content, tag }: { content: string; tag?: string }) {
+function MarkdownRendererWithIds({
+  content,
+  tag,
+  photos,
+}: {
+  content: string;
+  tag?: string;
+  photos?: string[];
+}) {
   const slugify = (text: string) =>
     text
       .toLowerCase()
@@ -484,7 +491,7 @@ function MarkdownRendererWithIds({ content, tag }: { content: string; tag?: stri
 
   return (
     <div>
-      <MarkdownRendererInner content={content} slugify={slugify} tag={tag} />
+      <MarkdownRendererInner content={content} slugify={slugify} tag={tag} photos={photos} />
     </div>
   );
 }
@@ -594,13 +601,16 @@ function MarkdownRendererInner({
   content,
   slugify,
   tag,
+  photos: photoOverrides,
 }: {
   content: string;
   slugify: (text: string) => string;
   tag?: string;
+  photos?: string[];
 }) {
   const sections = parseMarkdownIntoSections(content);
-  const photos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+  const fallbackPhotos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
+  const photos = photoOverrides?.length ? photoOverrides : fallbackPhotos;
   let h2Counter = 0;
   let photoIndex = 0;
 
@@ -685,7 +695,7 @@ function MarkdownRendererInner({
 
             {/* Photo break inline — toutes les 3 sections H2 */}
             {h2Title && currentNumber > 0 && currentNumber % 3 === 0 && photoIndex < photos.length && (() => {
-              const pIdx = photoIndex;
+              const pIdx = photoIndex % photos.length;
               const pIdx2 = (photoIndex + 1) % photos.length;
               photoIndex += 2;
               return (

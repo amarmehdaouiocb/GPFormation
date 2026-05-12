@@ -11,6 +11,8 @@ interface HomeContentProps {
   markdownContent: string;
 }
 
+const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
+
 // ----------------------------------------------------------------------
 // STATS SECTION : Minimal, Data-driven
 // ----------------------------------------------------------------------
@@ -74,9 +76,10 @@ const EditorialFormations = () => (
         <Link href="/formation-taxi" className="group flex flex-col border border-zinc-200 hover:border-zinc-950 transition-colors">
           <div className="relative aspect-[16/9] md:aspect-[3/2] overflow-hidden bg-zinc-100">
             <Image 
-              src="/images/taxi-parisien.jpg" 
+              src={`${GENERATED_IMAGE_BASE}/formation-taxi-card.webp`}
               alt="Formation TAXI" 
               fill 
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105" 
             />
           </div>
@@ -99,6 +102,7 @@ const EditorialFormations = () => (
               src="/images/vtc-berline-noire.jpg" 
               alt="Formation VTC" 
               fill 
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105" 
             />
           </div>
@@ -117,25 +121,47 @@ const EditorialFormations = () => (
 
       {/* Autres Formations (Ligne inférieure) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <Link href="/recuperation-de-points" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
-          <div>
-            <CheckCircle size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
-            <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
-            <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
+        <Link href="/recuperation-de-points" className="group border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col overflow-hidden">
+          <div className="relative aspect-[16/9] bg-zinc-100 overflow-hidden">
+            <Image
+              src={`${GENERATED_IMAGE_BASE}/stage-points-road-safety-training.webp`}
+              alt="Stage de récupération de points"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
           </div>
-          <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
-            En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          <div className="p-8 md:p-10 flex flex-col justify-between flex-1 min-h-[240px]">
+            <div>
+              <CheckCircle size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
+              <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
+              <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
+            </div>
+            <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
+              En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
         </Link>
 
-        <Link href="/formation-taxi/formation-passerelle" className="group p-8 md:p-10 border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col justify-between min-h-[240px]">
-          <div>
-            <GraduationCap size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
-            <h3 className="text-2xl font-bold tracking-tight mb-3">Formations Passerelles</h3>
-            <p className="text-zinc-600">Devenez Taxi si vous êtes VTC, ou VTC si vous êtes Taxi. Élargissez vos opportunités.</p>
+        <Link href="/formation-taxi/formation-passerelle" className="group border border-zinc-200 hover:border-zinc-950 transition-colors bg-zinc-50 hover:bg-white flex flex-col overflow-hidden">
+          <div className="relative aspect-[16/9] bg-zinc-100 overflow-hidden">
+            <Image
+              src={`${GENERATED_IMAGE_BASE}/reussite-carte-professionnelle.webp`}
+              alt="Formation passerelle TAXI et VTC"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
           </div>
-          <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
-            Voir le programme <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          <div className="p-8 md:p-10 flex flex-col justify-between flex-1 min-h-[240px]">
+            <div>
+              <GraduationCap size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
+              <h3 className="text-2xl font-bold tracking-tight mb-3">Formations Passerelles</h3>
+              <p className="text-zinc-600">Devenez Taxi si vous êtes VTC, ou VTC si vous êtes Taxi. Élargissez vos opportunités.</p>
+            </div>
+            <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
+              Voir le programme <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
         </Link>
       </div>
