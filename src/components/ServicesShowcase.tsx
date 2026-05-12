@@ -163,33 +163,33 @@ export default function ServicesShowcase() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-base sm:text-lg font-bold text-white">
-                            M. MICOOGULLARI
+                            M. SADDIKI
                           </p>
-                          <p className="text-sm text-zinc-400">Suleyman</p>
+                          <p className="text-sm text-zinc-400">Adil</p>
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-3">
                         <a
-                          href="tel:0608680381"
+                          href="tel:0145090935"
                           className="group/link flex items-center gap-3 text-zinc-300 hover:text-white transition-colors"
                         >
                           <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/link:bg-[#4CAF50] group-hover/link:border-[#4CAF50] transition-colors">
                             <Phone size={15} weight="fill" />
                           </div>
                           <span className="text-sm sm:text-base font-medium">
-                            06 08 68 03 81
+                            01 45 09 09 35
                           </span>
                         </a>
                         <a
-                          href="mailto:m.suleyman@gpformation.fr"
+                          href="mailto:a.saddiki@gpformation.fr"
                           className="group/link flex items-center gap-3 text-zinc-300 hover:text-white transition-colors"
                         >
                           <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/link:bg-[#4CAF50] group-hover/link:border-[#4CAF50] transition-colors">
                             <EnvelopeSimple size={15} weight="fill" />
                           </div>
                           <span className="text-sm sm:text-base font-medium break-all">
-                            m.suleyman@gpformation.fr
+                            a.saddiki@gpformation.fr
                           </span>
                         </a>
                       </div>
