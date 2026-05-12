@@ -81,9 +81,9 @@ Notre centre de formation est adapté aux personnes à mobilité réduite.
 - Des sanitaires adaptés
 
 **Référent handicap :**
-M. MICOOGULLARI Suleyman
-Tél : 06 08 68 03 81
-Email : m.suleyman@gpformation.fr
+M. Adil SADDIKI
+Tél : 01 45 09 09 35
+Email : a.saddiki@gpformation.fr
 
 ---
 
