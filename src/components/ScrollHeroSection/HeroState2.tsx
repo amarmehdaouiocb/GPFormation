@@ -6,11 +6,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, CalendarBlank, Sparkle, Clock } from "@phosphor-icons/react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
 
 const formations = [
   {
     title: "Formation TAXI",
-    image: "/images/taxi-parisien.jpg",
+    image: `${GENERATED_IMAGE_BASE}/formation-taxi-card.webp`,
     stat: "92% réussite",
     badge: "Prochaine session — Avril 2026",
     BadgeIcon: CalendarBlank,
@@ -28,7 +29,7 @@ const formations = [
   },
   {
     title: "Récup. de points",
-    image: "/images/formation-salle.jpg",
+    image: `${GENERATED_IMAGE_BASE}/stage-points-road-safety-training.webp`,
     stat: "4 pts en 24h",
     badge: "Chaque mois — Places limitées",
     BadgeIcon: Clock,
