@@ -208,7 +208,7 @@ export default function ServicesShowcase() {
               >
                 <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-100">
                   <Image
-                    src="/images/services/parking.jpg"
+                    src="/images/gpformation-generated/services-parking-secure-clean.webp"
                     alt="Parking sécurisé EIFFIA"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -216,7 +216,7 @@ export default function ServicesShowcase() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-950/30 pointer-events-none" />
                   <div className="absolute top-4 left-4">
-                    <span className="eyebrow text-white/90 font-mono text-[0.65rem]">
+                    <span className="eyebrow inline-block rounded-md bg-white/90 px-3 py-1.5 text-zinc-900 font-mono text-[0.65rem] backdrop-blur-md">
                       02 — Stationnement
                     </span>
                   </div>
@@ -262,7 +262,7 @@ export default function ServicesShowcase() {
               >
                 <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-100">
                   <Image
-                    src="/images/services/cantine.jpg"
+                    src="/images/gpformation-generated/services-cantine-clean.webp"
                     alt="Cantine municipale d'Aulnay-sous-Bois"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -270,7 +270,7 @@ export default function ServicesShowcase() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-950/30 pointer-events-none" />
                   <div className="absolute top-4 left-4">
-                    <span className="eyebrow text-white/90 font-mono text-[0.65rem]">
+                    <span className="eyebrow inline-block rounded-md bg-white/90 px-3 py-1.5 text-zinc-900 font-mono text-[0.65rem] backdrop-blur-md">
                       03 — Restauration
                     </span>
                   </div>
