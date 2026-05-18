@@ -9,37 +9,64 @@ import { List, X, CaretDown, ArrowUpRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import BookingWidget from "./BookingWidget";
 
+type FormationStats = {
+  reussite: string;
+  financements: string;
+  sessions: string;
+};
+
 type FormationItem = {
   name: string;
   href: string;
   description: string;
   meta: string;
+  stats?: FormationStats;
 };
 
 const formationsTaxi: FormationItem[] = [
   {
     name: "Formation Initiale TAXI",
     href: "/formation-taxi/formation-initiale",
-    description: "Obtenir la carte professionnelle et réussir l'examen.",
-    meta: "140 h",
+    description: "Préparation à la réussite à l'examen.",
+    meta: "90 h",
+    stats: {
+      reussite: "92 %",
+      financements: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
   {
     name: "Formation Continue TAXI",
     href: "/formation-taxi/formation-continue",
     description: "Stage obligatoire de renouvellement tous les 5 ans.",
     meta: "14 h",
+    stats: {
+      reussite: "100 %",
+      financements: "FAFCEA · Pôle Emploi",
+      sessions: "Chaque semaine",
+    },
   },
   {
-    name: "Formation à la mobilité",
+    name: "Formation à la mobilité TAXI",
     href: "/formation-taxi/formation-mobilite",
-    description: "Spécialisation au transport de personnes à mobilité réduite.",
-    meta: "7 h",
+    description: "Stage permettant l'obtention d'un nouveau département.",
+    meta: "14 h",
+    stats: {
+      reussite: "100 %",
+      financements: "FAFCEA · Pôle Emploi",
+      sessions: "Chaque mois",
+    },
   },
   {
     name: "Passerelle VTC → TAXI",
     href: "/formation-taxi/formation-passerelle",
-    description: "Convertir votre carte VTC en carte professionnelle TAXI.",
-    meta: "Express",
+    description: "Préparation à la réussite à l'examen TAXI.",
+    meta: "18 h",
+    stats: {
+      reussite: "95 %",
+      financements: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
 ];
 
@@ -78,7 +105,6 @@ const formationsVtc: FormationItem[] = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isNavHidden, setIsNavHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
@@ -87,29 +113,13 @@ export default function Navbar() {
   const isTransparent = isHome && !isScrolled;
 
   useEffect(() => {
-    if (!isHome) {
-      setIsNavHidden(false);
-    }
-  }, [isHome]);
-
-  useEffect(() => {
     const handleScroll = () => {
-      const currentY = window.scrollY;
-
-      if (isHome && !mobileMenuOpen) {
-        const atTop = currentY < 50;
-        const pastHero = currentY > window.innerHeight;
-        setIsNavHidden(!atTop && !pastHero);
-      } else if (!isHome) {
-        setIsNavHidden(false);
-      }
-
-      setIsScrolled(currentY > window.innerHeight * 0.15);
+      setIsScrolled(window.scrollY > window.innerHeight * 0.15);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome, mobileMenuOpen]);
+  }, []);
 
   return (
     <>
@@ -117,9 +127,6 @@ export default function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 border-b",
           "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          isNavHidden && !mobileMenuOpen
-            ? "-translate-y-full opacity-0"
-            : "translate-y-0 opacity-100",
           isTransparent
             ? "bg-transparent border-transparent py-8"
             : isScrolled
@@ -279,6 +286,12 @@ export default function Navbar() {
 
 type DropdownKind = "taxi" | "vtc";
 
+const DEFAULT_STATS: FormationStats = {
+  reussite: "98 %",
+  financements: "CPF · OPCO",
+  sessions: "Chaque semaine",
+};
+
 function FormationsDropdown({
   kind,
   title,
@@ -293,6 +306,9 @@ function FormationsDropdown({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const indexLabel = kind === "taxi" ? "01 — TAXI" : "02 — VTC";
   const rootHref = kind === "taxi" ? "/formation-taxi" : "/formation-vtc";
+  const activeStats =
+    (hoveredIndex !== null ? items[hoveredIndex]?.stats : null) ??
+    DEFAULT_STATS;
 
   return (
     <motion.div
@@ -439,9 +455,9 @@ function FormationsDropdown({
               </p>
 
               <div className="mt-5 pt-5 border-t border-dashed border-zinc-200 space-y-2.5">
-                <Stat label="Réussite" value="98 %" />
-                <Stat label="Financements" value="CPF · OPCO" />
-                <Stat label="Sessions" value="Chaque semaine" />
+                <Stat label="Réussite" value={activeStats.reussite} />
+                <Stat label="Financements" value={activeStats.financements} />
+                <Stat label="Sessions" value={activeStats.sessions} />
               </div>
             </div>
 
