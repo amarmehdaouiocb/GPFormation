@@ -56,7 +56,6 @@ export default function FormationFamilyTemplate({
   breadcrumbs,
   heroImage,
 }: FormationFamilyTemplateProps) {
-  const titleWords = title.split(" ");
   const familyKey = title.toLowerCase().includes("taxi") ? "taxi" : title.toLowerCase().includes("vtc") ? "vtc" : "taxi";
   const photos = FAMILY_PHOTOS[familyKey] ?? FAMILY_PHOTOS.taxi;
 
@@ -110,17 +109,7 @@ export default function FormationFamilyTemplate({
               transition={{ duration: 0.7 }}
               className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tighter text-white mb-8 leading-[0.92]"
             >
-              {titleWords.map((word, i) => (
-                <span key={i}>
-                  {i === titleWords.length - 1 ? (
-                    <span className="font-[family-name:var(--font-instrument-serif)] italic text-[#4CAF50]/90">
-                      {word}
-                    </span>
-                  ) : (
-                    <>{word} </>
-                  )}
-                </span>
-              ))}
+              {title}
             </motion.h1>
 
             <motion.p
