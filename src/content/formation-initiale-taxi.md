@@ -80,7 +80,7 @@ Mise en situation pratique de réalisation d'une course de taxi.
 
 ## Pièces à fournir
 
-- Pièce d'identité ou titre de séjour avec passeport en cours de validité
+- Pièce d'identité ou titre de séjour en cours de validité
 - Permis de conduire non affecté par le délai probatoire
 - Justificatif de domicile (moins de 3 mois)
 - 1 photo d'identité récente

@@ -4,7 +4,7 @@
 
 ## La formation Taxi
 
-GP Formation est spécialisée dans la formation TAXI à Aulnay-sous-Bois. Nous préparons plus de 200 candidats chaque année à l'examen de Taxi.
+GP Formation est spécialisée dans la formation TAXI à Aulnay-sous-Bois. Nous préparons les chauffeurs de Taxi de demain à réussir leur examen et à exercer leur métier en toute confiance.
 
 GP Formation est habilitée à vous former pour le métier de chauffeur de Taxi et à vous proposer des formations complémentaires, telles que la formation continue, la formation à la mobilité et la formation Passerelle (devenir VTC).
 

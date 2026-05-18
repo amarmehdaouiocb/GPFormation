@@ -85,7 +85,7 @@ const EditorialFormations = () => (
           </div>
           <div className="p-8 md:p-10 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation Initiale & Continue</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation initiale en centre & à distance</span>
               <ArrowRight size={20} className="text-zinc-400 group-hover:text-zinc-950 group-hover:translate-x-2 transition-all" />
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de TAXI</h3>
@@ -194,7 +194,7 @@ const AboutSection = () => (
             {[
               { title: "Financement sur-mesure", desc: "CPF, Pôle emploi, et autres dispositifs pour vous aider à financer votre projet." },
               { title: "Infrastructures adaptées", desc: "Centre accessible PMR, parking sécurisé EIFFIA, et cantine à tarif réduit." },
-              { title: "Accompagnement complet", desc: "De l'inscription à la préparation de l'examen théorique et pratique." }
+              { title: "Accompagnement complet", desc: "De l'inscription à l'obtention de la carte professionnelle." }
             ].map((item, i) => (
               <li key={i} className="bg-zinc-950 py-6 md:py-8 border-b border-zinc-800 last:border-0">
                 <h4 className="text-xl font-bold mb-3 flex items-center gap-4">

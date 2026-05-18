@@ -13,6 +13,7 @@ import {
   Phone,
   Coin,
   CreditCard,
+  DownloadSimple,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
 import React, { useMemo, useEffect, useState } from "react";
@@ -60,6 +61,13 @@ const DEFAULT_PHOTOS = [
   "/images/stock/succes-diplome.jpg",
 ];
 
+type FinancementVariant = "standard" | "fafcea";
+
+interface DownloadLink {
+  label: string;
+  href: string;
+}
+
 interface FormationDetailTemplateProps {
   title: string;
   content: string;
@@ -73,7 +81,22 @@ interface FormationDetailTemplateProps {
   photos?: string[];
   relatedFormations?: { title: string; href: string; tag?: string }[];
   stripePaymentLink?: string;
+  financementVariant?: FinancementVariant;
+  downloads?: DownloadLink[];
 }
+
+const FINANCEMENT_COPY: Record<FinancementVariant, { title: string; description: string }> = {
+  standard: {
+    title: "Besoin d'aide pour le financement ?",
+    description:
+      "Nos équipes vous accompagnent dans la constitution de votre dossier CPF, Pôle Emploi…",
+  },
+  fafcea: {
+    title: "Besoin d'aide pour le financement ?",
+    description:
+      "Nos équipes vous accompagnent dans la constitution de votre dossier FAFCEA, Pôle Emploi…",
+  },
+};
 
 function extractH2Headings(content: string): string[] {
   const matches = content.match(/^## (.+)$/gm);
@@ -94,7 +117,10 @@ export default function FormationDetailTemplate({
   photos,
   relatedFormations,
   stripePaymentLink,
+  financementVariant = "standard",
+  downloads,
 }: FormationDetailTemplateProps) {
+  const financementCopy = FINANCEMENT_COPY[financementVariant];
   const headings = useMemo(() => extractH2Headings(content), [content]);
   const [activeHeading, setActiveHeading] = useState<string>("");
   const defaultPhotos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
@@ -369,6 +395,45 @@ export default function FormationDetailTemplate({
             >
               <MarkdownRendererWithIds content={content} tag={tag} photos={resolvedPhotos} />
 
+              {/* Documents téléchargeables (optionnel) */}
+              {downloads && downloads.length > 0 && (
+                <div className="mt-16">
+                  <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
+                    Documents
+                  </span>
+                  <h4 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-950 mb-5">
+                    À télécharger
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {downloads.map((doc, i) => (
+                      <a
+                        key={i}
+                        href={doc.href}
+                        download
+                        className="group flex items-center justify-between gap-4 px-5 py-4 bg-zinc-50 hover:bg-white border border-zinc-200 hover:border-zinc-950 rounded-xl transition-all"
+                      >
+                        <span className="flex items-center gap-3 min-w-0">
+                          <span className="w-10 h-10 bg-[#4CAF50]/10 rounded-full flex items-center justify-center shrink-0">
+                            <DownloadSimple
+                              size={18}
+                              weight="duotone"
+                              className="text-[#4CAF50]"
+                            />
+                          </span>
+                          <span className="text-sm font-semibold text-zinc-900 leading-tight">
+                            {doc.label}
+                          </span>
+                        </span>
+                        <ArrowRight
+                          size={16}
+                          className="text-zinc-400 shrink-0 transition-transform group-hover:translate-x-1 group-hover:text-zinc-950"
+                        />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Info Box Financement */}
               <div className="mt-16 bg-[#4CAF50]/5 border border-[#4CAF50]/20 border-l-4 border-l-[#4CAF50] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div className="w-12 h-12 bg-[#4CAF50]/10 rounded-full flex items-center justify-center shrink-0">
@@ -376,11 +441,10 @@ export default function FormationDetailTemplate({
                 </div>
                 <div className="flex-1">
                   <h4 className="text-lg font-bold text-zinc-950 mb-1">
-                    Besoin d&apos;aide pour le financement ?
+                    {financementCopy.title}
                   </h4>
                   <p className="text-zinc-600 text-[0.95rem]">
-                    Nos équipes vous accompagnent dans le montage de votre dossier CPF ou
-                    Pôle Emploi.
+                    {financementCopy.description}
                   </p>
                 </div>
                 <Link

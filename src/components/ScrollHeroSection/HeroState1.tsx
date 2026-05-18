@@ -43,7 +43,7 @@ export default function HeroState1({ heroState }: { heroState: 1 | 2 }) {
             <br className="hidden sm:block" />
             de la formation{" "}
             <br />
-            <span className="text-[#7ED321]">TAXI & VTC.</span>
+            <span className="text-[#7ED321]">TAXI & VTC</span>
           </h1>
 
           <p
@@ -55,7 +55,7 @@ export default function HeroState1({ heroState }: { heroState: 1 | 2 }) {
           </p>
 
           <Link
-            href="/formation-taxi"
+            href="/contact"
             className="inline-flex items-center gap-3 px-10 py-4 bg-white text-zinc-950 font-semibold uppercase tracking-[0.2em] text-[13px] hover:scale-105 transition-transform rounded-full shadow-2xl"
           >
             S&apos;inscrire maintenant

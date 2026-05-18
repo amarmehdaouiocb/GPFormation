@@ -26,7 +26,7 @@ En effet, le transport de personnes est un secteur en perpétuelle évolution d'
 
 ### Conditions d'admission
 
-- Être titulaire du permis de conduire de catégorie B en cours de validité et non affecté par le délai probatoire prévu à l'article L.223-1 du code de la route
+- Être titulaire du permis de conduire de catégorie B en cours de validité
 - Être titulaire de la carte professionnelle de Taxi
 
 ### Pièces à fournir
