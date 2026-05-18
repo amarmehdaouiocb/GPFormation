@@ -91,7 +91,7 @@ Mise en situation pratique de réalisation d'une course de taxi.
 - Formule Temps plein : 90 heures sur 3 semaines
 - Formule Cours du soir : 40 heures sur 4 semaines
 - Formule Accélérée : 18 heures sur 6 jours
-- Formule E-learning : 60 jours d'accès
+- Formule E-learning : 60 jours d'accès à l'application disponible sur Apple Store et Play Store
 
 ## Objectif de la formation
 

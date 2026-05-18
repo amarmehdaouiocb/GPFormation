@@ -24,7 +24,7 @@ La formation mobilité permet d'élargir son activité en cumulant plusieurs dé
 
 ### Durée de la formation
 
-- 14 heures pour les départements en banlieue ou 35 heures pour Paris (75)
+- 14 heures
 
 ### Objectif de la formation
 
