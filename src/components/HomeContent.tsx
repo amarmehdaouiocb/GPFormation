@@ -108,7 +108,7 @@ const EditorialFormations = () => (
           </div>
           <div className="p-8 md:p-10 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">En centre & À distance</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4CAF50]">Formation initiale en centre & à distance</span>
               <ArrowRight size={20} className="text-zinc-400 group-hover:text-zinc-950 group-hover:translate-x-2 transition-all" />
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de VTC</h3>
@@ -182,7 +182,7 @@ const AboutSection = () => (
           </h2>
           <div className="w-16 h-1 bg-[#4CAF50] mb-8"></div>
           <p className="text-zinc-400 text-lg leading-relaxed mb-8">
-            Implanté à Aulnay-sous-Bois, notre centre accompagne plus de 400 personnes chaque année pour les aider à atteindre leurs objectifs professionnels dans le secteur du transport privé.
+            Implanté à Aulnay-sous-Bois, notre centre vous accompagne chaque année à atteindre vos objectifs professionnels dans le secteur du transport privé.
           </p>
           <Link href="/contact" className="inline-flex items-center gap-2 text-white font-medium hover:text-[#4CAF50] transition-colors pb-1 border-b border-white hover:border-[#4CAF50]">
             Prendre un rendez-vous gratuit

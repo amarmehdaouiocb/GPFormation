@@ -20,7 +20,7 @@ export default function Footer() {
               className="w-auto h-20 object-contain"
             />
             <p className="text-zinc-600 text-sm leading-relaxed max-w-[280px]">
-              Centre de formation TAXI / VTC en Île-de-France. Nous vous accompagnons vers la réussite de votre examen.
+              Centre de formation TAXI / VTC en Île-de-France. Nous vous accompagnons vers la réussite à votre examen.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 border border-zinc-200 flex items-center justify-center text-zinc-950 hover:bg-[#4CAF50] hover:text-white hover:border-[#4CAF50] transition-colors">
