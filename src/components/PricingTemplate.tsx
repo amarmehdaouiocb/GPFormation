@@ -177,13 +177,10 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               </span>
             </div>
 
-            <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-10 text-[clamp(3.2rem,12vw,11rem)] font-[family-name:var(--font-bricolage)]">
+            <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-10 text-[clamp(2.4rem,8vw,7rem)] font-[family-name:var(--font-bricolage)]">
               Tarifs <span className="text-zinc-300">&</span>
               <br />
-              <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]">
-                formules
-              </span>
-              <span className="text-zinc-950">.</span>
+              formules<span className="text-zinc-950">.</span>
             </h1>
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
@@ -640,7 +637,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                           </div>
                         </div>
                         <Link
-                          href="/contact"
+                          href={isPoints ? "/recuperation-de-points" : "/contact"}
                           className={`inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
                             isPoints
                               ? "bg-zinc-950 text-white hover:bg-[#4CAF50]"
@@ -686,7 +683,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 <span className="text-white/75">CPF &amp; OPCO</span>.
               </h3>
               <p className="text-lg md:text-xl text-white/85 font-light max-w-xl leading-relaxed">
-                Qualiopi, CPF, Pôle Emploi, OPCO… On construit avec vous un plan
+                CPF, Pôle Emploi, OPCO… On construit avec vous un plan
                 adapté. Et le reste ? En 3 ou 4 fois sans frais, directement
                 avec notre organisme.
               </p>
@@ -705,7 +702,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               </Link>
 
               <div className="flex flex-wrap md:justify-end gap-1.5">
-                {["Qualiopi", "CPF", "OPCO", "Pôle Emploi", "3x / 4x"].map(
+                {["CPF", "OPCO", "Pôle Emploi", "3x / 4x"].map(
                   (tag) => (
                     <span
                       key={tag}
@@ -723,9 +720,6 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
         {/* Sub-banner — numéros CPF */}
         <div className="border-t border-white/20 bg-[#2E7D32]/30">
           <div className="container-custom py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm">
-            <div className="font-mono text-white/70 uppercase tracking-[0.18em]">
-              Certifié Qualiopi
-            </div>
             <div className="font-light text-white/85 text-center">
               Un financement sur mesure en moins de{" "}
               <span className="font-bold text-white">48h</span>.

@@ -16,10 +16,15 @@ Lundi au vendredi — 09h30 à 16h30
 **À partir de 1500€**
 
 - Durée : 3 semaines
+- Cours théorique en salle
+- 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
 Inclus 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
+
+**Forfait 2 : 1741€**
+Frais à l'examen inclus
 
 ### Formule Cours du Soir
 
@@ -27,9 +32,14 @@ Lundi au vendredi — 18h00 à 20h30
 **À partir de 1500€**
 
 - Durée : 4 semaines
+- Cours théorique en salle
+- 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
+
+**Forfait 2 : 1741€**
+Frais à l'examen inclus
 
 ### Formule Accélérée
 
@@ -37,10 +47,15 @@ Lundi au vendredi — 18h00 à 21h00
 **À partir de 1500€**
 
 - Durée : 6 jours
+- Cours théorique en salle
+- 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Examen blanc la veille de l'examen officiel
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
+
+**Forfait 2 : 1741€**
+Frais à l'examen inclus
 
 ### Formule E-learning
 
@@ -83,7 +98,6 @@ Renouvellement de la carte Taxi obligatoire tous les 5 ans
 **490€ / 449€** (REMISE À DURÉE LIMITÉE)
 
 - 14 heures de formation pour pratiquer l'activité de chauffeur de Taxi dans un département en banlieue
-- 35 heures de formation pour pratiquer l'activité de chauffeur de Taxi dans Paris (75)
 - Module 1 : Connaissance du territoire
 - Module 2 : Réglementation locale
 
