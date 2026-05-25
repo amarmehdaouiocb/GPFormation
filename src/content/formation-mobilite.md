@@ -4,7 +4,7 @@
 
 ## Qu'est-ce que la formation mobilité ?
 
-La formation mobilité permet d'élargir son activité en cumulant plusieurs départements (jusqu'à 5 maximum). Elle est destinée aux titulaires d'une carte professionnelle de conducteur taxi. Cette formation n'est pas sanctionnée par un examen. À l'issue de la formation, une attestation est délivrée pour demander l'extension auprès de la préfecture.
+La formation mobilité permet d'élargir son activité en cumulant plusieurs départements (jusqu'à 5 maximum). Elle est destinée aux titulaires d'une carte professionnelle de conducteur taxi. Cette formation n'est pas sanctionnée par un examen. À l'issue de la formation, une attestation vous est délivrée vous permettant d'effectuer la demande auprès de la préfecture du nouveau département que vous avez acquis.
 
 ## INFOS PRATIQUES
 
