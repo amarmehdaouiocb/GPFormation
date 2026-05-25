@@ -24,7 +24,7 @@ Le juge peut imposer le stage. Cela ne permet pas de récupérer des points.
 
 ## Invalidation du permis
 
-En cas d'invalidation, vous ne pouvez conduire pendant 6 mois.
+En cas d'invalidation, vous ne pouvez plus conduire pendant une durée de 6 mois.
 
 **Démarches si titulaire depuis plus de 3 ans :**
 
@@ -41,7 +41,7 @@ En cas d'invalidation, vous ne pouvez conduire pendant 6 mois.
 
 ## Animateurs
 
-Le stage est animé par un psychologue et un expert en sécurité routière (BAFM).
+Le stage est animé par un psychologue et un expert en sécurité routière (BAFM / FMESR).
 
 ## Programme
 
@@ -81,7 +81,13 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 
 **Durée :** 14 heures, soit 2 jours consécutifs
 
-**Objectif :** Sensibiliser aux dangers du non-respect du code de la route avec récupération jusqu'à 4 points
+**Objectif :** Sensibiliser aux dangers du non-respect du code de la route (récupérer jusqu'à 4 points)
+
+## Financement et solde de points
+
+Besoin d'aide pour le financement ? Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.
+
+[Consultez votre solde de points sur Télépoints](https://telepoints.interieur.gouv.fr/)
 
 ## Avertissement important
 

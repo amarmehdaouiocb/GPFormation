@@ -76,30 +76,33 @@ const formationsVtc: FormationItem[] = [
     href: "/formation-vtc/formation-initiale",
     description: "Préparation complète à l'examen et à la carte VTC.",
     meta: "105 h",
+    stats: {
+      reussite: "92 %",
+      financements: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
   {
     name: "Formation Continue VTC",
     href: "/formation-vtc/formation-continue",
     description: "Renouvellement quinquennal obligatoire des chauffeurs.",
     meta: "14 h",
-  },
-  {
-    name: "Formation VTC à distance",
-    href: "/formation-vtc/formation-distance",
-    description: "Format 100 % en ligne, progression à votre rythme.",
-    meta: "e-learning",
-  },
-  {
-    name: "Formation VTC cours du soir",
-    href: "/formation-vtc/cours-du-soir",
-    description: "Compatible avec une activité salariée en journée.",
-    meta: "18 h — 22 h",
+    stats: {
+      reussite: "100 %",
+      financements: "FAFCEA · Pôle Emploi",
+      sessions: "Chaque semaine",
+    },
   },
   {
     name: "Passerelle TAXI → VTC",
     href: "/formation-vtc/formation-passerelle",
     description: "Obtenez votre carte VTC rapidement en tant que taxi.",
     meta: "Express",
+    stats: {
+      reussite: "95 %",
+      financements: "CPF · OPCO",
+      sessions: "Chaque mois",
+    },
   },
 ];
 
