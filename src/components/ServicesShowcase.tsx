@@ -68,9 +68,7 @@ export default function ServicesShowcase() {
           >
             Votre confort.
             <br />
-            <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]">
-              Notre priorité.
-            </span>
+            Notre priorité.
           </motion.h1>
 
           <motion.p
@@ -293,13 +291,13 @@ export default function ServicesShowcase() {
 
                   <p className="text-zinc-600 text-base leading-relaxed mb-6">
                     En tant que stagiaire, bénéficiez d&apos;offres exceptionnelles.
-                    Déjeunez à la cantine municipale d&apos;Aulnay-sous-Bois à tarif
+                    Déjeunez à la cantine municipale à 50m du centre à tarif
                     réduit pour des repas équilibrés au quotidien.
                   </p>
 
                   <div className="mt-auto pt-4 border-t border-zinc-200 flex items-center justify-between gap-3">
                     <span className="eyebrow text-zinc-500 text-[0.65rem]">
-                      Aulnay-sous-Bois
+                      à 50m du centre
                     </span>
                     <ArrowRight
                       size={18}
