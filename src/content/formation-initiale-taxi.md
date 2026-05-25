@@ -75,7 +75,7 @@ Mise en situation pratique de réalisation d'une course de taxi.
 
 ## Pré requis
 
-- Être titulaire du permis de conduire de catégorie B en cours de validité
+- Être titulaire du permis de conduire de catégorie B en cours de validité et non affecté par le délai probatoire
 - Délai d'accès à la formation entre 72 heures et 15 jours
 
 ## Pièces à fournir
@@ -99,4 +99,4 @@ Préparation à la réussite de l'examen de chauffeur de Taxi.
 
 ## Note
 
-En cas d'échec, possibilité de revenir une seconde fois en formation sans contrepartie financière (sous réserve de places disponibles pour la formation théorique uniquement, à l'exception de la formation E-Learning).
+En cas d'échec, vous avez la possibilité de revenir une seconde fois en formation sans contrepartie financière (sous réserve de places disponibles pour la formation théorique uniquement). À l'exception de la formation E-Learning.
