@@ -440,14 +440,8 @@ function FormationsDropdown({
             onMouseEnter={() => setHoveredIndex(null)}
           >
             <div className="flex-1">
-              <span
-                className="text-[10px] uppercase tracking-[0.24em] text-[#4CAF50]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Centre agréé
-              </span>
               <h3
-                className="mt-3 text-[22px] leading-[1.05] tracking-[-0.03em] font-semibold text-zinc-950"
+                className="text-[22px] leading-[1.05] tracking-[-0.03em] font-semibold text-zinc-950"
                 style={{ fontFamily: "var(--font-bricolage), var(--font-sans)" }}
               >
                 {title}
@@ -459,7 +453,6 @@ function FormationsDropdown({
               )}
 
               <div className="mt-5 pt-5 border-t border-dashed border-zinc-200 space-y-2.5">
-                <Stat label="Réussite" value={activeStats.reussite} />
                 <Stat label="Financements" value={activeStats.financements} />
                 <Stat label="Sessions" value={activeStats.sessions} />
               </div>

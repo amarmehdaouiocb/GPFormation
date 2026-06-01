@@ -12,7 +12,7 @@ const formations = [
   {
     title: "Formation TAXI",
     image: `${GENERATED_IMAGE_BASE}/formation-taxi-card.webp`,
-    stat: "92% réussite",
+    stat: "Sessions chaque mois",
     badge: "Prochaine session — Avril 2026",
     BadgeIcon: CalendarBlank,
     href: "/formation-taxi",

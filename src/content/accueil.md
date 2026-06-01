@@ -34,14 +34,13 @@ GP Formation forme depuis 2014 les chauffeurs de TAXI / VTC de demain à travers
 
 - **12 années** d'expérience dans la formation de TAXI / VTC
 - **+6000 candidats** formés à l'examen TAXI / VTC
-- **92 %** de réussite en moyenne à l'examen TAXI / VTC en 2024
 - **4.9/5** avec plus de 1300 avis sur Google
 
 ---
 
 ## Certifications et Financement
 
-En tant que premier centre de formation TAXI / VTC agréé en Île-de-France, les formations dispensées par GP Formation sont reconnues et certifiées par **Qualiopi**.
+En tant que premier centre de formation TAXI / VTC en Île-de-France, les formations dispensées par GP Formation sont reconnues et certifiées par **Qualiopi**.
 
 En tant que personne active, vous acquérez chaque année des droits à la formation.
 

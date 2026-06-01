@@ -85,9 +85,9 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 
 ## Financement et solde de points
 
-Besoin d'aide pour le financement ? Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.
+Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.
 
-[Consultez votre solde de points sur Télépoints](https://telepoints.interieur.gouv.fr/)
+[Consultez votre solde de points sur Télépoints](https://tele7.interieur.gouv.fr/tlp/)
 
 ## Avertissement important
 

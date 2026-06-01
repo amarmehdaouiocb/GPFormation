@@ -8,8 +8,6 @@ import {
   CheckCircle,
   CaretRight,
   GraduationCap,
-  ShieldCheck,
-  ChartLineUp,
   Phone,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
@@ -129,9 +127,7 @@ export default function FormationFamilyTemplate({
               className="flex flex-wrap items-center gap-3"
             >
               {[
-                { icon: ShieldCheck, label: "Centre Agréé" },
                 { icon: GraduationCap, label: "CPF Éligible" },
-                { icon: ChartLineUp, label: "Taux de réussite 95%" },
               ].map((badge, i) => (
                 <div
                   key={i}
@@ -186,8 +182,7 @@ export default function FormationFamilyTemplate({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4">
-                  <p className="text-white text-sm font-bold">Centre agréé</p>
-                  <p className="text-zinc-300 text-xs">Aulnay-sous-Bois, 93</p>
+                  <p className="text-white text-sm font-bold">Aulnay-sous-Bois, 93</p>
                 </div>
               </div>
             </div>

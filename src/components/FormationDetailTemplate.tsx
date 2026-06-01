@@ -481,11 +481,8 @@ export default function FormationDetailTemplate({
               <Image src={photoAt(0)} alt="" fill className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                <p className="text-white font-bold text-sm md:text-lg mb-2">
+                <p className="text-white font-bold text-sm md:text-lg">
                   Rejoignez nos promotions
-                </p>
-                <p className="text-zinc-300 text-xs md:text-sm">
-                  +95% de taux de réussite
                 </p>
               </div>
             </div>
