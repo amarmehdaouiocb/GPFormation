@@ -87,7 +87,7 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 
 Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.
 
-[Consultez votre solde de points sur Télépoints](https://tele7.interieur.gouv.fr/tlp/)
+[Consultez votre solde de points sur Mes points permis](https://mespointspermis.gouv.fr)
 
 ## Avertissement important
 
