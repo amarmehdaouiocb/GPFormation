@@ -29,7 +29,7 @@ La formation de VTC vous permet d'étudier 7 modules :
 
 **La formation VTC dure 6 semaines du lundi au vendredi de 18h00 à 20h00.**
 
-La formule en cours du soir vous permet de vous préparer au mieux à l'examen d'admissibilité. Son taux de réussite est quasi équivalent aux cours à temps plein.
+La formule en cours du soir vous permet de vous préparer au mieux à l'examen d'admissibilité, dans des conditions équivalentes aux cours à temps plein.
 
 En cas de réussite à l'examen écrit, des cours de conduite vous seront dispensés afin d'optimiser vos chances de réussite à l'examen d'admission.
 

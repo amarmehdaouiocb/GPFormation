@@ -4,15 +4,15 @@
 
 À GP Formation, nous vous proposons une pédagogie efficace et qui fonctionne depuis des années. En quelques chiffres découvrez pourquoi vous devriez nous rejoindre.
 
-## Centre agréé en Île-de-France
+## GP Formation en Île-de-France
 
-Avec plus de 12 ans d'existence dans la formation VTC et TAXI, GP Formation est un centre TAXI/VTC agréé en Île-de-France. La formation dispensée par GP Formation est reconnue et certifiée par Qualiopi. Cette certification nous permet d'attester de la qualité des process mis en oeuvre pour dispenser nos formations.
+Avec plus de 12 ans d'existence dans la formation VTC et TAXI, GP Formation est un centre TAXI/VTC en Île-de-France. La formation dispensée par GP Formation est reconnue et certifiée par Qualiopi. Cette certification nous permet d'attester de la qualité des process mis en oeuvre pour dispenser nos formations.
 
 ## Des candidats formés en Île-de-France
 
 À travers nos années d'existence, GP Formation a pu former de nombreux candidats à l'examen VTC et TAXI dans toute l'Île-de-France. Nous préparons chaque année plus de 400 candidats ! À l'issue de la formation, les stagiaires sont prêts pour la réussite à l'examen qui débouchera sur la délivrance de la carte professionnelle. Cette carte permettra aux stagiaires de travailler sur tout le territoire français.
 
-## Un taux de réussite élevé
+## Un accompagnement de qualité
 
 Nos formations sont dispensées par des formateurs professionnels et qualifiés. En rejoignant GP Formation, vous bénéficierez d'un suivi régulier.
 
