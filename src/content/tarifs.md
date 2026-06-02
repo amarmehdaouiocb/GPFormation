@@ -142,7 +142,7 @@ Pour les chauffeurs de Taxi souhaitant obtenir la carte de VTC
 
 ### Récupération de points de permis
 
-Pour récupérer jusqu'à 4 points
+jusqu'à 4 points sur votre permis de conduire
 **219€**
 
 - Dans la limite d'un stage par an et d'un permis de conduire toujours valide

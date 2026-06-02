@@ -66,9 +66,9 @@ export default function ServicesShowcase() {
             transition={{ duration: 0.6 }}
             className="text-[2.25rem] xs:text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter leading-[0.95] font-[family-name:var(--font-bricolage)] mb-6 sm:mb-8 max-w-4xl"
           >
-            Votre confort.
+            Votre confort
             <br />
-            Notre priorité.
+            Notre priorité
           </motion.h1>
 
           <motion.p
@@ -161,9 +161,9 @@ export default function ServicesShowcase() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-base sm:text-lg font-bold text-white">
-                            M. SADDIKI
+                            M. MICOOGULLARI
                           </p>
-                          <p className="text-sm text-zinc-400">Adil</p>
+                          <p className="text-sm text-zinc-400">Suleyman</p>
                         </div>
                       </div>
 
@@ -180,14 +180,14 @@ export default function ServicesShowcase() {
                           </span>
                         </a>
                         <a
-                          href="mailto:a.saddiki@gpformation.fr"
+                          href="mailto:m.suleyman@gpformation.fr"
                           className="group/link flex items-center gap-3 text-zinc-300 hover:text-white transition-colors"
                         >
                           <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/link:bg-[#4CAF50] group-hover/link:border-[#4CAF50] transition-colors">
                             <EnvelopeSimple size={15} weight="fill" />
                           </div>
                           <span className="text-sm sm:text-base font-medium break-all">
-                            a.saddiki@gpformation.fr
+                            m.suleyman@gpformation.fr
                           </span>
                         </a>
                       </div>
@@ -321,7 +321,7 @@ export default function ServicesShowcase() {
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white mb-6 font-[family-name:var(--font-bricolage)]">
               Venez visiter notre centre de formation
-              <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]"> à Aulnay-sous-Bois.</span>
+              <span className="italic font-normal font-[family-name:var(--font-instrument-serif)] text-[#4CAF50]"> à Aulnay-sous-Bois</span>
             </h2>
             <p className="text-zinc-400 text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
               Planifiez une visite et découvrez nos installations, nos salles de

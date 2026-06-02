@@ -87,7 +87,7 @@ export default function MarkdownPage({ content, title, breadcrumbs }: MarkdownPa
             <div className="bg-zinc-50 border border-zinc-200 p-8">
               <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-950 mb-6">À propos de cette page</h3>
               <p className="text-zinc-600 text-sm leading-relaxed mb-8">
-                Vous consultez les informations officielles de GP Formation, centre de formation agréé TAXI et VTC en Île-de-France.
+                Vous consultez les informations officielles de GP Formation, centre de formation TAXI et VTC en Île-de-France.
               </p>
               
               <div className="space-y-4">

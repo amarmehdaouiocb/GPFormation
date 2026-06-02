@@ -31,8 +31,8 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "GP Formation | Centre de formation TAXI et VTC agréé",
-  description: "Devenez chauffeur de TAXI ou VTC avec le 1er centre de formation agréé en Île-de-France. Formations initiales, continues, passerelles et récupération de points.",
+  title: "GP Formation | Centre de formation TAXI et VTC",
+  description: "Devenez chauffeur de TAXI ou VTC avec le 1er centre de formation en Île-de-France. Formations initiales, continues, passerelles et récupération de points.",
 };
 
 export default function RootLayout({

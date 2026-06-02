@@ -10,7 +10,7 @@ export default async function Page() {
     { label: data.title || "Formation", href: "#" }
   ];
   const downloads = [
-    { label: "Référentiel de formation", href: "/documents/taxi/referentiel-formation-initiale-taxi.pdf" },
+    { label: "Référentiel T3P", href: "/documents/referentiel-t3p.pdf" },
     { label: "Grille d'évaluation pratique", href: "/documents/taxi/grille-evaluation-pratique-taxi.pdf" },
     { label: "Dossier récapitulatif", href: "/documents/taxi/dossier-recapitulatif-formation-initiale-taxi.pdf" },
   ];

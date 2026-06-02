@@ -180,21 +180,19 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
             <h1 className="font-bold tracking-tighter leading-[0.9] text-zinc-950 mb-10 text-[clamp(2.4rem,8vw,7rem)] font-[family-name:var(--font-bricolage)]">
               Tarifs <span className="text-zinc-300">&</span>
               <br />
-              formules<span className="text-zinc-950">.</span>
+              formules
             </h1>
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
               <p className="text-xl md:text-2xl text-zinc-600 leading-relaxed font-light max-w-2xl">
-                Une grille transparente, sans frais cachés. Éligible aux
-                financements CPF, OPCO, Pôle Emploi — et payable en 3 ou 4 fois
-                sans frais.
+                Une grille transparente. Éligible aux
+                financements CPF, OPCO, Pôle Emploi.
               </p>
 
               <div className="flex flex-wrap gap-2 lg:shrink-0">
                 {[
                   { label: "Qualiopi", sub: "Certifié" },
                   { label: "CPF", sub: "Éligible" },
-                  { label: "3x / 4x", sub: "Sans frais" },
                 ].map((b) => (
                   <div
                     key={b.label}
@@ -393,7 +391,6 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 Formations
                 <br />
                 <span className="text-zinc-500">spécifiques</span>
-                <span className="text-white">.</span>
               </h2>
             </div>
 
@@ -536,13 +533,13 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-zinc-950 leading-[0.9] font-[family-name:var(--font-bricolage)]">
                   Autres
                   <br />
-                  <span className="text-zinc-400">formations</span>.
+                  <span className="text-zinc-400">formations</span>
                 </h2>
               </div>
               <p className="md:text-right text-zinc-500 max-w-sm leading-relaxed">
                 Stages de récupération de points
                 <br />
-                et perfectionnement en anglais.
+                et perfectionnement en anglais
               </p>
             </header>
 
@@ -684,8 +681,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               </h3>
               <p className="text-lg md:text-xl text-white/85 font-light max-w-xl leading-relaxed">
                 CPF, Pôle Emploi, OPCO… On construit avec vous un plan
-                adapté. Et le reste ? En 3 ou 4 fois sans frais, directement
-                avec notre organisme.
+                adapté, directement avec notre organisme.
               </p>
             </div>
 
@@ -702,7 +698,7 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
               </Link>
 
               <div className="flex flex-wrap md:justify-end gap-1.5">
-                {["CPF", "OPCO", "Pôle Emploi", "3x / 4x"].map(
+                {["CPF", "OPCO", "Pôle Emploi"].map(
                   (tag) => (
                     <span
                       key={tag}
