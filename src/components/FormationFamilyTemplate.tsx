@@ -7,6 +7,7 @@ import {
   ArrowRight,
   CheckCircle,
   CaretRight,
+  DownloadSimple,
   GraduationCap,
   Phone,
 } from "@phosphor-icons/react";
@@ -44,6 +45,7 @@ interface FormationFamilyTemplateProps {
   subFormations: SubFormation[];
   breadcrumbs: { label: string; href: string }[];
   heroImage?: string;
+  downloads?: { label: string; href: string }[];
 }
 
 export default function FormationFamilyTemplate({
@@ -53,6 +55,7 @@ export default function FormationFamilyTemplate({
   subFormations,
   breadcrumbs,
   heroImage,
+  downloads,
 }: FormationFamilyTemplateProps) {
   const familyKey = title.toLowerCase().includes("taxi") ? "taxi" : title.toLowerCase().includes("vtc") ? "vtc" : "taxi";
   const photos = FAMILY_PHOTOS[familyKey] ?? FAMILY_PHOTOS.taxi;
@@ -148,6 +151,45 @@ export default function FormationFamilyTemplate({
           <div className="relative">
             <div className="max-w-3xl">
               <MarkdownRenderer content={content} />
+
+              {/* Documents téléchargeables (optionnel) */}
+              {downloads && downloads.length > 0 && (
+                <div className="mt-16">
+                  <span className="eyebrow text-[#4CAF50] mb-2 block text-[0.7rem]">
+                    Documents
+                  </span>
+                  <h4 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-950 mb-5">
+                    À télécharger
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {downloads.map((doc, i) => (
+                      <a
+                        key={i}
+                        href={doc.href}
+                        download
+                        className="group flex items-center justify-between gap-4 px-5 py-4 bg-zinc-50 hover:bg-white border border-zinc-200 hover:border-zinc-950 rounded-xl transition-all"
+                      >
+                        <span className="flex items-center gap-3 min-w-0">
+                          <span className="w-10 h-10 bg-[#4CAF50]/10 rounded-full flex items-center justify-center shrink-0">
+                            <DownloadSimple
+                              size={18}
+                              weight="duotone"
+                              className="text-[#4CAF50]"
+                            />
+                          </span>
+                          <span className="text-sm font-semibold text-zinc-900 leading-tight">
+                            {doc.label}
+                          </span>
+                        </span>
+                        <ArrowRight
+                          size={16}
+                          className="text-zinc-400 shrink-0 transition-transform group-hover:translate-x-1 group-hover:text-zinc-950"
+                        />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="hidden xl:block absolute top-12 right-0 w-[300px] space-y-4">
               <Image
