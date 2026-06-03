@@ -11,11 +11,17 @@ interface MarkdownPageProps {
   breadcrumbs?: { label: string; href: string }[];
 }
 
+function extractFirstH1(markdown: string): string | undefined {
+  const match = markdown.match(/^#\s+(.+)$/m);
+  return match ? match[1].trim() : undefined;
+}
+
 export default function MarkdownPage({ content, title, breadcrumbs }: MarkdownPageProps) {
+  const resolvedTitle = title || extractFirstH1(content) || "Page d'information";
   return (
     <article className="min-h-screen bg-white pb-24">
       {/* Editorial Header / Hero */}
-      <div className="bg-zinc-50 border-b border-zinc-200 pt-16 pb-20 md:pt-24 md:pb-28">
+      <div className="bg-zinc-50 border-b border-zinc-200 pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="container-custom">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav className="flex items-center gap-2 text-sm font-medium text-zinc-500 mb-8 overflow-x-auto pb-2">
@@ -35,7 +41,7 @@ export default function MarkdownPage({ content, title, breadcrumbs }: MarkdownPa
           )}
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-zinc-950 max-w-4xl leading-[1.1]">
-            {title || "Page d'information"}
+            {resolvedTitle}
           </h1>
         </div>
       </div>
