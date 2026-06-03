@@ -145,7 +145,7 @@ Pour les chauffeurs de Taxi souhaitant obtenir la carte de VTC
 jusqu'à 4 points sur votre permis de conduire
 **219€**
 
-- Dans la limite d'un stage par an et d'un permis de conduire toujours valide
+- Dans la limite d'un stage par an et d'un permis de conduire valide
 - 14 heures de formation sur 2 jours consécutifs : vendredi & samedi de 09h00 à 12h00 et 13h00 à 17h00
 
 ### Formation Anglais

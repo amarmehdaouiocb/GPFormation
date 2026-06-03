@@ -85,9 +85,7 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 
 ## Financement et solde de points
 
-Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.
-
-[Consultez votre solde de points sur Mes points permis](https://mespointspermis.gouv.fr)
+[Consultez votre solde de points sur Mes points permis](https://mespoints.permisdeconduire.gouv.fr)
 
 ## Avertissement important
 
