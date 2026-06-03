@@ -1,6 +1,20 @@
 import { getMarkdownContent } from "@/lib/markdown";
 import FormationFamilyTemplate from "@/components/FormationFamilyTemplate";
 
+export const metadata: import("next").Metadata = {
+  title: "Formation TAXI à Aulnay-sous-Bois (Île-de-France)",
+  description:
+    "Formations TAXI à Aulnay-sous-Bois : initiale (carte professionnelle), continue, mobilité et passerelle VTC → TAXI. Préparez l'examen T3P. Éligible CPF.",
+  alternates: { canonical: "/formation-taxi" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Formation TAXI en Île-de-France",
+    description:
+      "Formations TAXI à Aulnay-sous-Bois : initiale, continue, mobilité et passerelle VTC → TAXI. Éligible CPF.",
+    url: "/formation-taxi",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("formation-taxi");
   const breadcrumbs = [{ label: "Formation TAXI", href: "/formation-taxi" }];

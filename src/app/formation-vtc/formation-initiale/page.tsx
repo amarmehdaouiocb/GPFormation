@@ -1,6 +1,20 @@
 import { getMarkdownContent } from "@/lib/markdown";
 import FormationDetailTemplate from "@/components/FormationDetailTemplate";
 
+export const metadata: import("next").Metadata = {
+  title: "Formation Initiale VTC — Carte professionnelle",
+  description:
+    "Formation initiale VTC à Aulnay-sous-Bois : préparez l'examen et obtenez votre carte professionnelle de chauffeur VTC. Théorie et pratique. Éligible CPF.",
+  alternates: { canonical: "/formation-vtc/formation-initiale" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Formation Initiale VTC",
+    description:
+      "Préparez l'examen et obtenez votre carte professionnelle de chauffeur VTC. Aulnay-sous-Bois, éligible CPF.",
+    url: "/formation-vtc/formation-initiale",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("formation-initiale-vtc");
   const breadcrumbs = [

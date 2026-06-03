@@ -1,6 +1,20 @@
 import { getMarkdownContent } from "@/lib/markdown";
 import FormationFamilyTemplate from "@/components/FormationFamilyTemplate";
 
+export const metadata: import("next").Metadata = {
+  title: "Formation VTC à Aulnay-sous-Bois (Île-de-France)",
+  description:
+    "Formations VTC à Aulnay-sous-Bois : initiale, à distance (e-learning), cours du soir, continue et passerelle TAXI → VTC. Obtenez votre carte VTC. Éligible CPF.",
+  alternates: { canonical: "/formation-vtc" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Formation VTC en Île-de-France",
+    description:
+      "Formations VTC à Aulnay-sous-Bois : initiale, e-learning, cours du soir, continue et passerelle. Éligible CPF.",
+    url: "/formation-vtc",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("formation-vtc");
   const breadcrumbs = [{ label: "Formation VTC", href: "/formation-vtc" }];

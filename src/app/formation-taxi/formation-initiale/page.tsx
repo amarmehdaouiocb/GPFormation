@@ -3,6 +3,20 @@ import FormationDetailTemplate from "@/components/FormationDetailTemplate";
 
 const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
 
+export const metadata: import("next").Metadata = {
+  title: "Formation Initiale TAXI — Préparation à l'examen T3P",
+  description:
+    "Formation initiale TAXI à Aulnay-sous-Bois : préparez l'examen T3P et obtenez votre carte professionnelle de chauffeur de taxi. Théorie, pratique et accompagnement. Éligible CPF.",
+  alternates: { canonical: "/formation-taxi/formation-initiale" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Formation Initiale TAXI — Examen T3P",
+    description:
+      "Préparez l'examen T3P et obtenez votre carte professionnelle de chauffeur de taxi. Aulnay-sous-Bois, éligible CPF.",
+    url: "/formation-taxi/formation-initiale",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("formation-initiale-taxi");
   const breadcrumbs = [

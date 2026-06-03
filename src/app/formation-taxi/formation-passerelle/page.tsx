@@ -3,6 +3,20 @@ import FormationDetailTemplate from "@/components/FormationDetailTemplate";
 
 const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
 
+export const metadata: import("next").Metadata = {
+  title: "Passerelle VTC vers TAXI",
+  description:
+    "Formation passerelle VTC → TAXI : capitalisez sur votre expérience de chauffeur VTC pour obtenir la carte de taxi. Réglementation, connaissance du territoire et pratique.",
+  alternates: { canonical: "/formation-taxi/formation-passerelle" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Passerelle VTC vers TAXI",
+    description:
+      "Devenez chauffeur de taxi en capitalisant sur votre expérience VTC. Réglementation, territoire et pratique.",
+    url: "/formation-taxi/formation-passerelle",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("formation-passerelle-vtc-vers-taxi");
   const breadcrumbs = [
