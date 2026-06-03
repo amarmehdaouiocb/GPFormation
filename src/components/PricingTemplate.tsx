@@ -323,16 +323,20 @@ export default function PricingTemplate({ content }: PricingTemplateProps) {
                           ))}
                         </ul>
                         {plan.forfaits.length > 0 && (
-                          <div className="mt-5 pt-4 border-t border-zinc-200 text-xs text-zinc-500 font-mono">
+                          <div className="mt-5 pt-4 border-t border-zinc-200 text-xs text-zinc-500 font-mono space-y-2.5">
                             {plan.forfaits.map((f, i) => (
-                              <div
-                                key={i}
-                                className="flex items-center justify-between gap-4"
-                              >
-                                <span>{f.label}</span>
-                                <span className="text-zinc-950 font-bold">
-                                  {f.value}
-                                </span>
+                              <div key={i}>
+                                <div className="flex items-center justify-between gap-4">
+                                  <span>{f.label}</span>
+                                  <span className="text-zinc-950 font-bold">
+                                    {f.value}
+                                  </span>
+                                </div>
+                                {f.description && (
+                                  <p className="mt-1 text-[#4CAF50] leading-snug">
+                                    {f.description}
+                                  </p>
+                                )}
                               </div>
                             ))}
                           </div>

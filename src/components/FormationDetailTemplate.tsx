@@ -61,7 +61,7 @@ const DEFAULT_PHOTOS = [
   "/images/stock/succes-diplome.jpg",
 ];
 
-type FinancementVariant = "standard" | "fafcea";
+type FinancementVariant = "standard" | "fafcea" | "points";
 
 interface DownloadLink {
   label: string;
@@ -95,6 +95,11 @@ const FINANCEMENT_COPY: Record<FinancementVariant, { title: string; description:
     title: "Besoin d'aide pour le financement ?",
     description:
       "Nos équipes vous accompagnent dans la constitution de votre dossier FAFCEA, Pôle Emploi…",
+  },
+  points: {
+    title: "Besoin d'aide pour le financement ?",
+    description:
+      "Nos équipes vous accompagnent : prise en charge possible par votre assurance auto.",
   },
 };
 
