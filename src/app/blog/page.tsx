@@ -28,7 +28,7 @@ export default async function BlogListing() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-24">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 pt-32 md:pt-40 pb-24">
       <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-12 text-zinc-950 dark:text-zinc-50">
         Le Blog GP Formation.
       </h1>
