@@ -1,6 +1,20 @@
 import Link from "next/link";
 import { getAllMarkdownSlugs, getMarkdownContent } from "@/lib/markdown";
 
+export const metadata: import("next").Metadata = {
+  title: "Actualités & Blog",
+  description:
+    "Le blog de GP Formation : actualités, conseils et guides pratiques pour devenir chauffeur TAXI ou VTC en Île-de-France.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Actualités & Blog — GP Formation",
+    description:
+      "Conseils et guides pour devenir chauffeur TAXI ou VTC en Île-de-France.",
+    url: "/blog",
+  },
+};
+
 export default async function BlogListing() {
   const slugs = getAllMarkdownSlugs("blog-");
   

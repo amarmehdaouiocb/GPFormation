@@ -1,6 +1,20 @@
 import { getMarkdownContent } from "@/lib/markdown";
 import FormationDetailTemplate from "@/components/FormationDetailTemplate";
 
+export const metadata: import("next").Metadata = {
+  title: "Stage de Récupération de Points du permis",
+  description:
+    "Stage de récupération de points (jusqu'à 4 points) : 14h sur 2 jours à Aulnay-sous-Bois. Sensibilisation à la sécurité routière animée par un psychologue et un expert BAFM.",
+  alternates: { canonical: "/recuperation-de-points" },
+  openGraph: {
+    images: ["/opengraph-image.png"],
+    title: "Stage de Récupération de Points du permis",
+    description:
+      "Récupérez jusqu'à 4 points : stage de 14h sur 2 jours à Aulnay-sous-Bois. Inscription en ligne.",
+    url: "/recuperation-de-points",
+  },
+};
+
 export default async function Page() {
   const { content, data } = getMarkdownContent("recuperation-de-points");
   const breadcrumbs = [
