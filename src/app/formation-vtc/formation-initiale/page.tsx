@@ -24,6 +24,7 @@ export default async function Page() {
   const downloads = [
     { label: "Référentiel T3P", href: "/documents/referentiel-t3p.pdf" },
     { label: "Grille d'évaluation VTC", href: "/documents/vtc/grille-evaluation-vtc.pdf" },
+    { label: "Dossier récapitulatif", href: "/documents/vtc/dossier-recapitulatif-formation-initiale-vtc.pdf" },
   ];
   return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="4 semaines" tag="VTC" downloads={downloads} />;
 }
