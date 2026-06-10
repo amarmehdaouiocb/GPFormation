@@ -12,7 +12,7 @@ Centre de formation TAXI / VTC en Île-de-France
 
 ### Chauffeur(e) de TAXI
 
-Découvrez nos différentes formules pour devenir chauffeur(e) de TAXI Parisien ou TAXI 93.
+Découvrez nos différentes formules pour devenir chauffeur(e) de TAXI.
 
 ### Chauffeur(e) de VTC
 
@@ -20,7 +20,7 @@ Devenez chauffeur VTC grâce à nos différentes formules s'adaptant à votre em
 
 ### Récupération de points
 
-Vous avez commis une infraction au code de la route ? Récupérez jusqu'à 4 points en 24 heures.
+Vous avez commis une infraction au code de la route ? Récupérez jusqu'à 4 points 24h après votre stage.
 
 ---
 

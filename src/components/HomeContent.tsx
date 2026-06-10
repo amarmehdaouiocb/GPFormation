@@ -90,7 +90,7 @@ const EditorialFormations = () => (
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de TAXI</h3>
             <p className="text-zinc-600 line-clamp-2">
-              Découvrez nos différentes formules pour devenir chauffeur(e) de TAXI Parisien ou TAXI 93. Un accompagnement de l'inscription à l'examen.
+              Découvrez nos différentes formules pour devenir chauffeur(e) de TAXI. Un accompagnement de l&apos;inscription à l&apos;examen.
             </p>
           </div>
         </Link>
@@ -113,7 +113,7 @@ const EditorialFormations = () => (
             </div>
             <h3 className="text-3xl font-bold tracking-tight mb-4">Chauffeur(e) de VTC</h3>
             <p className="text-zinc-600 line-clamp-2">
-              Devenez chauffeur VTC grâce à nos formules flexibles : cours du soir, à distance ou en présentiel. S'adapte à votre rythme.
+              Devenez chauffeur VTC grâce à nos formules flexibles : cours du soir, à distance ou en accéléré. S&apos;adapte à votre rythme.
             </p>
           </div>
         </Link>
@@ -135,7 +135,7 @@ const EditorialFormations = () => (
             <div>
               <CheckCircle size={32} className="text-[#4CAF50] mb-6" weight="duotone" />
               <h3 className="text-2xl font-bold tracking-tight mb-3">Récupération de points</h3>
-              <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu'à 4 points en 24 heures.</p>
+              <p className="text-zinc-600">Vous avez commis une infraction ? Récupérez jusqu&apos;à 4 points 24h après votre stage.</p>
             </div>
             <div className="flex items-center gap-2 mt-8 text-sm font-bold tracking-widest uppercase text-zinc-950">
               En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

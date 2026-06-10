@@ -61,7 +61,7 @@ Nos formations VTC en cours du soir sont très efficaces et ont un taux quasi é
 
 ## Quelles sont les alternatives à la formation en cours du soir ?
 
-L'école Gallieni propose 2 autres formations VTC :
+GP Formation propose 2 autres formations VTC :
 
 - Formation VTC à temps plein
 - Formation VTC à distance
