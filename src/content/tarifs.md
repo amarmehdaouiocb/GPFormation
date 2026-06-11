@@ -157,3 +157,5 @@ Pour toutes personnes souhaitant se perfectionner en anglais
 - Support de cours
 - Chauffeurs en activité : Anglais professionnel et touristique
 - Grand public : Perfectionner son anglais
+- Délai d'accès à la formation : l'accès à la formation est possible dans un délai moyen de 72h à 15 jours ouvrés après validation de l'inscription, sous réserve des places disponibles et de la réception des documents administratifs nécessaires.
+- Pour les demandes urgentes ou les formations intra-entreprise, une étude personnalisée peut être réalisée afin de proposer une date adaptée aux besoins du client.
