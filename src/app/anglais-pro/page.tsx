@@ -16,12 +16,12 @@ export const metadata: import("next").Metadata = {
 };
 
 const ANGLAIS_PHOTOS = [
-  "/images/equipe-accueil.jpg",
-  "/images/stock/formation-classe.jpg",
-  "/images/formation-salle.jpg",
-  "/images/succes-equipe.jpg",
-  "/images/stock/succes-diplome.jpg",
-  "/images/equipe-accueil.jpg",
+  "/images/gpformation-generated/anglais-pro-accueil.webp",
+  "/images/gpformation-generated/anglais-pro-formation.webp",
+  "/images/gpformation-generated/anglais-pro-service.webp",
+  "/images/gpformation-generated/anglais-pro-apprentissage.webp",
+  "/images/gpformation-generated/anglais-pro-reussite.webp",
+  "/images/gpformation-generated/anglais-pro-hero.webp",
 ];
 
 export default async function Page() {
@@ -37,7 +37,7 @@ export default async function Page() {
       location="Aulnay-sous-Bois"
       certification="Attestation de formation"
       tag="ANGLAIS"
-      heroImage="/images/equipe-accueil.jpg"
+      heroImage="/images/gpformation-generated/anglais-pro-hero.webp"
       photos={ANGLAIS_PHOTOS}
       financementVariant="anglais"
     />
