@@ -20,6 +20,7 @@ const STATIC_ROUTES = [
   "/formation-vtc/formation-vtc-93",
   "/formation-vtc/formation-vtc-en-ile-de-france",
   "/recuperation-de-points",
+  "/anglais-pro",
   "/tarifs",
   "/services",
   "/contact",

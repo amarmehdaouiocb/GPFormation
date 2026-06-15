@@ -204,6 +204,12 @@ export default function Navbar() {
               isTransparent={isTransparent}
             />
             <NavItem
+              href="/anglais-pro"
+              label="Anglais Pro"
+              active={pathname === '/anglais-pro'}
+              isTransparent={isTransparent}
+            />
+            <NavItem
               href="/tarifs"
               label="Tarifs"
               active={pathname === '/tarifs'}
@@ -273,6 +279,7 @@ export default function Navbar() {
 
               <div className="flex flex-col gap-3">
                 <Link href="/recuperation-de-points" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Récupération de points</Link>
+                <Link href="/anglais-pro" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Anglais Pro</Link>
                 <Link href="/tarifs" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Tarifs</Link>
                 <Link href="/services" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Services</Link>
                 <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-xl font-semibold tracking-tight text-zinc-900 hover:text-[#4CAF50] transition-colors">Contact</Link>

@@ -41,6 +41,7 @@ export default function Footer() {
               <li><Link href="/formation-taxi/formation-passerelle" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Passerelle VTC vers TAXI</Link></li>
               <li><Link href="/formation-vtc/formation-passerelle" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Passerelle TAXI vers VTC</Link></li>
               <li><Link href="/recuperation-de-points" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Récupération de points</Link></li>
+              <li><Link href="/anglais-pro" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Anglais Pro</Link></li>
             </ul>
           </div>
 
