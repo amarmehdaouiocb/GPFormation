@@ -47,19 +47,37 @@ Le stage est animé par un psychologue et un expert en sécurité routière (BAF
 
 ### Jour 1
 
-- Accueil et présentations
-- Généralités et statistiques
-- Logique de l'accident
-- Perception de la route
-- Analyse des situations d'infraction
+**Socle commun : phase de prise de contact et facteurs généraux de l'insécurité routière :**
+
+- Présentation du stage et des participants.
+- Données de sécurité routière et accidentologie : statistiques sur les accidents, causes principales.
+- Données psychophysiologiques : impact de la fatigue, du stress ou des substances sur la conduite, et lien avec la tâche de conduite.
+
+**Module spécifique de prévention des conduites à risque**
+
+Ce module se divise en trois phases :
+
+**Phase de diagnostic :**
+
+- Analyse des représentations individuelles et collectives.
+- Identification des attentes des participants.
+- Auto-évaluation des comportements d'usage (ex. : vitesse, alcool, distraction).
 
 ### Jour 2
 
-- Analyse d'un accident
-- Physique et conduite
-- Sensibilisation alcool/stupéfiants
-- Représentations autour de la conduite
-- Conclusion
+**Module spécifique de prévention des conduites à risque**
+
+**Phase d'analyse des influences :**
+
+- Étude des normes sociales et du contexte social influençant les comportements routiers.
+- Évaluation des compétences perçues et du sentiment d'auto-efficacité (confiance en ses capacités à conduire prudemment).
+- Introduction au contexte scientifique (données sur les risques, études épidémiologiques).
+
+**Phase d'ajustement :**
+
+- Travail sur le niveau de motivation à adopter des comportements sûrs.
+- Définition d'un comportement cible (objectif à atteindre).
+- Élaboration de stratégies pour modifier les habitudes à risque.
 
 ## Remboursement d'amende
 
@@ -78,6 +96,8 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 
 - Photocopie permis (recto/verso)
 - Photocopie pièce d'identité (recto/verso)
+
+Les informations d'inscription doivent être renseignées exactement comme elles apparaissent sur le permis de conduire, recto et verso.
 
 **Durée :** 14 heures, soit 2 jours consécutifs
 

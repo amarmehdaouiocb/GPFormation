@@ -16,6 +16,7 @@ import {
   DownloadSimple,
 } from "@phosphor-icons/react";
 import MarkdownRenderer from "./MarkdownRenderer";
+import RecoveryRegistrationForm from "./RecoveryRegistrationForm";
 import React, { useMemo, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -130,6 +131,8 @@ export default function FormationDetailTemplate({
   const [activeHeading, setActiveHeading] = useState<string>("");
   const defaultPhotos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
   const resolvedPhotos = photos?.length ? photos : defaultPhotos;
+  const usesRecoveryRegistration =
+    financementVariant === "points" && Boolean(stripePaymentLink);
   const photoAt = (index: number) =>
     resolvedPhotos[index % resolvedPhotos.length] ??
     defaultPhotos[index % defaultPhotos.length];
@@ -246,15 +249,25 @@ export default function FormationDetailTemplate({
                   <span>01 45 09 09 35</span>
                 </a>
                 {stripePaymentLink && (
-                  <a
-                    href={stripePaymentLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-7 py-4 bg-white text-zinc-950 font-bold tracking-wide uppercase text-sm hover:bg-zinc-100 transition-all hover:scale-[0.98] group rounded-md"
-                  >
-                    <CreditCard size={18} weight="duotone" />
-                    <span>S&apos;inscrire et payer en ligne</span>
-                  </a>
+                  usesRecoveryRegistration ? (
+                    <a
+                      href="#inscription-points"
+                      className="inline-flex items-center gap-2.5 px-7 py-4 bg-white text-zinc-950 font-bold tracking-wide uppercase text-sm hover:bg-zinc-100 transition-all hover:scale-[0.98] group rounded-md"
+                    >
+                      <CreditCard size={18} weight="duotone" />
+                      <span>S&apos;inscrire et payer en ligne</span>
+                    </a>
+                  ) : (
+                    <a
+                      href={stripePaymentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2.5 px-7 py-4 bg-white text-zinc-950 font-bold tracking-wide uppercase text-sm hover:bg-zinc-100 transition-all hover:scale-[0.98] group rounded-md"
+                    >
+                      <CreditCard size={18} weight="duotone" />
+                      <span>S&apos;inscrire et payer en ligne</span>
+                    </a>
+                  )
                 )}
               </motion.div>
             </div>
@@ -437,6 +450,10 @@ export default function FormationDetailTemplate({
                     ))}
                   </div>
                 </div>
+              )}
+
+              {usesRecoveryRegistration && stripePaymentLink && (
+                <RecoveryRegistrationForm paymentLink={stripePaymentLink} />
               )}
 
               {/* Info Box Financement */}

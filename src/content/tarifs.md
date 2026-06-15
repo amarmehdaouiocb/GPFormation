@@ -31,7 +31,7 @@ Frais à l'examen inclus
 Lundi au vendredi — 18h00 à 20h30
 **À partir de 1500€**
 
-- Durée : 4 semaines
+- Durée : 50 heures sur 4 semaines
 - Cours théorique en salle
 - 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
@@ -79,10 +79,10 @@ Renouvellement de la carte Taxi obligatoire tous les 5 ans
 **250€**
 
 - 14 heures de formation répartis sur 2 jours
-- Droit du transport public particuliers de personnes (3h30)
+- Réglementation du Transport Public Particuliers de Personnes et de la prévention des discriminations et des violences sexuelles et sexistes (3h30)
 - Réglementation spécifique liée à l'activité de taxi (3h30)
 - Sécurité Routière (3h30)
-- Gestion (3h30)
+- Anglais (3h30)
 
 ### Formation TPMR
 
@@ -121,9 +121,9 @@ Renouvellement de la carte VTC obligatoire tous les 5 ans
 **180€**
 
 - 14 heures de formation répartis sur 2 jours
-- Droit du transport public particuliers de personnes (3h30)
+- Réglementation du Transport Public Particuliers de Personnes et de la prévention des discriminations et des violences sexuelles et sexistes (3h30)
 - Réglementation spécifique liée à l'activité de VTC (3h30)
-- Gestion (3h30)
+- Sécurité Routière (3h30)
 - Anglais (3h30)
 
 ### Formation Passerelle (Taxi vers VTC)

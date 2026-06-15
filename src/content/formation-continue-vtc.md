@@ -12,7 +12,7 @@ Suivre une formation continue permet de rester à jour sur la réglementation ap
 
 ## INFOS PRATIQUES
 
-### Module A — Droit du transport public particuliers de personnes (3h30)
+### Module A — Réglementation du Transport Public Particuliers de Personnes et de la prévention des discriminations et des violences sexuelles et sexistes (3h30)
 
 ### Module B — Réglementation spécifique liée à l'activité de VTC (3h30)
 

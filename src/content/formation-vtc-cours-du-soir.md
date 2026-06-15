@@ -4,11 +4,11 @@
 
 Manque de temps en journée ? À GP Formation, il est possible de suivre une formation VTC en cours du soir.
 
-**Nos formations VTC en cours du soir se déroulent de 18h00 à 20h00, du lundi au vendredi, sur une durée de 6 semaines.**
+**Nos formations VTC en cours du soir se déroulent de 18h00 à 20h30, du lundi au vendredi, sur une durée de 4 semaines.**
 
 ## Au programme
 
-- 60 heures de cours répartis sur 6 semaines
+- 50 heures de cours réparties sur 4 semaines
 - Cours théorique en salle
 - Manuel de cours inclus
 - Cours de conduite avec un véhicule équipé double commande + mise à disposition le jour de l'examen
@@ -27,7 +27,7 @@ La formation de VTC vous permet d'étudier 7 modules :
 - Réglementation Nationale
 - Développement commercial
 
-**La formation VTC dure 6 semaines du lundi au vendredi de 18h00 à 20h00.**
+**La formation VTC dure 4 semaines du lundi au vendredi de 18h00 à 20h30.**
 
 La formule en cours du soir vous permet de vous préparer au mieux à l'examen d'admissibilité, dans des conditions équivalentes aux cours à temps plein.
 
@@ -47,11 +47,12 @@ En cas de succès à ces deux épreuves, vous recevrez la Carte Professionnelle 
 - Permis de conduire non affecté par le délai probatoire
 - Justificatif de domicile (moins de 3 mois)
 - 1 photo d'identité récente
+- Signature sur fond blanc
 - Droits d'inscription de 221€ (frais auprès de la Chambre des Métiers et de l'Artisanat)
 
 ### Durée de la formation
 
-- Formation de 60 heures, réparties sur 6 semaines.
+- Formation de 50 heures, réparties sur 4 semaines.
 
 ## Pourquoi suivre une formation de VTC en cours du soir ?
 

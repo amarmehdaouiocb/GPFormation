@@ -83,12 +83,13 @@ Mise en situation pratique de réalisation d'une course de VTC.
 - Permis de conduire non affecté par le délai probatoire
 - Justificatif de domicile (moins de 3 mois)
 - 1 photo d'identité récente
+- Signature manuscrite sur fond blanc
 - Droits d'inscription de 241€ (frais auprès de la Chambre des Métiers et de l'Artisanat)
 
 ## Durée de la formation
 
 - **Formule Temps plein :** 90 heures sur 3 semaines
-- **Formule Cours du soir :** 40 heures sur 4 semaines
+- **Formule Cours du soir :** 50 heures sur 4 semaines
 - **Formule Accélérée :** 18 heures sur 6 jours
 - **Formule E-learning :** 60 jours d'accès
 

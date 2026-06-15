@@ -16,13 +16,13 @@ En effet, le transport de personnes est un secteur en perpétuelle évolution d'
 
 ## INFOS PRATIQUES
 
-### Module A — Droit du transport public particuliers de personnes (3h30)
+### Module A — Réglementation du Transport Public Particuliers de Personnes et de la prévention des discriminations et des violences sexuelles et sexistes (3h30)
 
 ### Module B — Réglementation spécifique liée à l'activité de taxi (3h30)
 
 ### Module C — Sécurité Routière (3h30)
 
-### Module D — Gestion (3h30)
+### Module D — Anglais (3h30)
 
 ### Conditions d'admission
 

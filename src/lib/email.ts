@@ -10,6 +10,24 @@ type ContactEmailData = {
   message: string;
 };
 
+export type RecoveryRegistrationEmailData = {
+  email: string;
+  telephone: string;
+  nom: string;
+  prenoms: string;
+  dateNaissance: string;
+  lieuNaissance: string;
+  adresse: string;
+  codePostal: string;
+  ville: string;
+  numeroPermis: string;
+  dateDelivranceTitre: string;
+  dateExpirationTitre: string;
+  autoriteDelivrance: string;
+  categoriePermis: string;
+  dateObtentionCategorie: string;
+};
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -117,6 +135,91 @@ function buildContactEmailHtml(data: ContactEmailData): string {
 </html>`;
 }
 
+function buildRecoveryRegistrationEmailHtml(data: RecoveryRegistrationEmailData): string {
+  const now = new Date().toLocaleDateString("fr-FR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const rows = [
+    ["Email", data.email],
+    ["Téléphone", data.telephone],
+    ["Nom - champ 1", data.nom],
+    ["Prénom(s) - champ 2", data.prenoms],
+    ["Date de naissance - champ 3", data.dateNaissance],
+    ["Lieu de naissance - champ 3", data.lieuNaissance],
+    ["Adresse actuelle", data.adresse],
+    ["Code postal", data.codePostal],
+    ["Ville", data.ville],
+    ["Numéro de permis - champ 5", data.numeroPermis],
+    ["Date de délivrance du titre - champ 4a", data.dateDelivranceTitre],
+    ["Date de fin de validité du titre - champ 4b", data.dateExpirationTitre],
+    ["Autorité de délivrance - champ 4c", data.autoriteDelivrance],
+    ["Catégorie du permis - champ 9", data.categoriePermis],
+    ["Date d'obtention catégorie - verso colonne 10", data.dateObtentionCategorie],
+  ];
+
+  const rowsHtml = rows
+    .map(
+      ([label, value]) => `
+                <tr>
+                  <td style="padding:9px 0;color:#71717A;font-size:12px;text-transform:uppercase;letter-spacing:0.7px;width:220px;vertical-align:top;">${escapeHtml(label)}</td>
+                  <td style="padding:9px 0;color:#18181B;font-size:15px;font-weight:600;">${escapeHtml(value)}</td>
+                </tr>
+                <tr><td colspan="2" style="height:1px;background-color:#E4E4E7;font-size:0;">&nbsp;</td></tr>`,
+    )
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /></head>
+<body style="margin:0;padding:0;background-color:#F4F4F5;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4F4F5;padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="680" cellpadding="0" cellspacing="0" style="max-width:680px;width:100%;">
+        <tr><td style="background-color:#18181B;padding:28px 32px;border-radius:12px 12px 0 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">GP Formation</td>
+              <td align="right" style="color:rgba(255,255,255,0.7);font-size:13px;">Stage récupération de points</td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="height:3px;background-color:#4CAF50;font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td style="background-color:#ffffff;padding:32px;">
+          <p style="margin:0 0 8px;color:#18181B;font-size:20px;font-weight:700;">
+            Nouvelle inscription avant paiement
+          </p>
+          <p style="margin:0 0 24px;color:#71717A;font-size:14px;line-height:1.6;">
+            Informations saisies à partir du permis de conduire nouveau format. Le candidat est redirigé vers Stripe après l'envoi du formulaire.
+          </p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAFAFA;border:1px solid #E4E4E7;border-radius:8px;padding:0 20px;">
+            ${rowsHtml}
+          </table>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+            <tr><td align="center">
+              <a href="mailto:${escapeHtml(data.email)}" style="display:inline-block;background-color:#18181B;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:6px;">
+                Contacter le candidat
+              </a>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="background-color:#FAFAFA;padding:20px 32px;border-radius:0 0 12px 12px;border-top:1px solid #E4E4E7;">
+          <p style="margin:0;color:#A1A1AA;font-size:12px;text-align:center;">
+            Envoyé le ${now} via le formulaire d'inscription récupération de points - gpformation.fr
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 export async function sendContactEmail(data: ContactEmailData) {
   if (!process.env.RESEND_API_KEY) {
     console.log("RESEND_API_KEY not set, logging email:", data);
@@ -129,5 +232,20 @@ export async function sendContactEmail(data: ContactEmailData) {
     replyTo: data.email,
     subject: `Nouveau contact : ${data.prenom} ${data.nom}`.trim(),
     html: buildContactEmailHtml(data),
+  });
+}
+
+export async function sendRecoveryRegistrationEmail(data: RecoveryRegistrationEmailData) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log("RESEND_API_KEY not set, logging recovery registration:", data);
+    return;
+  }
+
+  await resend.emails.send({
+    from: "GP Formation <noreply@gpformation.fr>",
+    to: "contact@gpformation.fr",
+    replyTo: data.email,
+    subject: `Inscription stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
+    html: buildRecoveryRegistrationEmailHtml(data),
   });
 }
