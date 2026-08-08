@@ -16,7 +16,7 @@ export const metadata: import("next").Metadata = {
 };
 
 export default async function Page() {
-  const { content, data } = getMarkdownContent("moniteur-auto-ecole");
+  const { content } = getMarkdownContent("moniteur-auto-ecole");
   const breadcrumbs = [
     { label: "Moniteur Auto-École", href: "#" }
   ];

@@ -207,7 +207,7 @@ export default function ServicesShowcase() {
                 <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-100">
                   <Image
                     src="/images/gpformation-generated/services-parking-secure-clean.webp"
-                    alt="Parking sécurisé EIFFIA"
+                    alt="Parking sécurisé EFFIA"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -231,14 +231,14 @@ export default function ServicesShowcase() {
                       <CarProfile size={24} weight="duotone" />
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 font-[family-name:var(--font-bricolage)]">
-                      Parking EIFFIA
+                      Parking EFFIA
                     </h3>
                   </div>
 
                   <p className="text-zinc-600 text-base leading-relaxed mb-6">
                     Situé en face de notre centre, vous avez la possibilité de
                     vous garer, pour un tarif unique, dans le parking sécurisé
-                    EIFFIA, et ce pendant toute la durée de votre formation.
+                    EFFIA, et ce pendant toute la durée de votre formation.
                   </p>
 
                   <div className="mt-auto pt-4 border-t border-zinc-200 flex items-center justify-between gap-3">

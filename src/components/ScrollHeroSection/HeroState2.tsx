@@ -135,9 +135,9 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         })}
       </div>
 
-      {/* Mobile : scroll horizontal */}
+      {/* Mobile : cartes empilées */}
       <motion.div
-        className="lg:hidden w-full"
+        className="lg:hidden w-full max-h-[calc(100dvh-14rem)] overflow-y-auto overscroll-contain px-6 scrollbar-hide"
         initial={false}
         animate={
           heroState === 2
@@ -151,14 +151,14 @@ export default function HeroState2({ heroState }: { heroState: 1 | 2 }) {
         }
         style={{ willChange: "opacity, transform" }}
       >
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 px-6 scrollbar-hide">
+        <div className="flex w-full max-w-sm mx-auto flex-col gap-4 pb-4">
           {formations.map((formation) => (
             <Link
               key={formation.href}
               href={formation.href}
-              className="group snap-center shrink-0"
+              className="group block w-full"
             >
-              <div className="relative rounded-2xl overflow-hidden w-[300px] h-[400px]">
+              <div className="relative rounded-2xl overflow-hidden w-full h-[150px] sm:h-[180px]">
                 <Image
                   src={formation.image}
                   alt={formation.title}

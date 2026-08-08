@@ -1,9 +1,8 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useState } from "react";
 import {
   ArrowRight,
-  CheckCircle,
   CreditCard,
   WarningCircle,
 } from "@phosphor-icons/react";
@@ -11,9 +10,14 @@ import {
   submitRecoveryRegistration,
   type RecoveryRegistrationState,
 } from "@/app/recuperation-de-points/action";
+import {
+  formatRecoveryDateRange,
+  type RecoverySession,
+} from "@/lib/recovery-dates";
 
 interface RecoveryRegistrationFormProps {
-  paymentLink: string;
+  recoveryDates: RecoverySession[];
+  initialSelectedSession?: string;
 }
 
 const inputClass =
@@ -52,22 +56,16 @@ function Field({
 }
 
 export default function RecoveryRegistrationForm({
-  paymentLink,
+  recoveryDates,
+  initialSelectedSession,
 }: RecoveryRegistrationFormProps) {
   const [state, formAction, isPending] = useActionState<
     RecoveryRegistrationState,
     FormData
   >(submitRecoveryRegistration, null);
-
-  useEffect(() => {
-    if (!state?.success) return;
-
-    const timeoutId = window.setTimeout(() => {
-      window.location.href = paymentLink;
-    }, 900);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [paymentLink, state?.success]);
+  const [selectedSession, setSelectedSession] = useState(
+    initialSelectedSession ?? "",
+  );
 
   return (
     <section
@@ -84,38 +82,54 @@ export default function RecoveryRegistrationForm({
           </h3>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600 md:text-base">
             Renseignez les champs du permis nouveau format. Les informations sont
-            envoyées à GP Formation, puis vous êtes redirigé vers le paiement
-            sécurisé.
+            conservées temporairement, puis transmises à GP Formation uniquement
+            après confirmation de votre paiement.
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
           <CreditCard size={20} weight="duotone" className="text-[#4CAF50]" />
-          Paiement après formulaire
+          Paiement sécurisé Stripe
         </div>
       </div>
 
-      {state?.success ? (
-        <div className="flex flex-col items-center gap-4 border border-[#4CAF50]/30 bg-white p-8 text-center">
-          <CheckCircle size={42} weight="fill" className="text-[#4CAF50]" />
-          <div>
-            <p className="text-xl font-bold text-zinc-950">Informations envoyées</p>
-            <p className="mt-2 text-zinc-600">{state.message}</p>
+      <form action={formAction} className="space-y-8">
+        {state && (
+          <div className="flex items-start gap-3 border border-red-200 bg-red-50 p-4">
+            <WarningCircle
+              size={22}
+              weight="fill"
+              className="mt-0.5 shrink-0 text-red-500"
+            />
+            <p className="text-sm leading-relaxed text-red-700">{state.message}</p>
           </div>
-        </div>
-      ) : (
-        <form action={formAction} className="space-y-8">
-          {state && !state.success && (
-            <div className="flex items-start gap-3 border border-red-200 bg-red-50 p-4">
-              <WarningCircle
-                size={22}
-                weight="fill"
-                className="mt-0.5 shrink-0 text-red-500"
-              />
-              <p className="text-sm leading-relaxed text-red-700">{state.message}</p>
-            </div>
-          )}
+        )}
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="border border-[#4CAF50]/25 bg-white p-5 md:p-6">
+          <label htmlFor="sessionStart" className={labelClass}>
+            Session souhaitée
+          </label>
+          <select
+            id="sessionStart"
+            name="sessionStart"
+            required
+            value={selectedSession}
+            onChange={(event) => setSelectedSession(event.target.value)}
+            className="mt-3 w-full border border-zinc-300 bg-white px-4 py-4 text-base font-semibold text-zinc-950 outline-none transition-colors focus:border-[#4CAF50]"
+          >
+            <option value="">Choisir une session</option>
+            {recoveryDates.map((session) => (
+              <option key={session.start} value={session.start}>
+                {formatRecoveryDateRange(session)}
+              </option>
+            ))}
+          </select>
+          <p className="mt-3 text-sm leading-relaxed text-zinc-500">
+            Le stage se déroule sur les deux journées indiquées. Vous pourrez
+            modifier ce choix avant de continuer vers le paiement.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field
               id="email"
               label="Email"
@@ -130,16 +144,16 @@ export default function RecoveryRegistrationForm({
               placeholder="06 12 34 56 78"
               autoComplete="tel"
             />
-          </div>
+        </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field id="nom" label="Nom - champ 1" autoComplete="family-name" />
-            <Field id="prenoms" label="Prénom(s) - champ 2" autoComplete="given-name" />
-            <Field id="dateNaissance" label="Date de naissance - champ 3" type="date" />
-            <Field id="lieuNaissance" label="Lieu de naissance - champ 3" />
-          </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Field id="nom" label="Nom" autoComplete="family-name" />
+            <Field id="prenoms" label="Prénom(s)" autoComplete="given-name" />
+            <Field id="dateNaissance" label="Date de naissance" type="date" />
+            <Field id="lieuNaissance" label="Lieu de naissance" />
+        </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-3">
               <Field id="adresse" label="Adresse actuelle" autoComplete="street-address" />
             </div>
@@ -147,30 +161,29 @@ export default function RecoveryRegistrationForm({
             <div className="md:col-span-2">
               <Field id="ville" label="Ville" autoComplete="address-level2" />
             </div>
-          </div>
+        </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field id="numeroPermis" label="Numéro de permis - champ 5" />
-            <Field id="autoriteDelivrance" label="Autorité de délivrance - champ 4c" />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Field id="numeroPermis" label="Numéro de permis" />
+            <Field id="autoriteDelivrance" label="Autorité de délivrance" />
             <Field
               id="dateDelivranceTitre"
-              label="Date de délivrance du titre - champ 4a"
+              label="Date de délivrance du titre"
               type="date"
             />
             <Field
               id="dateExpirationTitre"
-              label="Date de fin de validité du titre - champ 4b"
+              label="Date de fin de validité du titre"
               type="date"
             />
-            <Field id="categoriePermis" label="Catégorie du permis - champ 9" placeholder="B" />
             <Field
               id="dateObtentionCategorie"
-              label="Date d'obtention catégorie - verso colonne 10"
+              label="Date d'obtention"
               type="date"
             />
-          </div>
+        </div>
 
-          <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4">
             <input
               type="checkbox"
               id="consentement"
@@ -183,23 +196,25 @@ export default function RecoveryRegistrationForm({
               className="cursor-pointer select-none text-sm leading-snug text-zinc-600"
             >
               J&apos;accepte que ces informations soient transmises à GP Formation
-              afin de préparer mon inscription au stage de récupération de points.
+              après validation de mon paiement afin de préparer mon inscription au
+              stage de récupération de points.
             </label>
-          </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="group flex w-full items-center justify-between bg-zinc-950 px-6 py-5 font-bold uppercase tracking-wide text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <span>{isPending ? "Enregistrement..." : "Continuer vers le paiement"}</span>
-            <ArrowRight
-              size={20}
-              className="transition-transform group-hover:translate-x-1"
-            />
-          </button>
-        </form>
-      )}
+        <button
+          type="submit"
+          disabled={isPending}
+          className="group flex w-full items-center justify-between bg-zinc-950 px-6 py-5 font-bold uppercase tracking-wide text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span>
+            {isPending ? "Sécurisation de l'inscription..." : "Continuer vers le paiement"}
+          </span>
+          <ArrowRight
+            size={20}
+            className="transition-transform group-hover:translate-x-1"
+          />
+        </button>
+      </form>
     </section>
   );
 }

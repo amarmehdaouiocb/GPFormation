@@ -1,6 +1,19 @@
 import { Resend } from "resend";
+import { formatRecoveryDateRange } from "@/lib/recovery-dates";
+import type { RecoveryRegistrationData } from "@/lib/recovery-registration";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resendClient: Resend | undefined;
+
+function getResendClient(): Resend {
+  const apiKey = process.env.RESEND_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is required to send emails");
+  }
+
+  resendClient ??= new Resend(apiKey);
+  return resendClient;
+}
 
 type ContactEmailData = {
   prenom: string;
@@ -10,23 +23,11 @@ type ContactEmailData = {
   message: string;
 };
 
-export type RecoveryRegistrationEmailData = {
-  email: string;
-  telephone: string;
-  nom: string;
-  prenoms: string;
-  dateNaissance: string;
-  lieuNaissance: string;
-  adresse: string;
-  codePostal: string;
-  ville: string;
-  numeroPermis: string;
-  dateDelivranceTitre: string;
-  dateExpirationTitre: string;
-  autoriteDelivrance: string;
-  categoriePermis: string;
-  dateObtentionCategorie: string;
-};
+interface RecoveryPaymentDetails {
+  checkoutSessionId: string;
+  amountTotal: number | null;
+  currency: string | null;
+}
 
 function escapeHtml(text: string): string {
   return text
@@ -135,7 +136,21 @@ function buildContactEmailHtml(data: ContactEmailData): string {
 </html>`;
 }
 
-function buildRecoveryRegistrationEmailHtml(data: RecoveryRegistrationEmailData): string {
+function formatPaymentAmount(payment: RecoveryPaymentDetails): string {
+  if (payment.amountTotal === null || !payment.currency) {
+    return "Paiement validé";
+  }
+
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: payment.currency.toUpperCase(),
+  }).format(payment.amountTotal / 100);
+}
+
+function buildRecoveryRegistrationEmailHtml(
+  data: RecoveryRegistrationData,
+  payment: RecoveryPaymentDetails,
+): string {
   const now = new Date().toLocaleDateString("fr-FR", {
     weekday: "long",
     year: "numeric",
@@ -146,21 +161,23 @@ function buildRecoveryRegistrationEmailHtml(data: RecoveryRegistrationEmailData)
   });
 
   const rows = [
+    ["Session choisie", formatRecoveryDateRange(data.session)],
+    ["Paiement Stripe", formatPaymentAmount(payment)],
+    ["Référence Stripe", payment.checkoutSessionId],
     ["Email", data.email],
     ["Téléphone", data.telephone],
-    ["Nom - champ 1", data.nom],
-    ["Prénom(s) - champ 2", data.prenoms],
-    ["Date de naissance - champ 3", data.dateNaissance],
-    ["Lieu de naissance - champ 3", data.lieuNaissance],
+    ["Nom", data.nom],
+    ["Prénom(s)", data.prenoms],
+    ["Date de naissance", data.dateNaissance],
+    ["Lieu de naissance", data.lieuNaissance],
     ["Adresse actuelle", data.adresse],
     ["Code postal", data.codePostal],
     ["Ville", data.ville],
-    ["Numéro de permis - champ 5", data.numeroPermis],
-    ["Date de délivrance du titre - champ 4a", data.dateDelivranceTitre],
-    ["Date de fin de validité du titre - champ 4b", data.dateExpirationTitre],
-    ["Autorité de délivrance - champ 4c", data.autoriteDelivrance],
-    ["Catégorie du permis - champ 9", data.categoriePermis],
-    ["Date d'obtention catégorie - verso colonne 10", data.dateObtentionCategorie],
+    ["Numéro de permis", data.numeroPermis],
+    ["Date de délivrance du titre", data.dateDelivranceTitre],
+    ["Date de fin de validité du titre", data.dateExpirationTitre],
+    ["Autorité de délivrance", data.autoriteDelivrance],
+    ["Date d'obtention", data.dateObtentionCategorie],
   ];
 
   const rowsHtml = rows
@@ -192,10 +209,10 @@ function buildRecoveryRegistrationEmailHtml(data: RecoveryRegistrationEmailData)
         <tr><td style="height:3px;background-color:#4CAF50;font-size:0;line-height:0;">&nbsp;</td></tr>
         <tr><td style="background-color:#ffffff;padding:32px;">
           <p style="margin:0 0 8px;color:#18181B;font-size:20px;font-weight:700;">
-            Nouvelle inscription avant paiement
+            Paiement validé — nouvelle inscription
           </p>
           <p style="margin:0 0 24px;color:#71717A;font-size:14px;line-height:1.6;">
-            Informations saisies à partir du permis de conduire nouveau format. Le candidat est redirigé vers Stripe après l'envoi du formulaire.
+            Stripe a confirmé le paiement. Voici les informations d'inscription saisies par le candidat pour la session sélectionnée.
           </p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAFAFA;border:1px solid #E4E4E7;border-radius:8px;padding:0 20px;">
             ${rowsHtml}
@@ -226,7 +243,7 @@ export async function sendContactEmail(data: ContactEmailData) {
     return;
   }
 
-  await resend.emails.send({
+  await getResendClient().emails.send({
     from: "GP Formation <noreply@gpformation.fr>",
     to: "contact@gpformation.fr",
     replyTo: data.email,
@@ -235,17 +252,28 @@ export async function sendContactEmail(data: ContactEmailData) {
   });
 }
 
-export async function sendRecoveryRegistrationEmail(data: RecoveryRegistrationEmailData) {
+export async function sendRecoveryRegistrationEmail(
+  data: RecoveryRegistrationData,
+  payment: RecoveryPaymentDetails,
+) {
   if (!process.env.RESEND_API_KEY) {
-    console.log("RESEND_API_KEY not set, logging recovery registration:", data);
-    return;
+    throw new Error("RESEND_API_KEY is required for paid recovery registrations");
   }
 
-  await resend.emails.send({
-    from: "GP Formation <noreply@gpformation.fr>",
-    to: "contact@gpformation.fr",
-    replyTo: data.email,
-    subject: `Inscription stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
-    html: buildRecoveryRegistrationEmailHtml(data),
-  });
+  const { error } = await getResendClient().emails.send(
+    {
+      from: "GP Formation <noreply@gpformation.fr>",
+      to: "contact@gpformation.fr",
+      replyTo: data.email,
+      subject: `Paiement validé — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
+      html: buildRecoveryRegistrationEmailHtml(data, payment),
+    },
+    {
+      idempotencyKey: `recovery-payment/${payment.checkoutSessionId}`,
+    },
+  );
+
+  if (error) {
+    throw new Error(`Resend failed to send the paid registration email: ${error.message}`);
+  }
 }

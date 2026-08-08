@@ -16,7 +16,7 @@ export const metadata: import("next").Metadata = {
 };
 
 export default async function Page() {
-  const { content, data } = getMarkdownContent("devenir-chauffeur-vtc");
+  const { content } = getMarkdownContent("devenir-chauffeur-vtc");
   const breadcrumbs = [
     { label: "Devenir Chauffeur VTC", href: "#" }
   ];

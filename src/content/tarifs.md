@@ -15,7 +15,7 @@ Les formations initiales TAXI & VTC dispensées par GP Formation sont référenc
 Lundi au vendredi — 09h30 à 16h30
 **À partir de 1500€**
 
-- Durée : 3 semaines
+- Durée : 90 heures sur 3 semaines
 - Cours théorique en salle
 - 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
@@ -37,6 +37,7 @@ Lundi au vendredi — 18h00 à 20h30
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
+Inclus 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 
 **Forfait 2 : 1741€**
 Frais à l'examen inclus
@@ -46,13 +47,14 @@ Frais à l'examen inclus
 Lundi au vendredi — 18h00 à 21h00
 **À partir de 1500€**
 
-- Durée : 6 jours
+- Durée : 18 heures sur 6 jours
 - Cours théorique en salle
 - 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 - Examen blanc la veille de l'examen officiel
 - Fournitures incluses (Manuel, Calculatrice, Stylo, Cahier A5, Tote bag)
 
 **Forfait 1 : 1500€**
+Inclus 4 cours pratique (véhicule équipé double commande + mise à disposition le jour de l'examen)
 
 **Forfait 2 : 1741€**
 Frais à l'examen inclus

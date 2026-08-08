@@ -46,7 +46,7 @@ export default async function BlogListing() {
               {post.description}
             </p>
             <div className="mt-6 flex items-center text-sm font-medium text-[#65BA11]">
-              Lire l'article &rarr;
+              Lire l&apos;article &rarr;
             </div>
           </Link>
         ))}

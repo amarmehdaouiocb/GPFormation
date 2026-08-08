@@ -26,5 +26,5 @@ export default async function Page() {
     { label: "Grille d'évaluation VTC", href: "/documents/vtc/grille-evaluation-vtc.pdf" },
     { label: "Dossier récapitulatif", href: "/documents/vtc/dossier-recapitulatif-formation-initiale-vtc.pdf" },
   ];
-  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="4 semaines" tag="VTC" downloads={downloads} />;
+  return <FormationDetailTemplate title={data.title || "Programme"} content={content} breadcrumbs={breadcrumbs} duration="Nous consulter" tag="VTC" downloads={downloads} />;
 }

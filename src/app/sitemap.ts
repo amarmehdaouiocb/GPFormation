@@ -27,6 +27,7 @@ const STATIC_ROUTES = [
   "/devenir-chauffeur-vtc",
   "/moniteur-auto-ecole",
   "/blog",
+  "/faq",
   "/mentions-legales",
   "/cgv",
   "/politique-de-confidentialite",

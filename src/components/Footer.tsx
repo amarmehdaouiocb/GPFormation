@@ -51,6 +51,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-zinc-600">
               <li><Link href="/tarifs" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Tarifs & Financements</Link></li>
               <li><Link href="/blog" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Actualités & Blog</Link></li>
+              <li><Link href="/faq" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">FAQ</Link></li>
               <li><Link href="/services" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Services</Link></li>
               <li><Link href="/contact" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Contact</Link></li>
             </ul>

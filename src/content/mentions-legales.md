@@ -13,7 +13,7 @@ L'édition du site internet **gpformation.fr** est assurée par la **SAS GRAND P
 
 ## Direction de la publication
 
-**Directeur de la publication :** M. Adil SADDIKI.
+**Directeur de la publication :** M. Suleyman MICOOGULLARI.
 
 ## Hébergement
 

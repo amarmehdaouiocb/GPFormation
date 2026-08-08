@@ -16,7 +16,7 @@ export const metadata: import("next").Metadata = {
 };
 
 export default async function Page() {
-  const { content, data } = getMarkdownContent("formation-vtc-93");
+  const { content } = getMarkdownContent("formation-vtc-93");
   const breadcrumbs = [
     { label: "Formations VTC", href: "/formation-vtc" },
     { label: "Formation VTC 93", href: "#" }

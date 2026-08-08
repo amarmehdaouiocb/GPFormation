@@ -1,6 +1,6 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CheckCircle, CaretRight, Info } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -26,85 +26,86 @@ function extractH2Title(section: string): string | null {
   return match ? match[1] : null;
 }
 
-const baseMarkdownComponents = {
+const baseMarkdownComponents: Components = {
   h1: () => null,
   h2: () => null,
-  h3: ({ node, ...props }: any) => (
+  h3: ({ children }) => (
     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3">
       <div className="w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
         <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
       </div>
-      {props.children}
+      {children}
     </h3>
   ),
-  p: ({ node, children, ...props }: any) => (
-    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light" {...props}>
+  p: ({ children }) => (
+    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light">
       {children}
     </p>
   ),
-  ul: ({ node, ...props }: any) => (
+  ul: ({ children }) => (
     <ul className="flex flex-col gap-0 my-5 pl-0 list-none divide-y divide-zinc-100">
-      {props.children}
+      {children}
     </ul>
   ),
-  li: ({ node, ...props }: any) => (
+  li: ({ children }) => (
     <li className="flex items-start gap-3 py-3 group">
       <div className="mt-1 shrink-0 text-[#4CAF50]">
         <CheckCircle size={20} weight="duotone" />
       </div>
       <span className="text-zinc-800 group-hover:text-zinc-950 leading-relaxed font-medium transition-colors text-[1.05rem]">
-        {props.children}
+        {children}
       </span>
     </li>
   ),
-  table: ({ node, ...props }: any) => (
+  table: ({ children }) => (
     <div className="my-8 w-full overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
-      <table className="w-full text-left border-collapse min-w-[600px]" {...props}>
-        {props.children}
+      <table className="w-full text-left border-collapse min-w-[600px]">
+        {children}
       </table>
     </div>
   ),
-  thead: ({ node, ...props }: any) => (
-    <thead className="bg-zinc-950 text-white [&>tr>th:first-child]:rounded-tl-xl [&>tr>th:last-child]:rounded-tr-xl" {...props}>
-      {props.children}
+  thead: ({ children }) => (
+    <thead className="bg-zinc-950 text-white [&>tr>th:first-child]:rounded-tl-xl [&>tr>th:last-child]:rounded-tr-xl">
+      {children}
     </thead>
   ),
-  th: ({ node, ...props }: any) => (
-    <th className="py-4 px-5 font-semibold uppercase tracking-widest text-xs whitespace-nowrap" {...props}>
-      {props.children}
+  th: ({ children }) => (
+    <th className="py-4 px-5 font-semibold uppercase tracking-widest text-xs whitespace-nowrap">
+      {children}
     </th>
   ),
-  td: ({ node, ...props }: any) => (
-    <td className="py-3.5 px-5 border-t border-zinc-100 text-zinc-600 align-middle" {...props}>
-      {props.children}
+  td: ({ children }) => (
+    <td className="py-3.5 px-5 border-t border-zinc-100 text-zinc-600 align-middle">
+      {children}
     </td>
   ),
-  tr: ({ node, ...props }: any) => (
-    <tr className="even:bg-zinc-50/70 hover:bg-zinc-50 transition-colors" {...props}>
-      {props.children}
+  tr: ({ children }) => (
+    <tr className="even:bg-zinc-50/70 hover:bg-zinc-50 transition-colors">
+      {children}
     </tr>
   ),
-  blockquote: ({ node, ...props }: any) => (
+  blockquote: ({ children }) => (
     <blockquote className="my-8 p-5 md:p-6 bg-[#4CAF50]/5 border-l-4 border-[#4CAF50] flex gap-4 items-start rounded-r-lg">
       <Info className="text-[#4CAF50] shrink-0 mt-0.5" size={20} weight="duotone" />
       <div className="text-zinc-800 font-medium text-base leading-relaxed [&>p]:mb-0">
-        {props.children}
+        {children}
       </div>
     </blockquote>
   ),
-  a: ({ node, ...props }: any) => (
+  a: ({ children, href, title }) => (
     <a
       className="font-semibold text-[#4CAF50] hover:text-zinc-950 underline decoration-2 decoration-[#4CAF50]/30 hover:decoration-zinc-950 underline-offset-4 transition-all"
       target="_blank"
       rel="noopener noreferrer"
-      {...props}
+      href={href}
+      title={title}
     >
-      {props.children}
+      {children}
     </a>
   ),
-  strong: ({ node, ...props }: any) => (
-    <strong className="font-bold text-zinc-950" {...props}>
-      {props.children}
+  strong: ({ children }) => (
+    <strong className="font-bold text-zinc-950">
+      {children}
     </strong>
   ),
 };

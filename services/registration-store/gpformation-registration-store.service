@@ -1,0 +1,24 @@
+[Unit]
+Description=GP Formation recovery registration store
+After=network.target
+
+[Service]
+Type=simple
+User=gpformation-store
+Group=gpformation-store
+WorkingDirectory=/opt/gpformation-registration-store
+EnvironmentFile=/etc/gpformation-registration-store.env
+ExecStart=/usr/bin/python3 /opt/gpformation-registration-store/server.py
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/gpformation-registration-store
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

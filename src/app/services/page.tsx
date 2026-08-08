@@ -4,7 +4,7 @@ import ServicesShowcase from "@/components/ServicesShowcase";
 export const metadata: Metadata = {
   title: "Campus & Services à Aulnay-sous-Bois",
   description:
-    "Découvrez les services proposés par GP Formation : accessibilité PMR, parking sécurisé EIFFIA et cantine municipale à tarif réduit à Aulnay-sous-Bois.",
+    "Découvrez les services proposés par GP Formation : accessibilité PMR, parking sécurisé EFFIA et cantine municipale à tarif réduit à Aulnay-sous-Bois.",
   alternates: { canonical: "/services" },
   openGraph: {
     images: ["/opengraph-image.png"],

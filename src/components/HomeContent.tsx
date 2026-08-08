@@ -7,10 +7,6 @@ import Image from "next/image";
 import { ArrowRight, GraduationCap, CheckCircle } from "@phosphor-icons/react";
 import ScrollHeroSection from "./ScrollHeroSection";
 
-interface HomeContentProps {
-  markdownContent: string;
-}
-
 const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
 
 // ----------------------------------------------------------------------
@@ -60,10 +56,10 @@ const EditorialFormations = () => (
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
         <div className="max-w-2xl">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-950 mb-6">
-            L'itinéraire de votre réussite.
+            L&apos;itinéraire de votre réussite.
           </h2>
           <p className="text-lg text-zinc-600 leading-relaxed">
-            Nos formations s'adaptent à votre profil et à votre emploi du temps. Que vous débutiez ou que vous souhaitiez faire évoluer votre carrière.
+            Nos formations s&apos;adaptent à votre profil et à votre emploi du temps. Que vous débutiez ou que vous souhaitiez faire évoluer votre carrière.
           </p>
         </div>
         <Link href="/tarifs" className="inline-flex items-center gap-2 font-semibold text-[#4CAF50] hover:text-zinc-950 transition-colors pb-1 border-b-2 border-[#4CAF50] hover:border-zinc-950 self-start md:self-auto">
@@ -193,7 +189,7 @@ const AboutSection = () => (
           <ul className="flex flex-col gap-px bg-zinc-800">
             {[
               { title: "Financement sur-mesure", desc: "CPF, Pôle emploi, et autres dispositifs pour vous aider à financer votre projet." },
-              { title: "Infrastructures adaptées", desc: "Centre accessible PMR, parking sécurisé EIFFIA, et cantine à tarif réduit." },
+              { title: "Infrastructures adaptées", desc: "Centre accessible PMR, parking sécurisé EFFIA, et cantine à tarif réduit." },
               { title: "Accompagnement complet", desc: "De l'inscription à l'obtention de la carte professionnelle." }
             ].map((item, i) => (
               <li key={i} className="bg-zinc-950 py-6 md:py-8 border-b border-zinc-800 last:border-0">
@@ -213,7 +209,7 @@ const AboutSection = () => (
 );
 
 
-export default function HomeContent({ markdownContent }: HomeContentProps) {
+export default function HomeContent() {
   return (
     <div className="flex flex-col bg-white">
       <ScrollHeroSection />

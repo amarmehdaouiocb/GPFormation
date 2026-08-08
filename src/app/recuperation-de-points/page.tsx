@@ -1,5 +1,8 @@
 import { getMarkdownContent } from "@/lib/markdown";
+import { getUpcomingRecoverySessions } from "@/lib/recovery-dates";
 import FormationDetailTemplate from "@/components/FormationDetailTemplate";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: import("next").Metadata = {
   title: "Stage de Récupération de Points du permis",
@@ -15,10 +18,21 @@ export const metadata: import("next").Metadata = {
   },
 };
 
-export default async function Page() {
-  const { content, data } = getMarkdownContent("recuperation-de-points");
+interface RecoveryPointsPageProps {
+  searchParams: Promise<{ session?: string | string[] }>;
+}
+
+export default async function Page({ searchParams }: RecoveryPointsPageProps) {
+  const { content } = getMarkdownContent("recuperation-de-points");
+  const recoveryDates = getUpcomingRecoverySessions();
+  const requestedSession = (await searchParams).session;
+  const selectedRecoverySession =
+    typeof requestedSession === "string" &&
+    recoveryDates.some((session) => session.start === requestedSession)
+      ? requestedSession
+      : undefined;
   const breadcrumbs = [
     { label: "Stage de Récupération de points", href: "#" }
   ];
-  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" certification="Attestation de suivi" tag="PERMIS" stripePaymentLink={process.env.NEXT_PUBLIC_STRIPE_RECOVERY_LINK} financementVariant="points" />;
+  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" certification="Attestation de suivi" tag="PERMIS" stripePaymentLink={process.env.NEXT_PUBLIC_STRIPE_RECOVERY_LINK} financementVariant="points" recoveryDates={recoveryDates} selectedRecoverySession={selectedRecoverySession} />;
 }

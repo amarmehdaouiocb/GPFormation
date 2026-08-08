@@ -90,7 +90,7 @@ Email : a.saddiki@gpformation.fr
 
 ### Parking
 
-Situé en face de GP Formation, vous avez la possibilité de vous garer, pour un tarif unique, dans le parking sécurisé EIFFIA, et ce, pendant toute la durée de votre formation.
+Situé en face de GP Formation, vous avez la possibilité de vous garer, pour un tarif unique, dans le parking sécurisé EFFIA, et ce, pendant toute la durée de votre formation.
 
 ### Cantine
 

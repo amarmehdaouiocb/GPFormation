@@ -13,10 +13,14 @@ import {
   Phone,
   Coin,
   CreditCard,
+  CheckCircle as SelectedCheckCircle,
   DownloadSimple,
 } from "@phosphor-icons/react";
-import MarkdownRenderer from "./MarkdownRenderer";
 import RecoveryRegistrationForm from "./RecoveryRegistrationForm";
+import {
+  formatRecoveryDateRange,
+  type RecoverySession,
+} from "@/lib/recovery-dates";
 import React, { useMemo, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -84,6 +88,8 @@ interface FormationDetailTemplateProps {
   stripePaymentLink?: string;
   financementVariant?: FinancementVariant;
   downloads?: DownloadLink[];
+  recoveryDates?: RecoverySession[];
+  selectedRecoverySession?: string;
 }
 
 const FINANCEMENT_COPY: Record<FinancementVariant, { title: string; description: string }> = {
@@ -130,6 +136,8 @@ export default function FormationDetailTemplate({
   stripePaymentLink,
   financementVariant = "standard",
   downloads,
+  recoveryDates,
+  selectedRecoverySession,
 }: FormationDetailTemplateProps) {
   const financementCopy = FINANCEMENT_COPY[financementVariant];
   const headings = useMemo(() => extractH2Headings(content), [content]);
@@ -341,6 +349,77 @@ export default function FormationDetailTemplate({
         </div>
       </section>
 
+      {recoveryDates && recoveryDates.length > 0 && (
+        <section className="border-b border-zinc-200 bg-zinc-50 py-14 md:py-20">
+          <div className="container-custom">
+            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <span className="eyebrow mb-2 block text-[0.7rem] text-[#4CAF50]">
+                  Calendrier
+                </span>
+                <h2 className="text-3xl font-bold tracking-tighter text-zinc-950 md:text-4xl">
+                  Prochaines dates
+                </h2>
+              </div>
+              <p className="max-w-sm text-sm leading-relaxed text-zinc-500">
+                Choisissez une session pour la présélectionner directement dans
+                le formulaire d&apos;inscription.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {recoveryDates.map((session) => {
+                const isSelected = selectedRecoverySession === session.start;
+
+                return (
+                  <Link
+                    key={session.start}
+                    href={`/recuperation-de-points?session=${encodeURIComponent(session.start)}#inscription-points`}
+                    aria-label={`Choisir la session du ${formatRecoveryDateRange(session)}`}
+                    className={cn(
+                      "group flex min-h-44 flex-col justify-between rounded-xl border bg-white px-5 py-5 shadow-sm transition-all hover:-translate-y-1 hover:border-[#4CAF50] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4CAF50]",
+                      isSelected
+                        ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/15"
+                        : "border-zinc-200",
+                    )}
+                  >
+                    <div>
+                      <span className="mb-3 flex items-start justify-between gap-3">
+                        <span className="eyebrow block text-[0.65rem] text-zinc-400">
+                          Stage récupération de points
+                        </span>
+                        {isSelected && (
+                          <SelectedCheckCircle
+                            size={20}
+                            weight="fill"
+                            className="shrink-0 text-[#4CAF50]"
+                          />
+                        )}
+                      </span>
+                      <p className="text-base font-bold leading-snug text-zinc-950">
+                        {formatRecoveryDateRange(session)}
+                      </p>
+                    </div>
+                    <span
+                      className={cn(
+                        "mt-5 flex items-center justify-between gap-2 text-xs font-bold uppercase tracking-wide",
+                        isSelected ? "text-[#4CAF50]" : "text-zinc-500",
+                      )}
+                    >
+                      {isSelected ? "Session sélectionnée" : "Choisir cette session"}
+                      <ArrowRight
+                        size={15}
+                        className="transition-transform group-hover:translate-x-1"
+                      />
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Programme Section */}
       <section className="py-16 md:py-28 bg-white">
         <div className="container-custom">
@@ -457,8 +536,12 @@ export default function FormationDetailTemplate({
                 </div>
               )}
 
-              {usesRecoveryRegistration && stripePaymentLink && (
-                <RecoveryRegistrationForm paymentLink={stripePaymentLink} />
+              {usesRecoveryRegistration && stripePaymentLink && recoveryDates && (
+                <RecoveryRegistrationForm
+                  key={selectedRecoverySession ?? "no-session"}
+                  recoveryDates={recoveryDates}
+                  initialSelectedSession={selectedRecoverySession}
+                />
               )}
 
               {/* Info Box Financement */}
@@ -585,7 +668,7 @@ function MarkdownRendererWithIds({
 }
 
 /* Inner component that renders markdown sections with heading IDs */
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CheckCircle, Info } from "@phosphor-icons/react";
 
@@ -602,85 +685,86 @@ function extractH2Title(section: string): string | null {
   return match ? match[1] : null;
 }
 
-const mdComponents = {
+const mdComponents: Components = {
   h1: () => null,
   h2: () => null,
-  h3: ({ node, ...props }: any) => (
+  h3: ({ children }) => (
     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mb-5 flex items-center gap-3">
       <div className="w-9 h-9 rounded-full bg-[#4CAF50]/10 flex items-center justify-center shrink-0">
         <CaretRight className="text-[#4CAF50]" size={18} weight="bold" />
       </div>
-      {props.children}
+      {children}
     </h3>
   ),
-  p: ({ node, children, ...props }: any) => (
-    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light" {...props}>
+  p: ({ children }) => (
+    <p className="text-lg md:text-xl text-zinc-600 leading-[1.8] mb-5 font-light">
       {children}
     </p>
   ),
-  ul: ({ node, ...props }: any) => (
+  ul: ({ children }) => (
     <ul className="flex flex-col gap-0 my-5 pl-0 list-none divide-y divide-zinc-100">
-      {props.children}
+      {children}
     </ul>
   ),
-  li: ({ node, ...props }: any) => (
+  li: ({ children }) => (
     <li className="flex items-start gap-3 py-3 group">
       <div className="mt-1 shrink-0 text-[#4CAF50]">
         <CheckCircle size={20} weight="duotone" />
       </div>
       <span className="text-zinc-800 group-hover:text-zinc-950 leading-relaxed font-medium transition-colors text-[1.05rem]">
-        {props.children}
+        {children}
       </span>
     </li>
   ),
-  table: ({ node, ...props }: any) => (
+  table: ({ children }) => (
     <div className="my-8 w-full overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
-      <table className="w-full text-left border-collapse min-w-[600px]" {...props}>
-        {props.children}
+      <table className="w-full text-left border-collapse min-w-[600px]">
+        {children}
       </table>
     </div>
   ),
-  thead: ({ node, ...props }: any) => (
-    <thead className="bg-zinc-950 text-white [&>tr>th:first-child]:rounded-tl-xl [&>tr>th:last-child]:rounded-tr-xl" {...props}>
-      {props.children}
+  thead: ({ children }) => (
+    <thead className="bg-zinc-950 text-white [&>tr>th:first-child]:rounded-tl-xl [&>tr>th:last-child]:rounded-tr-xl">
+      {children}
     </thead>
   ),
-  th: ({ node, ...props }: any) => (
-    <th className="py-4 px-5 font-semibold uppercase tracking-widest text-xs whitespace-nowrap" {...props}>
-      {props.children}
+  th: ({ children }) => (
+    <th className="py-4 px-5 font-semibold uppercase tracking-widest text-xs whitespace-nowrap">
+      {children}
     </th>
   ),
-  td: ({ node, ...props }: any) => (
-    <td className="py-3.5 px-5 border-t border-zinc-100 text-zinc-600 align-middle" {...props}>
-      {props.children}
+  td: ({ children }) => (
+    <td className="py-3.5 px-5 border-t border-zinc-100 text-zinc-600 align-middle">
+      {children}
     </td>
   ),
-  tr: ({ node, ...props }: any) => (
-    <tr className="even:bg-zinc-50/70 hover:bg-zinc-50 transition-colors" {...props}>
-      {props.children}
+  tr: ({ children }) => (
+    <tr className="even:bg-zinc-50/70 hover:bg-zinc-50 transition-colors">
+      {children}
     </tr>
   ),
-  blockquote: ({ node, ...props }: any) => (
+  blockquote: ({ children }) => (
     <blockquote className="my-8 p-5 md:p-6 bg-[#4CAF50]/5 border-l-4 border-[#4CAF50] flex gap-4 items-start rounded-r-lg">
       <Info className="text-[#4CAF50] shrink-0 mt-0.5" size={20} weight="duotone" />
       <div className="text-zinc-800 font-medium text-base leading-relaxed [&>p]:mb-0">
-        {props.children}
+        {children}
       </div>
     </blockquote>
   ),
-  a: ({ node, ...props }: any) => (
+  a: ({ children, href, title }) => (
     <a
       className="font-semibold text-[#4CAF50] hover:text-zinc-950 underline decoration-2 decoration-[#4CAF50]/30 hover:decoration-zinc-950 underline-offset-4 transition-all"
       target="_blank"
       rel="noopener noreferrer"
-      {...props}
+      href={href}
+      title={title}
     >
-      {props.children}
+      {children}
     </a>
   ),
-  strong: ({ node, ...props }: any) => (
-    <strong className="font-bold text-zinc-950" {...props}>
-      {props.children}
+  strong: ({ children }) => (
+    <strong className="font-bold text-zinc-950">
+      {children}
     </strong>
   ),
 };

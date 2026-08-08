@@ -34,7 +34,7 @@ export default function ContactPage() {
               projet
             </h1>
             <p className="text-lg text-zinc-600 max-w-md leading-relaxed">
-              Une question sur nos formations ? Un besoin d'accompagnement spécifique ? Notre équipe est à votre écoute.
+              Une question sur nos formations ? Un besoin d&apos;accompagnement spécifique ? Notre équipe est à votre écoute.
             </p>
           </div>
 
@@ -195,7 +195,7 @@ export default function ContactPage() {
                   className="mt-1 w-5 h-5 accent-zinc-950 cursor-pointer"
                 />
                 <label htmlFor="consentement" className="text-sm text-zinc-600 leading-snug cursor-pointer select-none">
-                  En soumettant ce formulaire, j'accepte que les informations saisies soient exploitées dans le cadre de la demande de contact et de la relation commerciale.
+                  En soumettant ce formulaire, j&apos;accepte que les informations saisies soient exploitées dans le cadre de la demande de contact et de la relation commerciale.
                 </label>
               </div>
 
