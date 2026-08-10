@@ -255,6 +255,37 @@ class RegistrationStore:
             )
         return "processed"
 
+    def list_paid_registrations(self) -> list[dict[str, str | None]]:
+        with closing(self._connect()) as connection:
+            rows = connection.execute(
+                """
+                SELECT
+                    registrations.reference,
+                    registrations.encrypted_payload,
+                    registrations.created_at AS registration_created_at,
+                    payments.checkout_session_id,
+                    payments.updated_at AS paid_at,
+                    payments.email_sent_at
+                FROM payments
+                INNER JOIN registrations
+                    ON registrations.reference = payments.reference
+                WHERE payments.status = 'processed'
+                ORDER BY payments.updated_at DESC
+                """
+            ).fetchall()
+
+        return [
+            {
+                "reference": row["reference"],
+                "payload": row["encrypted_payload"],
+                "registrationCreatedAt": row["registration_created_at"],
+                "checkoutSessionId": row["checkout_session_id"],
+                "paidAt": row["paid_at"],
+                "emailSentAt": row["email_sent_at"],
+            }
+            for row in rows
+        ]
+
 
 class RegistrationStoreServer(ThreadingHTTPServer):
     daemon_threads = True
@@ -316,6 +347,11 @@ class RegistrationStoreHandler(BaseHTTPRequestHandler):
             return
 
         self._require_authentication()
+
+        if self.command == "GET" and path == "/v1/registrations/paid":
+            registrations = self.server.store.list_paid_registrations()
+            self._send_json(HTTPStatus.OK, {"registrations": registrations})
+            return
 
         if self.command == "PUT" and path.startswith("/v1/registrations/"):
             reference = validate_reference(path.removeprefix("/v1/registrations/"))

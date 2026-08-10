@@ -2,9 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Envelope, Phone, MapPin, InstagramLogo, FacebookLogo } from "@phosphor-icons/react";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="bg-white pt-24 pb-12 border-t border-zinc-200">
       <div className="container-custom">
