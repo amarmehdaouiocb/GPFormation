@@ -16,7 +16,10 @@ import { logoutAdmin } from "@/app/admin/actions";
 import AdminDocumentDownloadButton from "@/components/AdminDocumentDownloadButton";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
-import { RECOVERY_DOCUMENTS } from "@/lib/recovery-documents";
+import {
+  getIdentityDocumentLabel,
+  getRequiredRecoveryDocuments,
+} from "@/lib/recovery-documents";
 import {
   getPaidRecoveryRegistrations,
   type PaidRecoveryRegistration,
@@ -62,6 +65,9 @@ function StudentCard({
 }) {
   const { data } = registration;
   const initials = `${data.prenoms.charAt(0)}${data.nom.charAt(0)}`.toUpperCase();
+  const requiredDocuments = getRequiredRecoveryDocuments(
+    data.typePieceIdentite,
+  );
 
   return (
     <article className="border border-zinc-200 bg-white shadow-[0_16px_50px_rgba(24,24,27,0.035)]">
@@ -140,6 +146,12 @@ function StudentCard({
                 <dt className="text-xs text-zinc-500">Lieu de naissance</dt>
                 <dd className="mt-1 font-medium">{data.lieuNaissance}</dd>
               </div>
+              <div>
+                <dt className="text-xs text-zinc-500">Pièce d’identité</dt>
+                <dd className="mt-1 font-medium">
+                  {getIdentityDocumentLabel(data.typePieceIdentite)}
+                </dd>
+              </div>
             </dl>
           </div>
 
@@ -185,7 +197,7 @@ function StudentCard({
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {RECOVERY_DOCUMENTS.map((document) => {
+            {requiredDocuments.map((document) => {
               const uploadedDocument = registration.documents.find(
                 ({ kind }) => kind === document.kind,
               );

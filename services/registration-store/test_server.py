@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import sqlite3
 import tempfile
 import threading
 import time
@@ -12,7 +13,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from server import create_server
+from server import RegistrationStore, create_server
 
 
 TOKEN = "test-token-that-is-longer-than-thirty-two-characters"
@@ -24,6 +25,11 @@ DOCUMENT_KINDS = (
     "permis_verso",
     "identite_recto",
     "identite_verso",
+)
+PASSPORT_DOCUMENT_KINDS = (
+    "permis_recto",
+    "permis_verso",
+    "identite_recto",
 )
 SAMPLE_PNG = b"\x89PNG\r\n\x1a\nprivate-test-document"
 
@@ -110,8 +116,8 @@ class RegistrationStoreApiTest(unittest.TestCase):
         self.assertEqual(json.loads(body)["kind"], kind)
         self.assertEqual(headers["Access-Control-Allow-Origin"], "http://localhost:3000")
 
-    def upload_all_documents(self) -> None:
-        for kind in DOCUMENT_KINDS:
+    def upload_all_documents(self, kinds: tuple[str, ...] = DOCUMENT_KINDS) -> None:
+        for kind in kinds:
             self.upload_document(kind)
 
     def test_health_is_public(self) -> None:
@@ -217,6 +223,128 @@ class RegistrationStoreApiTest(unittest.TestCase):
         )
         self.assertEqual(status, 409)
         self.assertEqual(body["error"], "conflict")
+
+    def test_reference_identity_document_type_cannot_be_changed(self) -> None:
+        path = f"/v1/registrations/{REFERENCE}"
+        self.request(
+            "PUT",
+            path,
+            {
+                "payload": PAYLOAD,
+                "identityDocumentType": "passeport",
+            },
+        )
+        status, body = self.request(
+            "PUT",
+            path,
+            {
+                "payload": PAYLOAD,
+                "identityDocumentType": "carte_identite",
+            },
+        )
+        self.assertEqual(status, 409)
+        self.assertEqual(body["error"], "conflict")
+
+    def test_passport_requires_only_the_identity_page(self) -> None:
+        status, body = self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {
+                "payload": PAYLOAD,
+                "identityDocumentType": "passeport",
+            },
+        )
+        self.assertEqual((status, body["status"]), (201, "created"))
+
+        self.upload_all_documents(PASSPORT_DOCUMENT_KINDS)
+
+        status, body = self.request(
+            "POST",
+            "/v1/documents/verify",
+            {"reference": REFERENCE},
+        )
+        self.assertEqual(status, 200)
+        self.assertTrue(body["complete"])
+        self.assertEqual(
+            {document["kind"] for document in body["documents"]},
+            set(PASSPORT_DOCUMENT_KINDS),
+        )
+
+        status, body, _ = self.raw_request(
+            "PUT",
+            self.signed_document_path("upload", "identite_verso"),
+            SAMPLE_PNG,
+            {
+                "Content-Type": "image/png",
+                "Origin": "http://localhost:3000",
+            },
+        )
+        self.assertEqual(status, 409)
+        self.assertEqual(json.loads(body)["error"], "conflict")
+
+        claim = {
+            "checkoutSessionId": CHECKOUT_SESSION_ID,
+            "reference": REFERENCE,
+        }
+        status, body = self.request("POST", "/v1/payments/claim", claim)
+        self.assertEqual(status, 200)
+        self.assertEqual(body, {"status": "ready", "payload": PAYLOAD})
+
+    def test_invalid_identity_document_type_is_rejected(self) -> None:
+        status, body = self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {
+                "payload": PAYLOAD,
+                "identityDocumentType": "permis_de_conduire",
+            },
+        )
+        self.assertEqual(status, 400)
+        self.assertEqual(body["error"], "bad_request")
+
+    def test_existing_database_is_migrated_with_card_as_default(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database_path = Path(directory) / "legacy.sqlite3"
+            connection = sqlite3.connect(database_path)
+            try:
+                connection.execute(
+                    """
+                    CREATE TABLE registrations (
+                        reference TEXT PRIMARY KEY,
+                        encrypted_payload TEXT NOT NULL,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL
+                    )
+                    """
+                )
+                connection.execute(
+                    """
+                    INSERT INTO registrations (
+                        reference, encrypted_payload, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?)
+                    """,
+                    (REFERENCE, PAYLOAD, "2026-08-10T10:00:00Z", "2026-08-10T10:00:00Z"),
+                )
+                connection.commit()
+            finally:
+                connection.close()
+
+            store = RegistrationStore(str(database_path))
+            connection = sqlite3.connect(database_path)
+            try:
+                row = connection.execute(
+                    """
+                    SELECT identity_document_type
+                    FROM registrations
+                    WHERE reference = ?
+                    """,
+                    (REFERENCE,),
+                ).fetchone()
+            finally:
+                connection.close()
+
+            self.assertIsNotNone(store)
+            self.assertEqual(row, ("carte_identite",))
 
     def test_missing_registration_cannot_be_claimed(self) -> None:
         status, body = self.request(

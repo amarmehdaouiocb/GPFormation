@@ -2,8 +2,8 @@
 
 Small authenticated HTTP service backed by SQLite. The Next.js application encrypts
 registration details before sending them here, so the VPS only persists opaque
-ciphertext. The four identity documents are uploaded directly to the VPS and encrypted
-at rest with AES-256-GCM. Stripe payment transitions are stored atomically and can
+ciphertext. The three or four required documents are uploaded directly to the VPS and
+encrypted at rest with AES-256-GCM. Stripe payment transitions are stored atomically and can
 safely be retried.
 
 ## Endpoints
@@ -11,7 +11,7 @@ safely be retried.
 - `GET /health` — public liveness and SQLite check.
 - `PUT /v1/registrations/{reference}` — idempotently persist encrypted registration data.
 - `PUT /v1/uploads/{reference}/{kind}` — upload one document with a short-lived signed URL.
-- `POST /v1/documents/verify` — verify that all four required documents are present.
+- `POST /v1/documents/verify` — verify that all required documents are present.
 - `POST /v1/payments/claim` — atomically claim a paid Stripe Checkout Session.
 - `POST /v1/payments/complete` — mark the notification email as sent.
 - `GET /v1/registrations/paid` — list encrypted registrations whose payment and notification are complete.
@@ -20,7 +20,8 @@ safely be retried.
 The upload and download routes use HMAC-signed, expiring URLs. All other `/v1/*`
 endpoints require `Authorization: Bearer <REGISTRATION_STORE_TOKEN>`. Uploads also
 require an allowed GP Formation browser origin. A payment claim is rejected unless
-all four document kinds are present.
+the expected document kinds are present: driving licence recto/verso plus either the
+passport identity page, or the recto/verso of another identity document.
 
 ## Runtime environment
 

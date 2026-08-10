@@ -1,5 +1,9 @@
 import { Resend } from "resend";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
+import {
+  getIdentityDocumentLabel,
+  getRequiredRecoveryDocuments,
+} from "@/lib/recovery-documents";
 import type { RecoveryRegistrationData } from "@/lib/recovery-registration";
 
 let resendClient: Resend | undefined;
@@ -160,6 +164,9 @@ function buildRecoveryRegistrationEmailHtml(
     minute: "2-digit",
   });
 
+  const requiredDocumentCount = getRequiredRecoveryDocuments(
+    data.typePieceIdentite,
+  ).length;
   const rows = [
     ["Session choisie", formatRecoveryDateRange(data.session)],
     ["Paiement Stripe", formatPaymentAmount(payment)],
@@ -174,7 +181,11 @@ function buildRecoveryRegistrationEmailHtml(
     ["Code postal", data.codePostal],
     ["Ville", data.ville],
     ["Numéro de permis", data.numeroPermis],
-    ["Pièces justificatives", "4 fichiers disponibles dans l’espace administrateur"],
+    ["Pièce d’identité", getIdentityDocumentLabel(data.typePieceIdentite)],
+    [
+      "Pièces justificatives",
+      `${requiredDocumentCount} fichiers disponibles dans l’espace administrateur`,
+    ],
   ];
 
   const rowsHtml = rows

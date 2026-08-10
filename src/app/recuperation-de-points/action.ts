@@ -1,6 +1,7 @@
 "use server";
 
 import { getUpcomingRecoverySessions } from "@/lib/recovery-dates";
+import { isIdentityDocumentType } from "@/lib/recovery-documents";
 import {
   createRecoveryDocumentUploadTargets,
   createRecoveryRegistrationReference,
@@ -37,6 +38,7 @@ const REQUIRED_FIELDS: Array<keyof RecoveryRegistrantDetails> = [
   "codePostal",
   "ville",
   "numeroPermis",
+  "typePieceIdentite",
 ];
 
 function getPaymentLink(): string | null {
@@ -83,6 +85,13 @@ export async function submitRecoveryRegistration(
     };
   }
 
+  if (!isIdentityDocumentType(details.typePieceIdentite)) {
+    return {
+      status: "error",
+      message: "Veuillez choisir le type de pièce d’identité fourni.",
+    };
+  }
+
   if (!selectedSession) {
     return {
       status: "error",
@@ -126,7 +135,10 @@ export async function submitRecoveryRegistration(
     return {
       status: "upload",
       reference,
-      uploads: createRecoveryDocumentUploadTargets(reference),
+      uploads: createRecoveryDocumentUploadTargets(
+        reference,
+        details.typePieceIdentite,
+      ),
     };
   } catch {
     return {
