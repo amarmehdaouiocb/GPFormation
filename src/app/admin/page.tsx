@@ -236,6 +236,7 @@ export default async function AdminPage() {
           <form action={logoutAdmin}>
             <button
               type="submit"
+              aria-label="Se déconnecter"
               className="flex items-center gap-2 border border-zinc-200 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-zinc-700 transition-colors hover:border-zinc-950 hover:bg-zinc-950 hover:text-white sm:px-4"
             >
               <SignOut size={17} />
