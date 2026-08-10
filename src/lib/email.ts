@@ -174,10 +174,7 @@ function buildRecoveryRegistrationEmailHtml(
     ["Code postal", data.codePostal],
     ["Ville", data.ville],
     ["Numéro de permis", data.numeroPermis],
-    ["Date de délivrance du titre", data.dateDelivranceTitre],
-    ["Date de fin de validité du titre", data.dateExpirationTitre],
-    ["Autorité de délivrance", data.autoriteDelivrance],
-    ["Date d'obtention", data.dateObtentionCategorie],
+    ["Pièces justificatives", "4 fichiers disponibles dans l’espace administrateur"],
   ];
 
   const rowsHtml = rows

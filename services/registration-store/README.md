@@ -2,17 +2,25 @@
 
 Small authenticated HTTP service backed by SQLite. The Next.js application encrypts
 registration details before sending them here, so the VPS only persists opaque
-ciphertext. Stripe payment transitions are stored atomically and can safely be retried.
+ciphertext. The four identity documents are uploaded directly to the VPS and encrypted
+at rest with AES-256-GCM. Stripe payment transitions are stored atomically and can
+safely be retried.
 
 ## Endpoints
 
 - `GET /health` — public liveness and SQLite check.
 - `PUT /v1/registrations/{reference}` — idempotently persist encrypted registration data.
+- `PUT /v1/uploads/{reference}/{kind}` — upload one document with a short-lived signed URL.
+- `POST /v1/documents/verify` — verify that all four required documents are present.
 - `POST /v1/payments/claim` — atomically claim a paid Stripe Checkout Session.
 - `POST /v1/payments/complete` — mark the notification email as sent.
 - `GET /v1/registrations/paid` — list encrypted registrations whose payment and notification are complete.
+- `GET /v1/downloads/{reference}/{kind}` — download a paid registration document with a short-lived signed URL.
 
-All `/v1/*` endpoints require `Authorization: Bearer <REGISTRATION_STORE_TOKEN>`.
+The upload and download routes use HMAC-signed, expiring URLs. All other `/v1/*`
+endpoints require `Authorization: Bearer <REGISTRATION_STORE_TOKEN>`. Uploads also
+require an allowed GP Formation browser origin. A payment claim is rejected unless
+all four document kinds are present.
 
 ## Runtime environment
 
@@ -20,10 +28,13 @@ All `/v1/*` endpoints require `Authorization: Bearer <REGISTRATION_STORE_TOKEN>`
 REGISTRATION_STORE_HOST=127.0.0.1
 REGISTRATION_STORE_PORT=8787
 REGISTRATION_STORE_DB_PATH=/var/lib/gpformation-registration-store/registrations.sqlite3
+REGISTRATION_STORE_DOCUMENTS_PATH=/var/lib/gpformation-registration-store/documents
 REGISTRATION_STORE_TOKEN=<random secret of at least 32 characters>
 ```
 
 The service must bind to localhost and be exposed only through an HTTPS reverse proxy.
+The API token also derives the document encryption key: rotating it requires
+re-encrypting the existing document files first.
 
 ## Tests
 
@@ -36,9 +47,13 @@ python -m unittest -v test_server.py
 - The Next.js site stays on Vercel.
 - Registration details are encrypted by Next.js before being sent to this service.
 - The service runs behind Nginx on the OVH VPS and stores data in SQLite.
+- Uploaded documents bypass Vercel's request-size limit, are validated by file signature,
+  capped at 8 MiB each, and are encrypted before being written to disk.
 - Stripe calls the Vercel webhook after a confirmed payment.
 - The webhook atomically claims the payment, sends the confirmation email, then marks it complete.
 - Any storage or email error returns HTTP 500 so Stripe retries the event.
+- Admin document download links expire after two minutes and the VPS serves them only
+  for registrations whose payment processing is complete.
 
 ## Vercel variables
 
@@ -72,6 +87,7 @@ Do not store either secret in this repository.
 
 - Service: `gpformation-registration-store.service`
 - Database: `/var/lib/gpformation-registration-store/registrations.sqlite3`
+- Encrypted documents: `/var/lib/gpformation-registration-store/documents/`
 - Local backups: `/var/backups/gpformation-registration-store/`
 - Backup timer: `gpformation-registration-store-backup.timer`
 - TLS renewal timer: `snap.certbot.renew.timer`

@@ -8,6 +8,7 @@ if [[ -z "${SOURCE_DIRECTORY}" || ! -f "${SOURCE_DIRECTORY}/server.py" ]]; then
   exit 1
 fi
 
+python3 -c 'from cryptography.hazmat.primitives.ciphers.aead import AESGCM'
 python3 -m py_compile "${SOURCE_DIRECTORY}/server.py" "${SOURCE_DIRECTORY}/backup.py"
 
 if ! id gpformation-store >/dev/null 2>&1; then
@@ -28,6 +29,7 @@ if [[ ! -f /etc/gpformation-registration-store.env ]]; then
     'REGISTRATION_STORE_HOST=127.0.0.1' \
     'REGISTRATION_STORE_PORT=8787' \
     'REGISTRATION_STORE_DB_PATH=/var/lib/gpformation-registration-store/registrations.sqlite3' \
+    'REGISTRATION_STORE_DOCUMENTS_PATH=/var/lib/gpformation-registration-store/documents' \
     "REGISTRATION_STORE_TOKEN=${REGISTRATION_STORE_TOKEN}" \
     > /etc/gpformation-registration-store.env
 fi

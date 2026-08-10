@@ -3,10 +3,15 @@ import "server-only";
 import {
   createCipheriv,
   createDecipheriv,
+  createHmac,
   randomBytes,
   randomUUID,
 } from "node:crypto";
 import type { RecoverySession } from "@/lib/recovery-dates";
+import {
+  RECOVERY_DOCUMENTS,
+  type RecoveryDocumentKind,
+} from "@/lib/recovery-documents";
 
 export interface RecoveryRegistrantDetails {
   email: string;
@@ -19,10 +24,6 @@ export interface RecoveryRegistrantDetails {
   codePostal: string;
   ville: string;
   numeroPermis: string;
-  dateDelivranceTitre: string;
-  dateExpirationTitre: string;
-  autoriteDelivrance: string;
-  dateObtentionCategorie: string;
 }
 
 export interface RecoveryRegistrationData extends RecoveryRegistrantDetails {
@@ -50,6 +51,7 @@ interface StorePaidRegistration {
   checkoutSessionId: string;
   paidAt: string;
   emailSentAt: string | null;
+  documents: RecoveryDocumentMetadata[];
 }
 
 interface StorePaidRegistrationsResponse {
@@ -66,7 +68,25 @@ export interface PaidRecoveryRegistration {
   createdAt: string;
   paidAt: string;
   emailSentAt: string | null;
+  documents: RecoveryDocumentMetadata[];
   data: RecoveryRegistrationData;
+}
+
+export interface RecoveryDocumentMetadata {
+  kind: RecoveryDocumentKind;
+  contentType: string;
+  sizeBytes: number;
+  uploadedAt: string;
+}
+
+export interface RecoveryDocumentUploadTarget {
+  kind: RecoveryDocumentKind;
+  uploadUrl: string;
+}
+
+interface StoreDocumentStatusResponse {
+  complete: boolean;
+  documents: RecoveryDocumentMetadata[];
 }
 
 function getRequiredEnvironmentVariable(name: string): string {
@@ -89,6 +109,31 @@ function getRegistrationStoreUrl(path: string): string {
   }
 
   return `${baseUrl.toString().replace(/\/$/, "")}${path}`;
+}
+
+function createDocumentAccessUrl(
+  reference: string,
+  kind: RecoveryDocumentKind,
+  purpose: "upload" | "download",
+): string {
+  const expiresInSeconds = purpose === "upload" ? 15 * 60 : 2 * 60;
+  const expires = Math.floor(Date.now() / 1_000) + expiresInSeconds;
+  const signature = createHmac(
+    "sha256",
+    getRequiredEnvironmentVariable("REGISTRATION_STORE_TOKEN"),
+  )
+    .update(`${purpose}\n${reference}\n${kind}\n${expires}`, "utf8")
+    .digest("hex");
+  const route = purpose === "upload" ? "uploads" : "downloads";
+  const url = new URL(
+    getRegistrationStoreUrl(
+      `/v1/${route}/${encodeURIComponent(reference)}/${encodeURIComponent(kind)}`,
+    ),
+  );
+
+  url.searchParams.set("expires", String(expires));
+  url.searchParams.set("signature", signature);
+  return url.toString();
 }
 
 async function requestRegistrationStore<T>(
@@ -196,6 +241,34 @@ export async function savePendingRecoveryRegistration(
   });
 }
 
+export function createRecoveryDocumentUploadTargets(
+  reference: string,
+): RecoveryDocumentUploadTarget[] {
+  return RECOVERY_DOCUMENTS.map(({ kind }) => ({
+    kind,
+    uploadUrl: createDocumentAccessUrl(reference, kind, "upload"),
+  }));
+}
+
+export async function verifyRecoveryDocuments(
+  reference: string,
+): Promise<StoreDocumentStatusResponse> {
+  return requestRegistrationStore<StoreDocumentStatusResponse>(
+    "/v1/documents/verify",
+    {
+      method: "POST",
+      body: JSON.stringify({ reference }),
+    },
+  );
+}
+
+export function createRecoveryDocumentDownloadUrl(
+  reference: string,
+  kind: RecoveryDocumentKind,
+): string {
+  return createDocumentAccessUrl(reference, kind, "download");
+}
+
 export async function claimRecoveryPayment(
   checkoutSessionId: string,
   reference: string,
@@ -250,6 +323,7 @@ export async function getPaidRecoveryRegistrations(): Promise<
       createdAt: decrypted.createdAt,
       paidAt: registration.paidAt,
       emailSentAt: registration.emailSentAt,
+      documents: registration.documents,
       data: decrypted.data,
     };
   });
