@@ -10,6 +10,7 @@ ciphertext. Stripe payment transitions are stored atomically and can safely be r
 - `PUT /v1/registrations/{reference}` — idempotently persist encrypted registration data.
 - `POST /v1/payments/claim` — atomically claim a paid Stripe Checkout Session.
 - `POST /v1/payments/complete` — mark the notification email as sent.
+- `GET /v1/registrations/paid` — list encrypted registrations whose payment and notification are complete.
 
 All `/v1/*` endpoints require `Authorization: Bearer <REGISTRATION_STORE_TOKEN>`.
 

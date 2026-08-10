@@ -40,7 +40,7 @@ class RegistrationStoreApiTest(unittest.TestCase):
         path: str,
         body: dict[str, str] | None = None,
         authenticated: bool = True,
-    ) -> tuple[int, dict[str, str]]:
+    ) -> tuple[int, dict[str, object]]:
         headers = {"Content-Type": "application/json"}
         if authenticated:
             headers["Authorization"] = f"Bearer {TOKEN}"
@@ -102,8 +102,29 @@ class RegistrationStoreApiTest(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(body, {"status": "ready", "payload": PAYLOAD})
 
+        status, body = self.request("GET", "/v1/registrations/paid")
+        self.assertEqual(status, 200)
+        self.assertEqual(body, {"registrations": []})
+
         status, body = self.request("POST", "/v1/payments/complete", claim)
         self.assertEqual((status, body["status"]), (200, "processed"))
+
+        status, body = self.request("GET", "/v1/registrations/paid")
+        self.assertEqual(status, 200)
+        registrations = body["registrations"]
+        self.assertIsInstance(registrations, list)
+        self.assertEqual(len(registrations), 1)
+        self.assertEqual(
+            registrations[0],
+            {
+                "reference": REFERENCE,
+                "payload": PAYLOAD,
+                "registrationCreatedAt": registrations[0]["registrationCreatedAt"],
+                "checkoutSessionId": CHECKOUT_SESSION_ID,
+                "paidAt": registrations[0]["paidAt"],
+                "emailSentAt": registrations[0]["emailSentAt"],
+            },
+        )
 
         status, body = self.request("POST", "/v1/payments/claim", claim)
         self.assertEqual(status, 200)
