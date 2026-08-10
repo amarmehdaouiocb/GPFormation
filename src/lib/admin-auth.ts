@@ -124,7 +124,14 @@ export async function createAdminSession(username: string): Promise<void> {
 
 export async function destroyAdminSession(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete(ADMIN_COOKIE_NAME);
+  cookieStore.set(ADMIN_COOKIE_NAME, "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/admin",
+    maxAge: 0,
+    expires: new Date(0),
+  });
 }
 
 export async function isAdminAuthenticated(): Promise<boolean> {
