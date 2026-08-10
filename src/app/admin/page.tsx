@@ -5,6 +5,7 @@ import {
   CheckCircle,
   ClockCounterClockwise,
   EnvelopeSimple,
+  FileText,
   IdentificationCard,
   MapPin,
   Phone,
@@ -12,8 +13,10 @@ import {
   UsersThree,
 } from "@phosphor-icons/react/dist/ssr";
 import { logoutAdmin } from "@/app/admin/actions";
+import AdminDocumentDownloadButton from "@/components/AdminDocumentDownloadButton";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
+import { RECOVERY_DOCUMENTS } from "@/lib/recovery-documents";
 import {
   getPaidRecoveryRegistrations,
   type PaidRecoveryRegistration,
@@ -38,6 +41,16 @@ function formatDateTime(value: string): string {
 
 function formatDate(value: string): string {
   return dateFormatter.format(new Date(`${value}T12:00:00Z`));
+}
+
+function formatFileSize(sizeBytes: number): string {
+  if (sizeBytes < 1024 * 1024) {
+    return `${Math.max(1, Math.round(sizeBytes / 1024))} Ko`;
+  }
+
+  return `${(sizeBytes / (1024 * 1024)).toLocaleString("fr-FR", {
+    maximumFractionDigits: 1,
+  })} Mo`;
 }
 
 function StudentCard({
@@ -154,31 +167,51 @@ function StudentCard({
                   {data.numeroPermis}
                 </dd>
               </div>
-              <div>
-                <dt className="text-xs text-zinc-500">Autorité de délivrance</dt>
-                <dd className="mt-1 font-medium">{data.autoriteDelivrance}</dd>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <dt className="text-xs text-zinc-500">Délivré le</dt>
-                  <dd className="mt-1 font-medium">
-                    {formatDate(data.dateDelivranceTitre)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-zinc-500">Valable jusqu’au</dt>
-                  <dd className="mt-1 font-medium">
-                    {formatDate(data.dateExpirationTitre)}
-                  </dd>
-                </div>
-              </div>
-              <div>
-                <dt className="text-xs text-zinc-500">Date d’obtention</dt>
-                <dd className="mt-1 font-medium">
-                  {formatDate(data.dateObtentionCategorie)}
-                </dd>
-              </div>
             </dl>
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-200 bg-[#fafaf8] p-5 md:p-6">
+          <div className="flex items-start gap-3">
+            <FileText size={22} className="shrink-0 text-[#4CAF50]" />
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
+                Pièces justificatives
+              </h3>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Fichiers chiffrés sur le VPS, accessibles uniquement depuis cet espace.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {RECOVERY_DOCUMENTS.map((document) => {
+              const uploadedDocument = registration.documents.find(
+                ({ kind }) => kind === document.kind,
+              );
+
+              return uploadedDocument ? (
+                <AdminDocumentDownloadButton
+                  key={document.kind}
+                  reference={registration.reference}
+                  kind={document.kind}
+                  label={`${document.label} — ${document.side}`}
+                  detail={`Télécharger · ${formatFileSize(uploadedDocument.sizeBytes)}`}
+                />
+              ) : (
+                <div
+                  key={document.kind}
+                  className="border border-dashed border-zinc-300 bg-white px-4 py-3"
+                >
+                  <p className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+                    {document.label} — {document.side}
+                  </p>
+                  <p className="mt-1 font-mono text-[0.6rem] text-red-600">
+                    Fichier indisponible
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
 

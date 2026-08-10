@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import tempfile
 import threading
+import time
 import unittest
 import urllib.error
 import urllib.request
 from pathlib import Path
+from typing import Any
 
 from server import create_server
 
@@ -15,6 +19,13 @@ TOKEN = "test-token-that-is-longer-than-thirty-two-characters"
 REFERENCE = "recovery_20260904_123e4567-e89b-42d3-a456-426614174000"
 PAYLOAD = "aGVsbG93b3JsZA.dGFnZWQ.ZW5jcnlwdGVk"
 CHECKOUT_SESSION_ID = "cs_test_1234567890abcdef"
+DOCUMENT_KINDS = (
+    "permis_recto",
+    "permis_verso",
+    "identite_recto",
+    "identite_verso",
+)
+SAMPLE_PNG = b"\x89PNG\r\n\x1a\nprivate-test-document"
 
 
 class RegistrationStoreApiTest(unittest.TestCase):
@@ -45,20 +56,63 @@ class RegistrationStoreApiTest(unittest.TestCase):
         if authenticated:
             headers["Authorization"] = f"Bearer {TOKEN}"
         data = None if body is None else json.dumps(body).encode("utf-8")
+        status, response_body, _ = self.raw_request(method, path, data, headers)
+        return status, json.loads(response_body)
+
+    def raw_request(
+        self,
+        method: str,
+        path: str,
+        data: bytes | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> tuple[int, bytes, Any]:
         request = urllib.request.Request(
             f"{self.base_url}{path}",
             data=data,
-            headers=headers,
+            headers=headers or {},
             method=method,
         )
         try:
             with urllib.request.urlopen(request, timeout=5) as response:
-                return response.status, json.loads(response.read())
+                return response.status, response.read(), response.headers
         except urllib.error.HTTPError as error:
             try:
-                return error.code, json.loads(error.read())
+                return error.code, error.read(), error.headers
             finally:
                 error.close()
+
+    def signed_document_path(
+        self,
+        purpose: str,
+        kind: str,
+        expires_in_seconds: int = 300,
+    ) -> str:
+        expires = int(time.time()) + expires_in_seconds
+        message = f"{purpose}\n{REFERENCE}\n{kind}\n{expires}".encode("utf-8")
+        signature = hmac.new(TOKEN.encode("utf-8"), message, hashlib.sha256).hexdigest()
+        route = "uploads" if purpose == "upload" else "downloads"
+        return (
+            f"/v1/{route}/{REFERENCE}/{kind}"
+            f"?expires={expires}&signature={signature}"
+        )
+
+    def upload_document(self, kind: str) -> None:
+        status, body, headers = self.raw_request(
+            "PUT",
+            self.signed_document_path("upload", kind),
+            SAMPLE_PNG,
+            {
+                "Content-Type": "image/png",
+                "Origin": "http://localhost:3000",
+            },
+        )
+        self.assertEqual(status, 201, body)
+        self.assertEqual(json.loads(body)["kind"], kind)
+        self.assertEqual(headers["Access-Control-Allow-Origin"], "http://localhost:3000")
+
+    def upload_all_documents(self) -> None:
+        for kind in DOCUMENT_KINDS:
+            self.upload_document(kind)
 
     def test_health_is_public(self) -> None:
         status, body = self.request("GET", "/health", authenticated=False)
@@ -89,6 +143,24 @@ class RegistrationStoreApiTest(unittest.TestCase):
             {"payload": PAYLOAD},
         )
         self.assertEqual((status, body["status"]), (200, "existing"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/documents/verify",
+            {"reference": REFERENCE},
+        )
+        self.assertEqual(status, 200)
+        self.assertFalse(body["complete"])
+
+        self.upload_all_documents()
+
+        status, body = self.request(
+            "POST",
+            "/v1/documents/verify",
+            {"reference": REFERENCE},
+        )
+        self.assertEqual(status, 200)
+        self.assertTrue(body["complete"])
 
         claim = {
             "checkoutSessionId": CHECKOUT_SESSION_ID,
@@ -123,7 +195,12 @@ class RegistrationStoreApiTest(unittest.TestCase):
                 "checkoutSessionId": CHECKOUT_SESSION_ID,
                 "paidAt": registrations[0]["paidAt"],
                 "emailSentAt": registrations[0]["emailSentAt"],
+                "documents": registrations[0]["documents"],
             },
+        )
+        self.assertEqual(
+            {document["kind"] for document in registrations[0]["documents"]},
+            set(DOCUMENT_KINDS),
         )
 
         status, body = self.request("POST", "/v1/payments/claim", claim)
@@ -152,6 +229,106 @@ class RegistrationStoreApiTest(unittest.TestCase):
         )
         self.assertEqual(status, 404)
         self.assertEqual(body["error"], "not_found")
+
+    def test_incomplete_documents_block_payment_claim(self) -> None:
+        self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {"payload": PAYLOAD},
+        )
+        self.upload_document("permis_recto")
+
+        status, body = self.request(
+            "POST",
+            "/v1/payments/claim",
+            {
+                "checkoutSessionId": CHECKOUT_SESSION_ID,
+                "reference": REFERENCE,
+            },
+        )
+
+        self.assertEqual(status, 409)
+        self.assertEqual(body["error"], "conflict")
+
+    def test_documents_are_encrypted_and_downloadable_only_after_payment(self) -> None:
+        self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {"payload": PAYLOAD},
+        )
+        self.upload_all_documents()
+
+        encrypted_path = (
+            Path(self.temporary_directory.name)
+            / "documents"
+            / REFERENCE
+            / "permis_recto.enc"
+        )
+        encrypted_content = encrypted_path.read_bytes()
+        self.assertNotEqual(encrypted_content, SAMPLE_PNG)
+        self.assertNotIn(SAMPLE_PNG, encrypted_content)
+
+        download_path = self.signed_document_path("download", "permis_recto")
+        status, _, _ = self.raw_request("GET", download_path)
+        self.assertEqual(status, 404)
+
+        claim = {
+            "checkoutSessionId": CHECKOUT_SESSION_ID,
+            "reference": REFERENCE,
+        }
+        self.request("POST", "/v1/payments/claim", claim)
+        self.request("POST", "/v1/payments/complete", claim)
+
+        status, content, headers = self.raw_request("GET", download_path)
+        self.assertEqual(status, 200)
+        self.assertEqual(content, SAMPLE_PNG)
+        self.assertEqual(headers["Content-Type"], "image/png")
+        self.assertIn("attachment", headers["Content-Disposition"])
+
+    def test_upload_requires_allowed_origin_and_valid_signature(self) -> None:
+        self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {"payload": PAYLOAD},
+        )
+        path = self.signed_document_path("upload", "permis_recto")
+
+        status, body, headers = self.raw_request(
+            "OPTIONS",
+            path,
+            headers={"Origin": "http://localhost:3000"},
+        )
+        self.assertEqual(status, 204)
+        self.assertEqual(body, b"")
+        self.assertEqual(headers["Access-Control-Allow-Origin"], "http://localhost:3000")
+
+        status, body, _ = self.raw_request(
+            "PUT",
+            path,
+            SAMPLE_PNG,
+            {"Origin": "https://example.com"},
+        )
+        self.assertEqual(status, 403)
+        self.assertEqual(json.loads(body)["error"], "forbidden")
+
+        status, body, _ = self.raw_request(
+            "PUT",
+            f"{path}0",
+            SAMPLE_PNG,
+            {"Origin": "http://localhost:3000"},
+        )
+        self.assertEqual(status, 401)
+        self.assertEqual(json.loads(body)["error"], "unauthorized")
+
+        self.upload_document("permis_recto")
+        status, body, _ = self.raw_request(
+            "PUT",
+            path,
+            SAMPLE_PNG,
+            {"Origin": "http://localhost:3000"},
+        )
+        self.assertEqual(status, 409)
+        self.assertEqual(json.loads(body)["error"], "conflict")
 
 
 if __name__ == "__main__":
