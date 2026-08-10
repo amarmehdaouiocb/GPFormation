@@ -43,9 +43,31 @@ interface StorePaymentClaimResponse {
   payload?: string;
 }
 
+interface StorePaidRegistration {
+  reference: string;
+  payload: string;
+  registrationCreatedAt: string;
+  checkoutSessionId: string;
+  paidAt: string;
+  emailSentAt: string | null;
+}
+
+interface StorePaidRegistrationsResponse {
+  registrations: StorePaidRegistration[];
+}
+
 export type RecoveryPaymentClaim =
   | { status: "processed" }
   | { status: "ready"; data: RecoveryRegistrationData };
+
+export interface PaidRecoveryRegistration {
+  reference: string;
+  checkoutSessionId: string;
+  createdAt: string;
+  paidAt: string;
+  emailSentAt: string | null;
+  data: RecoveryRegistrationData;
+}
 
 function getRequiredEnvironmentVariable(name: string): string {
   const value = process.env[name];
@@ -207,5 +229,28 @@ export async function completeRecoveryPayment(
   await requestRegistrationStore("/v1/payments/complete", {
     method: "POST",
     body: JSON.stringify({ checkoutSessionId, reference }),
+  });
+}
+
+export async function getPaidRecoveryRegistrations(): Promise<
+  PaidRecoveryRegistration[]
+> {
+  const response =
+    await requestRegistrationStore<StorePaidRegistrationsResponse>(
+      "/v1/registrations/paid",
+      { method: "GET" },
+    );
+
+  return response.registrations.map((registration) => {
+    const decrypted = decryptRegistration(registration.payload);
+
+    return {
+      reference: registration.reference,
+      checkoutSessionId: registration.checkoutSessionId,
+      createdAt: decrypted.createdAt,
+      paidAt: registration.paidAt,
+      emailSentAt: registration.emailSentAt,
+      data: decrypted.data,
+    };
   });
 }
