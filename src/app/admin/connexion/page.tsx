@@ -31,7 +31,7 @@ export default async function AdminLoginPage() {
             Grand Paris Formation
           </p>
           <h1 className="mt-6 max-w-xl text-6xl font-bold leading-[0.92] tracking-[-0.055em] xl:text-7xl">
-            Les inscriptions, sans le bruit.
+            Suivi des inscriptions aux stages.
           </h1>
           <p className="mt-8 max-w-lg text-lg leading-relaxed text-zinc-400">
             Consultez les dossiers des élèves uniquement après validation de leur

@@ -34,6 +34,12 @@ DOCUMENT_KINDS = (
     "identite_recto",
     "identite_verso",
 )
+IDENTITY_DOCUMENT_TYPES = (
+    "carte_identite",
+    "passeport",
+    "titre_sejour",
+)
+DEFAULT_IDENTITY_DOCUMENT_TYPE = "carte_identite"
 DOCUMENT_KIND_PATTERN = re.compile(r"^(?:permis|identite)_(?:recto|verso)$")
 SIGNATURE_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 VERCEL_ORIGIN_PATTERN = re.compile(
@@ -126,6 +132,19 @@ def validate_document_kind(value: Any) -> str:
     return value
 
 
+def validate_identity_document_type(value: Any) -> str:
+    if not isinstance(value, str) or value not in IDENTITY_DOCUMENT_TYPES:
+        raise BadRequest("Unsupported identity document type")
+    return value
+
+
+def required_document_kinds(identity_document_type: str) -> set[str]:
+    kinds = {"permis_recto", "permis_verso", "identite_recto"}
+    if identity_document_type != "passeport":
+        kinds.add("identite_verso")
+    return kinds
+
+
 def detect_document_type(content: bytes) -> tuple[str, str]:
     if content.startswith(b"%PDF-"):
         return "application/pdf", "pdf"
@@ -173,6 +192,7 @@ class RegistrationStore:
                 CREATE TABLE IF NOT EXISTS registrations (
                     reference TEXT PRIMARY KEY,
                     encrypted_payload TEXT NOT NULL,
+                    identity_document_type TEXT NOT NULL DEFAULT 'carte_identite',
                     created_at TEXT NOT NULL,
                     updated_at TEXT NOT NULL
                 );
@@ -214,6 +234,20 @@ class RegistrationStore:
                     ON documents(reference);
                 """
             )
+            registration_columns = {
+                row["name"]
+                for row in connection.execute(
+                    "PRAGMA table_info(registrations)"
+                ).fetchall()
+            }
+            if "identity_document_type" not in registration_columns:
+                connection.execute(
+                    """
+                    ALTER TABLE registrations
+                    ADD COLUMN identity_document_type TEXT NOT NULL
+                        DEFAULT 'carte_identite'
+                    """
+                )
 
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
@@ -239,11 +273,19 @@ class RegistrationStore:
     def assert_document_upload_allowed(self, reference: str, kind: str) -> None:
         with closing(self._connect()) as connection:
             registration = connection.execute(
-                "SELECT 1 FROM registrations WHERE reference = ?",
+                """
+                SELECT identity_document_type
+                FROM registrations
+                WHERE reference = ?
+                """,
                 (reference,),
             ).fetchone()
             if not registration:
                 raise NotFound("Registration was not found")
+            if kind not in required_document_kinds(
+                registration["identity_document_type"]
+            ):
+                raise Conflict("Document is not required for this registration")
 
             payment = connection.execute(
                 "SELECT 1 FROM payments WHERE reference = ? LIMIT 1",
@@ -304,7 +346,11 @@ class RegistrationStore:
     def get_document_status(self, reference: str) -> dict[str, Any]:
         with closing(self._connect()) as connection:
             registration = connection.execute(
-                "SELECT 1 FROM registrations WHERE reference = ?",
+                """
+                SELECT identity_document_type
+                FROM registrations
+                WHERE reference = ?
+                """,
                 (reference,),
             ).fetchone()
             if not registration:
@@ -320,6 +366,9 @@ class RegistrationStore:
                 (reference,),
             ).fetchall()
 
+        expected_kinds = required_document_kinds(
+            registration["identity_document_type"]
+        )
         documents = [
             {
                 "kind": row["kind"],
@@ -328,11 +377,12 @@ class RegistrationStore:
                 "uploadedAt": row["updated_at"],
             }
             for row in rows
-            if self.document_path(reference, row["kind"]).is_file()
+            if row["kind"] in expected_kinds
+            and self.document_path(reference, row["kind"]).is_file()
         ]
         present_kinds = {document["kind"] for document in documents}
         return {
-            "complete": present_kinds == set(DOCUMENT_KINDS),
+            "complete": present_kinds == expected_kinds,
             "documents": documents,
         }
 
@@ -369,26 +419,40 @@ class RegistrationStore:
             "sha256": row["sha256"],
         }
 
-    def save_registration(self, reference: str, payload: str) -> str:
+    def save_registration(
+        self,
+        reference: str,
+        payload: str,
+        identity_document_type: str,
+    ) -> str:
         now = utc_now()
         with self._transaction() as connection:
             existing = connection.execute(
-                "SELECT encrypted_payload FROM registrations WHERE reference = ?",
+                """
+                SELECT encrypted_payload, identity_document_type
+                FROM registrations
+                WHERE reference = ?
+                """,
                 (reference,),
             ).fetchone()
 
             if existing:
-                if hmac.compare_digest(existing["encrypted_payload"], payload):
+                if hmac.compare_digest(
+                    existing["encrypted_payload"], payload
+                ) and hmac.compare_digest(
+                    existing["identity_document_type"], identity_document_type
+                ):
                     return "existing"
                 raise Conflict("Registration reference already exists")
 
             connection.execute(
                 """
                 INSERT INTO registrations (
-                    reference, encrypted_payload, created_at, updated_at
-                ) VALUES (?, ?, ?, ?)
+                    reference, encrypted_payload, identity_document_type,
+                    created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?)
                 """,
-                (reference, payload, now, now),
+                (reference, payload, identity_document_type, now, now),
             )
         return "created"
 
@@ -412,7 +476,7 @@ class RegistrationStore:
 
             registration = connection.execute(
                 """
-                SELECT encrypted_payload
+                SELECT encrypted_payload, identity_document_type
                 FROM registrations
                 WHERE reference = ?
                 """,
@@ -430,7 +494,9 @@ class RegistrationStore:
                 for row in document_rows
                 if self.document_path(reference, row["kind"]).is_file()
             }
-            if document_kinds != set(DOCUMENT_KINDS):
+            if document_kinds != required_document_kinds(
+                registration["identity_document_type"]
+            ):
                 raise Conflict("Registration documents are incomplete")
 
             if payment:
@@ -823,7 +889,17 @@ class RegistrationStoreHandler(BaseHTTPRequestHandler):
             reference = validate_reference(path.removeprefix("/v1/registrations/"))
             body = self._read_json()
             payload = validate_payload(body.get("payload"))
-            result = self.server.store.save_registration(reference, payload)
+            identity_document_type = validate_identity_document_type(
+                body.get(
+                    "identityDocumentType",
+                    DEFAULT_IDENTITY_DOCUMENT_TYPE,
+                )
+            )
+            result = self.server.store.save_registration(
+                reference,
+                payload,
+                identity_document_type,
+            )
             status = HTTPStatus.CREATED if result == "created" else HTTPStatus.OK
             self._send_json(status, {"status": result})
             return

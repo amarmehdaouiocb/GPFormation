@@ -18,9 +18,12 @@ import {
   type RecoveryRegistrationState,
 } from "@/app/recuperation-de-points/action";
 import {
+  getRequiredRecoveryDocuments,
+  IDENTITY_DOCUMENT_TYPES,
+  isIdentityDocumentType,
   RECOVERY_DOCUMENT_ACCEPT,
   RECOVERY_DOCUMENT_MAX_BYTES,
-  RECOVERY_DOCUMENTS,
+  type IdentityDocumentType,
   type RecoveryDocumentKind,
 } from "@/lib/recovery-documents";
 import {
@@ -312,7 +315,10 @@ export default function RecoveryRegistrationForm({
   const [uploadError, setUploadError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [identityDocumentType, setIdentityDocumentType] =
+    useState<IdentityDocumentType>("carte_identite");
   const startedReference = useRef("");
+  const requiredDocuments = getRequiredRecoveryDocuments(identityDocumentType);
 
   useEffect(() => {
     if (state?.status !== "upload" || startedReference.current === state.reference) {
@@ -330,7 +336,7 @@ export default function RecoveryRegistrationForm({
           const file = selectedFiles[target.kind];
 
           if (!file) {
-            throw new Error("Sélectionnez les quatre justificatifs demandés.");
+            throw new Error("Sélectionnez tous les justificatifs demandés.");
           }
 
           setUploadStatuses((current) => ({
@@ -400,7 +406,7 @@ export default function RecoveryRegistrationForm({
             Votre dossier d’inscription
           </h3>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600 md:text-base">
-            Renseignez vos informations et ajoutez les quatre justificatifs. Le
+            Renseignez vos informations et ajoutez les justificatifs demandés. Le
             dossier est conservé de manière sécurisée et transmis à GP Formation
             uniquement après confirmation de votre paiement.
           </p>
@@ -520,14 +526,20 @@ export default function RecoveryRegistrationForm({
           />
         </div>
 
-        <section aria-labelledby="documents-title" className="border border-zinc-200 bg-[#f4f4ef] p-5 sm:p-6">
+        <section
+          aria-labelledby="documents-title"
+          className="border border-zinc-200 bg-[#f4f4ef] p-5 sm:p-6"
+        >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#2E7D32]">
                 Pièces justificatives
               </p>
-              <h4 id="documents-title" className="mt-2 text-xl font-bold tracking-[-0.03em] text-zinc-950">
-                Les quatre faces de votre dossier
+              <h4
+                id="documents-title"
+                className="mt-2 text-xl font-bold tracking-[-0.03em] text-zinc-950"
+              >
+                Documents à joindre
               </h4>
             </div>
             <p className="text-xs leading-relaxed text-zinc-500 sm:max-w-xs sm:text-right">
@@ -535,8 +547,72 @@ export default function RecoveryRegistrationForm({
             </p>
           </div>
 
+          <fieldset className="mt-5">
+            <legend className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-700">
+              Type de pièce d’identité
+            </legend>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {IDENTITY_DOCUMENT_TYPES.map((documentType) => (
+                <label
+                  key={documentType.value}
+                  className={`cursor-pointer border px-4 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#4CAF50] ${
+                    identityDocumentType === documentType.value
+                      ? "border-zinc-950 bg-zinc-950 text-white"
+                      : "border-zinc-300 bg-white text-zinc-800 hover:border-[#4CAF50]"
+                  } ${isBusy ? "cursor-not-allowed opacity-60" : ""}`}
+                >
+                  <input
+                    type="radio"
+                    name="typePieceIdentite"
+                    value={documentType.value}
+                    checked={identityDocumentType === documentType.value}
+                    disabled={isBusy}
+                    className="sr-only"
+                    onChange={(event) => {
+                      if (!isIdentityDocumentType(event.target.value)) {
+                        return;
+                      }
+
+                      const nextType = event.target.value;
+                      setIdentityDocumentType(nextType);
+
+                      if (nextType === "passeport") {
+                        setSelectedFiles((current) => {
+                          const nextFiles = { ...current };
+                          delete nextFiles.identite_verso;
+                          return nextFiles;
+                        });
+                        setUploadStatuses((current) => {
+                          const nextStatuses = { ...current };
+                          delete nextStatuses.identite_verso;
+                          return nextStatuses;
+                        });
+                      }
+                    }}
+                  />
+                  <span className="block text-sm font-bold">
+                    {documentType.label}
+                  </span>
+                  <span
+                    className={`mt-1 block text-xs ${
+                      identityDocumentType === documentType.value
+                        ? "text-zinc-300"
+                        : "text-zinc-500"
+                    }`}
+                  >
+                    {documentType.description}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <p className="mt-5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-zinc-500">
+            {requiredDocuments.length} fichiers demandés
+          </p>
+
           <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {RECOVERY_DOCUMENTS.map((document) => (
+            {requiredDocuments.map((document) => (
               <DocumentField
                 key={document.kind}
                 {...document}

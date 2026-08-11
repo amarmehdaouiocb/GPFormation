@@ -9,7 +9,9 @@ import {
 } from "node:crypto";
 import type { RecoverySession } from "@/lib/recovery-dates";
 import {
-  RECOVERY_DOCUMENTS,
+  getRequiredRecoveryDocuments,
+  isIdentityDocumentType,
+  type IdentityDocumentType,
   type RecoveryDocumentKind,
 } from "@/lib/recovery-documents";
 
@@ -24,6 +26,7 @@ export interface RecoveryRegistrantDetails {
   codePostal: string;
   ville: string;
   numeroPermis: string;
+  typePieceIdentite: IdentityDocumentType;
 }
 
 export interface RecoveryRegistrationData extends RecoveryRegistrantDetails {
@@ -218,6 +221,10 @@ function decryptRegistration(payload: string): StoredRecoveryRegistration {
     throw new Error("Unsupported recovery registration version");
   }
 
+  if (!isIdentityDocumentType(registration.data.typePieceIdentite)) {
+    registration.data.typePieceIdentite = "carte_identite";
+  }
+
   return registration;
 }
 
@@ -237,14 +244,18 @@ export async function savePendingRecoveryRegistration(
 
   await requestRegistrationStore(`/v1/registrations/${encodeURIComponent(reference)}`, {
     method: "PUT",
-    body: JSON.stringify({ payload: encryptRegistration(registration) }),
+    body: JSON.stringify({
+      payload: encryptRegistration(registration),
+      identityDocumentType: data.typePieceIdentite,
+    }),
   });
 }
 
 export function createRecoveryDocumentUploadTargets(
   reference: string,
+  identityDocumentType: IdentityDocumentType,
 ): RecoveryDocumentUploadTarget[] {
-  return RECOVERY_DOCUMENTS.map(({ kind }) => ({
+  return getRequiredRecoveryDocuments(identityDocumentType).map(({ kind }) => ({
     kind,
     uploadUrl: createDocumentAccessUrl(reference, kind, "upload"),
   }));

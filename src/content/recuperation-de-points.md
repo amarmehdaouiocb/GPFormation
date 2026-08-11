@@ -95,7 +95,7 @@ Les conducteurs ayant suivi le stage peuvent obtenir le remboursement auprès du
 **Pièces à fournir :**
 
 - Photocopie permis (recto/verso)
-- Photocopie pièce d'identité (recto/verso)
+- Photocopie pièce d'identité (recto/verso), ou page d'identité du passeport
 
 Les informations d'inscription doivent être renseignées exactement comme elles apparaissent sur le permis de conduire, recto et verso.
 
