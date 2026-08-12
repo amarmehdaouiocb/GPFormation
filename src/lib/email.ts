@@ -33,6 +33,10 @@ interface RecoveryPaymentDetails {
   currency: string | null;
 }
 
+interface RecoveryAuthorizationDetails extends RecoveryPaymentDetails {
+  adminUrl: string;
+}
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -245,6 +249,83 @@ function buildRecoveryRegistrationEmailHtml(
 </html>`;
 }
 
+function buildRecoveryAuthorizationEmailHtml(
+  data: RecoveryRegistrationData,
+  payment: RecoveryAuthorizationDetails,
+): string {
+  const now = new Date().toLocaleDateString("fr-FR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const rows = [
+    ["Candidat", `${data.prenoms} ${data.nom}`.trim()],
+    ["Session choisie", formatRecoveryDateRange(data.session)],
+    ["Montant autorisé", formatPaymentAmount(payment)],
+    ["Email", data.email],
+    ["Téléphone", data.telephone],
+    ["Référence Stripe", payment.stripePaymentId],
+  ];
+  const rowsHtml = rows
+    .map(
+      ([label, value]) => `
+                <tr>
+                  <td style="padding:9px 0;color:#71717A;font-size:12px;text-transform:uppercase;letter-spacing:0.7px;width:190px;vertical-align:top;">${escapeHtml(label)}</td>
+                  <td style="padding:9px 0;color:#18181B;font-size:15px;font-weight:600;">${escapeHtml(value)}</td>
+                </tr>
+                <tr><td colspan="2" style="height:1px;background-color:#E4E4E7;font-size:0;">&nbsp;</td></tr>`,
+    )
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /></head>
+<body style="margin:0;padding:0;background-color:#F4F4F5;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4F4F5;padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="680" cellpadding="0" cellspacing="0" style="max-width:680px;width:100%;">
+        <tr><td style="background-color:#18181B;padding:28px 32px;border-radius:12px 12px 0 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">GP Formation</td>
+              <td align="right" style="color:rgba(255,255,255,0.7);font-size:13px;">Action requise</td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="height:3px;background-color:#F59E0B;font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td style="background-color:#ffffff;padding:32px;">
+          <p style="margin:0 0 8px;color:#18181B;font-size:20px;font-weight:700;">
+            Nouvelle demande à valider
+          </p>
+          <p style="margin:0 0 24px;color:#71717A;font-size:14px;line-height:1.6;">
+            La carte du candidat a été autorisée, mais elle n’a pas encore été débitée. Vérifiez le dossier dans l’espace administrateur, puis validez ou refusez la demande.
+          </p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:0 20px;">
+            ${rowsHtml}
+          </table>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+            <tr><td align="center">
+              <a href="${escapeHtml(payment.adminUrl)}" style="display:inline-block;background-color:#18181B;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:13px 28px;border-radius:6px;">
+                Vérifier la demande
+              </a>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="background-color:#FAFAFA;padding:20px 32px;border-radius:0 0 12px 12px;border-top:1px solid #E4E4E7;">
+          <p style="margin:0;color:#A1A1AA;font-size:12px;text-align:center;">
+            Reçu le ${now} — aucune somme n’est encaissée avant validation dans le back-office.
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 export async function sendContactEmail(data: ContactEmailData) {
   if (!process.env.RESEND_API_KEY) {
     console.log("RESEND_API_KEY not set, logging email:", data);
@@ -283,5 +364,31 @@ export async function sendRecoveryRegistrationEmail(
 
   if (error) {
     throw new Error(`Resend failed to send the paid registration email: ${error.message}`);
+  }
+}
+
+export async function sendRecoveryAuthorizationEmail(
+  data: RecoveryRegistrationData,
+  payment: RecoveryAuthorizationDetails,
+) {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is required for recovery authorizations");
+  }
+
+  const { error } = await getResendClient().emails.send(
+    {
+      from: "GP Formation <noreply@gpformation.fr>",
+      to: "contact@gpformation.fr",
+      replyTo: data.email,
+      subject: `À valider — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
+      html: buildRecoveryAuthorizationEmailHtml(data, payment),
+    },
+    {
+      idempotencyKey: `recovery-authorization/${payment.stripePaymentId}`,
+    },
+  );
+
+  if (error) {
+    throw new Error(`Resend failed to send the authorization email: ${error.message}`);
   }
 }

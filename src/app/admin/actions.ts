@@ -81,7 +81,7 @@ function redirectToAdmin(
   message: string,
   anchor: "payments" | "sessions",
 ): never {
-  const parameters = new URLSearchParams({ type, message });
+  const parameters = new URLSearchParams({ type, message, area: anchor });
   redirect(`/admin?${parameters.toString()}#${anchor}`);
 }
 

@@ -1,6 +1,9 @@
 import Stripe from "stripe";
 import { sendRecoveryRegistrationEmail } from "@/lib/email";
-import { processCapturedRecoveryPayment } from "@/lib/recovery-payment";
+import {
+  processAuthorizedRecoveryPayment,
+  processCapturedRecoveryPayment,
+} from "@/lib/recovery-payment";
 import {
   cancelRecoveryPaymentAuthorization,
   claimRecoveryPayment,
@@ -67,6 +70,7 @@ async function processLegacyCheckoutEvent(
 
 async function processPaymentIntentEvent(
   event: Stripe.Event,
+  adminUrl: string,
 ): Promise<string> {
   const paymentIntent = event.data.object as Stripe.PaymentIntent;
   const metadata = getRecoveryPaymentMetadata(paymentIntent);
@@ -77,7 +81,12 @@ async function processPaymentIntentEvent(
 
   if (event.type === "payment_intent.amount_capturable_updated") {
     await markRecoveryPaymentAuthorized(paymentIntent.id, metadata.reference);
-    return "Payment authorization recorded";
+    const status = await processAuthorizedRecoveryPayment(
+      paymentIntent,
+      metadata.reference,
+      adminUrl,
+    );
+    return `Payment authorization ${status}`;
   }
 
   if (event.type === "payment_intent.succeeded") {
@@ -137,7 +146,8 @@ export async function POST(request: Request): Promise<Response> {
       event.type === "payment_intent.succeeded" ||
       event.type === "payment_intent.canceled"
     ) {
-      return new Response(await processPaymentIntentEvent(event), {
+      const adminUrl = new URL("/admin#payments", request.url).toString();
+      return new Response(await processPaymentIntentEvent(event, adminUrl), {
         status: 200,
       });
     }

@@ -113,6 +113,8 @@ export type CapturedPaymentEmailClaim =
   | { status: "processed" | "processing" }
   | { status: "ready"; data: RecoveryRegistrationData };
 
+export type AuthorizedPaymentEmailClaim = CapturedPaymentEmailClaim;
+
 export interface RecoveryDocumentMetadata {
   kind: RecoveryDocumentKind;
   contentType: string;
@@ -385,6 +387,56 @@ export async function markRecoveryPaymentAuthorized(
     method: "POST",
     body: JSON.stringify({ paymentIntentId, reference }),
   });
+}
+
+export async function claimAuthorizedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<AuthorizedPaymentEmailClaim> {
+  const claim = await requestRegistrationStore<StorePaymentClaimResponse>(
+    "/v1/payment-intents/authorization/claim-email",
+    {
+      method: "POST",
+      body: JSON.stringify({ paymentIntentId, reference }),
+    },
+  );
+
+  if (claim.status !== "ready") {
+    return { status: claim.status };
+  }
+  if (!claim.payload) {
+    throw new Error("Registration store returned an empty encrypted payload");
+  }
+  return {
+    status: "ready",
+    data: decryptRegistration(claim.payload).data,
+  };
+}
+
+export async function completeAuthorizedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore(
+    "/v1/payment-intents/authorization/complete-email",
+    {
+      method: "POST",
+      body: JSON.stringify({ paymentIntentId, reference }),
+    },
+  );
+}
+
+export async function releaseAuthorizedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore(
+    "/v1/payment-intents/authorization/release-email",
+    {
+      method: "POST",
+      body: JSON.stringify({ paymentIntentId, reference }),
+    },
+  );
 }
 
 export async function claimRecoveryPaymentApproval(
