@@ -45,6 +45,12 @@ interface RecoveryRegistrationFormProps {
 
 type UploadStatus = "idle" | "uploading" | "uploaded" | "error";
 
+type PaymentPrefillDetails = {
+  email: string;
+  phone: string;
+  name: string;
+};
+
 const inputClass =
   "w-full rounded-none border-0 border-b-2 border-zinc-300 bg-transparent px-0 py-3 text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-950";
 const labelClass = "text-xs font-bold uppercase tracking-widest text-zinc-950";
@@ -303,7 +309,13 @@ function DocumentField({
   );
 }
 
-function RecoveryPaymentForm({ session }: { session?: RecoverySession }) {
+function RecoveryPaymentForm({
+  session,
+  prefillDetails,
+}: {
+  session?: RecoverySession;
+  prefillDetails: PaymentPrefillDetails;
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const [isConfirming, setIsConfirming] = useState(false);
@@ -393,6 +405,13 @@ function RecoveryPaymentForm({ session }: { session?: RecoverySession }) {
             options={{
               layout: "tabs",
               terms: { card: "never" },
+              defaultValues: {
+                billingDetails: {
+                  email: prefillDetails.email,
+                  phone: prefillDetails.phone,
+                  name: prefillDetails.name,
+                },
+              },
             }}
           />
         </div>
@@ -448,6 +467,8 @@ export default function RecoveryRegistrationForm({
   const [isUploading, setIsUploading] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [paymentClientSecret, setPaymentClientSecret] = useState("");
+  const [paymentPrefillDetails, setPaymentPrefillDetails] =
+    useState<PaymentPrefillDetails>({ email: "", phone: "", name: "" });
   const [identityDocumentType, setIdentityDocumentType] =
     useState<IdentityDocumentType>("carte_identite");
   const startedReference = useRef("");
@@ -564,7 +585,10 @@ export default function RecoveryRegistrationForm({
             },
           }}
         >
-          <RecoveryPaymentForm session={paymentSession} />
+          <RecoveryPaymentForm
+            session={paymentSession}
+            prefillDetails={paymentPrefillDetails}
+          />
         </Elements>
       </section>
     );
@@ -598,7 +622,16 @@ export default function RecoveryRegistrationForm({
       <form
         action={formAction}
         className="space-y-8"
-        onSubmit={() => {
+        onSubmit={(event) => {
+          const formData = new FormData(event.currentTarget);
+          const prenoms = String(formData.get("prenoms") ?? "").trim();
+          const nom = String(formData.get("nom") ?? "").trim();
+
+          setPaymentPrefillDetails({
+            email: String(formData.get("email") ?? "").trim(),
+            phone: String(formData.get("telephone") ?? "").trim(),
+            name: `${prenoms} ${nom}`.trim(),
+          });
           setUploadError("");
           setUploadStatuses({});
         }}
