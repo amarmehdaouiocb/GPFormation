@@ -382,7 +382,19 @@ function PendingRegistrationCard({
   );
 }
 
-function SessionManager({ sessions }: { sessions: RecoverySession[] }) {
+type AdminNotice = {
+  type?: string;
+  message?: string;
+  area?: string;
+};
+
+function SessionManager({
+  sessions,
+  notice,
+}: {
+  sessions: RecoverySession[];
+  notice: AdminNotice;
+}) {
   const activeSessions = sessions.filter((session) => !session.deletedAt);
   const archivedSessions = sessions.filter((session) => session.deletedAt);
   const inputClass =
@@ -444,81 +456,137 @@ function SessionManager({ sessions }: { sessions: RecoverySession[] }) {
         </button>
       </form>
 
+      {notice.area === "sessions" && notice.message ? (
+        <div
+          role="status"
+          className={`mt-4 border px-5 py-4 text-sm font-medium ${
+            notice.type === "error"
+              ? "border-red-200 bg-red-50 text-red-700"
+              : "border-[#4CAF50]/30 bg-[#edf8ed] text-[#2E7D32]"
+          }`}
+        >
+          {notice.message}
+        </div>
+      ) : null}
+
       <div className="mt-4 space-y-3">
-        {activeSessions.map((session) => (
-          <form
-            key={session.start}
-            action={updateAdminRecoverySession.bind(null, session.start)}
-            className="grid gap-3 border border-zinc-200 bg-white p-4 lg:grid-cols-[1fr_1fr_130px_150px_150px_auto] lg:items-end"
-          >
-            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
-              Début
-              <input
-                type="date"
-                name="start"
-                defaultValue={session.start}
-                required
-                className={`mt-2 ${inputClass}`}
-              />
-            </label>
-            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
-              Fin
-              <input
-                type="date"
-                name="end"
-                defaultValue={session.end}
-                required
-                className={`mt-2 ${inputClass}`}
-              />
-            </label>
-            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
-              Capacité
-              <input
-                type="number"
-                name="capacity"
-                min="1"
-                max="100"
-                defaultValue={session.capacity ?? 20}
-                required
-                className={`mt-2 ${inputClass}`}
-              />
-            </label>
-            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
-              État
-              <select
-                name="status"
-                defaultValue={session.status ?? "open"}
-                className={`mt-2 ${inputClass}`}
+        {activeSessions.map((session) => {
+          const formId = `session-${session.start}`;
+          const paidCount = session.paidCount ?? 0;
+          const pendingCount = session.pendingCount ?? 0;
+          const capacity = session.capacity ?? 20;
+
+          return (
+            <article
+              key={session.start}
+              className="border border-zinc-200 bg-white shadow-[0_12px_35px_rgba(24,24,27,0.025)]"
+            >
+              <div className="flex flex-col gap-2 border-b border-zinc-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm font-bold text-zinc-900">
+                  {formatRecoveryDateRange(session)}
+                </p>
+                <span
+                  className={`w-fit px-2.5 py-1 font-mono text-[0.62rem] font-bold uppercase tracking-[0.1em] ${
+                    session.status === "closed"
+                      ? "bg-zinc-100 text-zinc-600"
+                      : "bg-[#edf8ed] text-[#2E7D32]"
+                  }`}
+                >
+                  {session.status === "closed" ? "Fermée" : "Ouverte"}
+                </span>
+              </div>
+
+              <form
+                id={formId}
+                action={updateAdminRecoverySession.bind(null, session.start)}
+                className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_120px_150px] lg:items-end"
               >
-                <option value="open">Ouverte</option>
-                <option value="closed">Fermée</option>
-              </select>
-            </label>
-            <div className="h-11 border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-500">
-              <strong className="block text-sm text-zinc-900">
-                {session.paidCount ?? 0}/{session.capacity ?? 20}
-              </strong>
-              confirmées · {session.pendingCount ?? 0} en attente
-            </div>
-            <div className="flex h-11">
-              <button
-                type="submit"
-                aria-label={`Enregistrer la session du ${session.start}`}
-                className="flex flex-1 items-center justify-center border border-zinc-300 text-zinc-700 hover:border-zinc-950 hover:bg-zinc-950 hover:text-white"
-              >
-                <PencilSimple size={17} />
-              </button>
-              <button
-                type="submit"
-                formAction={deleteAdminRecoverySession.bind(null, session.start)}
-                aria-label={`Supprimer la session du ${session.start}`}
-                className="flex flex-1 items-center justify-center border border-l-0 border-zinc-300 text-red-600 hover:border-red-600 hover:bg-red-600 hover:text-white"
-              >
-                <Trash size={17} />
-              </button>
-            </div>
-          </form>
-        ))}
+                <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+                  Début
+                  <input
+                    type="date"
+                    name="start"
+                    defaultValue={session.start}
+                    required
+                    className={`mt-2 ${inputClass}`}
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+                  Fin
+                  <input
+                    type="date"
+                    name="end"
+                    defaultValue={session.end}
+                    required
+                    className={`mt-2 ${inputClass}`}
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+                  Capacité
+                  <input
+                    type="number"
+                    name="capacity"
+                    min="1"
+                    max="100"
+                    defaultValue={capacity}
+                    required
+                    className={`mt-2 ${inputClass}`}
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+                  État
+                  <select
+                    name="status"
+                    defaultValue={session.status ?? "open"}
+                    className={`mt-2 ${inputClass}`}
+                  >
+                    <option value="open">Ouverte</option>
+                    <option value="closed">Fermée</option>
+                  </select>
+                </label>
+              </form>
+
+              <div className="flex flex-col gap-4 border-t border-zinc-100 bg-zinc-50/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="grid w-full grid-cols-2 gap-px border border-zinc-200 bg-zinc-200 sm:w-auto sm:min-w-[300px]">
+                  <div className="min-w-0 bg-white px-4 py-3">
+                    <strong className="block text-lg leading-none text-zinc-950">
+                      {paidCount}/{capacity}
+                    </strong>
+                    <span className="mt-1.5 block text-xs leading-snug text-zinc-500">
+                      places confirmées
+                    </span>
+                  </div>
+                  <div className="min-w-0 bg-white px-4 py-3">
+                    <strong className="block text-lg leading-none text-zinc-950">
+                      {pendingCount}
+                    </strong>
+                    <span className="mt-1.5 block text-xs leading-snug text-zinc-500">
+                      demande{pendingCount > 1 ? "s" : ""} en attente
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                  <button
+                    form={formId}
+                    type="submit"
+                    className="flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-xs font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-zinc-800"
+                  >
+                    <PencilSimple size={17} /> Enregistrer
+                  </button>
+                  <form action={deleteAdminRecoverySession.bind(null, session.start)}>
+                    <button
+                      type="submit"
+                      className="flex min-h-11 w-full items-center justify-center gap-2 border border-red-200 bg-white px-5 text-xs font-bold uppercase tracking-[0.08em] text-red-600 transition-colors hover:border-red-600 hover:bg-red-600 hover:text-white"
+                    >
+                      <Trash size={17} /> Supprimer
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {archivedSessions.length > 0 ? (
@@ -540,7 +608,7 @@ function SessionManager({ sessions }: { sessions: RecoverySession[] }) {
 }
 
 interface AdminPageProps {
-  searchParams: Promise<{ type?: string; message?: string }>;
+  searchParams: Promise<AdminNotice>;
 }
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
@@ -624,7 +692,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </div>
         </div>
 
-        {notice.message ? (
+        {notice.message && notice.area !== "sessions" ? (
           <div
             role="status"
             className={`mt-8 border px-5 py-4 text-sm font-medium ${
@@ -738,7 +806,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           )}
         </section>
 
-        <SessionManager sessions={sessions} />
+        <SessionManager sessions={sessions} notice={notice} />
       </div>
     </main>
   );

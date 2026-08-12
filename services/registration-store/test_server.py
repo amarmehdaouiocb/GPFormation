@@ -250,6 +250,53 @@ class RegistrationStoreApiTest(unittest.TestCase):
         )
         self.assertEqual((status, body["status"]), (200, "requires_capture"))
 
+        identifiers = {
+            "paymentIntentId": PAYMENT_INTENT_ID,
+            "reference": REFERENCE,
+        }
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/claim-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "ready"))
+        self.assertEqual(body["payload"], PAYLOAD)
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/claim-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "processing"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/release-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "released"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/claim-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "ready"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/complete-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "processed"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorization/claim-email",
+            identifiers,
+        )
+        self.assertEqual((status, body["status"]), (200, "processed"))
+
         status, body = self.request("GET", "/v1/registrations/pending")
         self.assertEqual(status, 200)
         self.assertEqual(len(body["registrations"]), 1)
@@ -257,10 +304,6 @@ class RegistrationStoreApiTest(unittest.TestCase):
             body["registrations"][0]["paymentIntentId"], PAYMENT_INTENT_ID
         )
 
-        identifiers = {
-            "paymentIntentId": PAYMENT_INTENT_ID,
-            "reference": REFERENCE,
-        }
         status, body = self.request(
             "POST", "/v1/payment-intents/approval/claim", identifiers
         )

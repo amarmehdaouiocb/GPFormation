@@ -311,6 +311,8 @@ class RegistrationStore:
                     created_at TEXT NOT NULL,
                     updated_at TEXT NOT NULL,
                     captured_at TEXT,
+                    authorization_email_claimed_at TEXT,
+                    authorization_email_sent_at TEXT,
                     email_claimed_at TEXT,
                     email_sent_at TEXT,
                     FOREIGN KEY (reference) REFERENCES registrations(reference)
@@ -360,6 +362,27 @@ class RegistrationStore:
             if "session_start" not in registration_columns:
                 connection.execute(
                     "ALTER TABLE registrations ADD COLUMN session_start TEXT"
+                )
+
+            authorization_columns = {
+                row["name"]
+                for row in connection.execute(
+                    "PRAGMA table_info(payment_authorizations)"
+                ).fetchall()
+            }
+            if "authorization_email_claimed_at" not in authorization_columns:
+                connection.execute(
+                    """
+                    ALTER TABLE payment_authorizations
+                    ADD COLUMN authorization_email_claimed_at TEXT
+                    """
+                )
+            if "authorization_email_sent_at" not in authorization_columns:
+                connection.execute(
+                    """
+                    ALTER TABLE payment_authorizations
+                    ADD COLUMN authorization_email_sent_at TEXT
+                    """
                 )
 
             now = utc_now()
@@ -1041,6 +1064,117 @@ class RegistrationStore:
                 (now, payment_intent_id),
             )
         return {"status": "capturing"}
+
+    def claim_authorized_payment_email(
+        self,
+        payment_intent_id: str,
+        reference: str,
+    ) -> dict[str, Any]:
+        now = utc_now()
+        with self._transaction() as connection:
+            payment = connection.execute(
+                """
+                SELECT reference, status, authorization_email_claimed_at,
+                    authorization_email_sent_at
+                FROM payment_authorizations
+                WHERE payment_intent_id = ?
+                """,
+                (payment_intent_id,),
+            ).fetchone()
+            if not payment:
+                raise NotFound("PaymentIntent was not found")
+            if not hmac.compare_digest(payment["reference"], reference):
+                raise Conflict("PaymentIntent is linked to another registration")
+            if payment["status"] in ("paid", "canceled"):
+                return {"status": "processed"}
+            if payment["status"] not in ("requires_capture", "capturing"):
+                raise Conflict("Payment is not ready for review")
+            if payment["authorization_email_sent_at"]:
+                return {"status": "processed"}
+            if payment["authorization_email_claimed_at"]:
+                claimed_at = datetime.fromisoformat(
+                    payment["authorization_email_claimed_at"].replace("Z", "+00:00")
+                )
+                if claimed_at > datetime.now(timezone.utc) - timedelta(minutes=10):
+                    return {"status": "processing"}
+
+            registration = connection.execute(
+                "SELECT encrypted_payload FROM registrations WHERE reference = ?",
+                (reference,),
+            ).fetchone()
+            if not registration:
+                raise NotFound("Registration was not found")
+
+            connection.execute(
+                """
+                UPDATE payment_authorizations
+                SET authorization_email_claimed_at = ?, updated_at = ?
+                WHERE payment_intent_id = ?
+                """,
+                (now, now, payment_intent_id),
+            )
+            return {
+                "status": "ready",
+                "payload": registration["encrypted_payload"],
+            }
+
+    def complete_authorized_payment_email(
+        self,
+        payment_intent_id: str,
+        reference: str,
+    ) -> str:
+        now = utc_now()
+        with self._transaction() as connection:
+            payment = connection.execute(
+                "SELECT reference FROM payment_authorizations WHERE payment_intent_id = ?",
+                (payment_intent_id,),
+            ).fetchone()
+            if not payment:
+                raise NotFound("PaymentIntent was not found")
+            if not hmac.compare_digest(payment["reference"], reference):
+                raise Conflict("PaymentIntent is linked to another registration")
+            connection.execute(
+                """
+                UPDATE payment_authorizations
+                SET authorization_email_sent_at = COALESCE(
+                        authorization_email_sent_at, ?
+                    ),
+                    updated_at = ?
+                WHERE payment_intent_id = ?
+                """,
+                (now, now, payment_intent_id),
+            )
+        return "processed"
+
+    def release_authorized_payment_email(
+        self,
+        payment_intent_id: str,
+        reference: str,
+    ) -> str:
+        now = utc_now()
+        with self._transaction() as connection:
+            payment = connection.execute(
+                """
+                SELECT reference, authorization_email_sent_at
+                FROM payment_authorizations
+                WHERE payment_intent_id = ?
+                """,
+                (payment_intent_id,),
+            ).fetchone()
+            if not payment:
+                raise NotFound("PaymentIntent was not found")
+            if not hmac.compare_digest(payment["reference"], reference):
+                raise Conflict("PaymentIntent is linked to another registration")
+            if not payment["authorization_email_sent_at"]:
+                connection.execute(
+                    """
+                    UPDATE payment_authorizations
+                    SET authorization_email_claimed_at = NULL, updated_at = ?
+                    WHERE payment_intent_id = ?
+                    """,
+                    (now, payment_intent_id),
+                )
+        return "released"
 
     def release_payment_approval(
         self,
@@ -1863,6 +1997,33 @@ class RegistrationStoreHandler(BaseHTTPRequestHandler):
                 validate_reference(body.get("reference")),
             )
             self._send_json(HTTPStatus.OK, result)
+            return
+
+        if self.command == "POST" and path == "/v1/payment-intents/authorization/claim-email":
+            body = self._read_json()
+            result = self.server.store.claim_authorized_payment_email(
+                validate_payment_intent_id(body.get("paymentIntentId")),
+                validate_reference(body.get("reference")),
+            )
+            self._send_json(HTTPStatus.OK, result)
+            return
+
+        if self.command == "POST" and path == "/v1/payment-intents/authorization/complete-email":
+            body = self._read_json()
+            result = self.server.store.complete_authorized_payment_email(
+                validate_payment_intent_id(body.get("paymentIntentId")),
+                validate_reference(body.get("reference")),
+            )
+            self._send_json(HTTPStatus.OK, {"status": result})
+            return
+
+        if self.command == "POST" and path == "/v1/payment-intents/authorization/release-email":
+            body = self._read_json()
+            result = self.server.store.release_authorized_payment_email(
+                validate_payment_intent_id(body.get("paymentIntentId")),
+                validate_reference(body.get("reference")),
+            )
+            self._send_json(HTTPStatus.OK, {"status": result})
             return
 
         if self.command == "POST" and path == "/v1/payment-intents/approval/release":
