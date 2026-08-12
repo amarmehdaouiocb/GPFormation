@@ -90,6 +90,7 @@ interface FormationDetailTemplateProps {
   downloads?: DownloadLink[];
   recoveryDates?: RecoverySession[];
   selectedRecoverySession?: string;
+  recoveryPaymentEnabled?: boolean;
 }
 
 const FINANCEMENT_COPY: Record<FinancementVariant, { title: string; description: string }> = {
@@ -138,6 +139,7 @@ export default function FormationDetailTemplate({
   downloads,
   recoveryDates,
   selectedRecoverySession,
+  recoveryPaymentEnabled = false,
 }: FormationDetailTemplateProps) {
   const financementCopy = FINANCEMENT_COPY[financementVariant];
   const headings = useMemo(() => extractH2Headings(content), [content]);
@@ -145,7 +147,7 @@ export default function FormationDetailTemplate({
   const defaultPhotos = TAG_PHOTOS[tag?.toUpperCase() ?? ""] ?? DEFAULT_PHOTOS;
   const resolvedPhotos = photos?.length ? photos : defaultPhotos;
   const usesRecoveryRegistration =
-    financementVariant === "points" && Boolean(stripePaymentLink);
+    financementVariant === "points" && recoveryPaymentEnabled;
   const photoAt = (index: number) =>
     resolvedPhotos[index % resolvedPhotos.length] ??
     defaultPhotos[index % defaultPhotos.length];
@@ -261,7 +263,7 @@ export default function FormationDetailTemplate({
                   <Phone size={18} weight="duotone" />
                   <span>01 45 09 09 35</span>
                 </a>
-                {stripePaymentLink && (
+                {(stripePaymentLink || usesRecoveryRegistration) && (
                   usesRecoveryRegistration ? (
                     <a
                       href="#inscription-points"
@@ -536,7 +538,7 @@ export default function FormationDetailTemplate({
                 </div>
               )}
 
-              {usesRecoveryRegistration && stripePaymentLink && recoveryDates && (
+              {usesRecoveryRegistration && recoveryDates && (
                 <RecoveryRegistrationForm
                   key={selectedRecoverySession ?? "no-session"}
                   recoveryDates={recoveryDates}

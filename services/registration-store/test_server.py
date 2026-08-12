@@ -18,8 +18,10 @@ from server import RegistrationStore, create_server
 
 TOKEN = "test-token-that-is-longer-than-thirty-two-characters"
 REFERENCE = "recovery_20260904_123e4567-e89b-42d3-a456-426614174000"
+REFERENCE_TWO = "recovery_20260904_123e4567-e89b-42d3-a456-426614174001"
 PAYLOAD = "aGVsbG93b3JsZA.dGFnZWQ.ZW5jcnlwdGVk"
 CHECKOUT_SESSION_ID = "cs_test_1234567890abcdef"
+PAYMENT_INTENT_ID = "pi_test_1234567890abcdef"
 DOCUMENT_KINDS = (
     "permis_recto",
     "permis_verso",
@@ -55,7 +57,7 @@ class RegistrationStoreApiTest(unittest.TestCase):
         self,
         method: str,
         path: str,
-        body: dict[str, str] | None = None,
+        body: dict[str, Any] | None = None,
         authenticated: bool = True,
     ) -> tuple[int, dict[str, object]]:
         headers = {"Content-Type": "application/json"}
@@ -92,20 +94,21 @@ class RegistrationStoreApiTest(unittest.TestCase):
         purpose: str,
         kind: str,
         expires_in_seconds: int = 300,
+        reference: str = REFERENCE,
     ) -> str:
         expires = int(time.time()) + expires_in_seconds
-        message = f"{purpose}\n{REFERENCE}\n{kind}\n{expires}".encode("utf-8")
+        message = f"{purpose}\n{reference}\n{kind}\n{expires}".encode("utf-8")
         signature = hmac.new(TOKEN.encode("utf-8"), message, hashlib.sha256).hexdigest()
         route = "uploads" if purpose == "upload" else "downloads"
         return (
-            f"/v1/{route}/{REFERENCE}/{kind}"
+            f"/v1/{route}/{reference}/{kind}"
             f"?expires={expires}&signature={signature}"
         )
 
-    def upload_document(self, kind: str) -> None:
+    def upload_document(self, kind: str, reference: str = REFERENCE) -> None:
         status, body, headers = self.raw_request(
             "PUT",
-            self.signed_document_path("upload", kind),
+            self.signed_document_path("upload", kind, reference=reference),
             SAMPLE_PNG,
             {
                 "Content-Type": "image/png",
@@ -116,9 +119,13 @@ class RegistrationStoreApiTest(unittest.TestCase):
         self.assertEqual(json.loads(body)["kind"], kind)
         self.assertEqual(headers["Access-Control-Allow-Origin"], "http://localhost:3000")
 
-    def upload_all_documents(self, kinds: tuple[str, ...] = DOCUMENT_KINDS) -> None:
+    def upload_all_documents(
+        self,
+        kinds: tuple[str, ...] = DOCUMENT_KINDS,
+        reference: str = REFERENCE,
+    ) -> None:
         for kind in kinds:
-            self.upload_document(kind)
+            self.upload_document(kind, reference)
 
     def test_health_is_public(self) -> None:
         status, body = self.request("GET", "/health", authenticated=False)
@@ -198,7 +205,9 @@ class RegistrationStoreApiTest(unittest.TestCase):
                 "reference": REFERENCE,
                 "payload": PAYLOAD,
                 "registrationCreatedAt": registrations[0]["registrationCreatedAt"],
+                "stripePaymentId": CHECKOUT_SESSION_ID,
                 "checkoutSessionId": CHECKOUT_SESSION_ID,
+                "paymentSource": "checkout",
                 "paidAt": registrations[0]["paidAt"],
                 "emailSentAt": registrations[0]["emailSentAt"],
                 "documents": registrations[0]["documents"],
@@ -212,6 +221,184 @@ class RegistrationStoreApiTest(unittest.TestCase):
         status, body = self.request("POST", "/v1/payments/claim", claim)
         self.assertEqual(status, 200)
         self.assertEqual(body, {"status": "processed"})
+
+    def test_manual_capture_flow_and_email_are_idempotent(self) -> None:
+        self.request(
+            "PUT",
+            f"/v1/registrations/{REFERENCE}",
+            {"payload": PAYLOAD, "sessionStart": "2026-09-04"},
+        )
+        self.upload_all_documents()
+
+        payment = {
+            "paymentIntentId": PAYMENT_INTENT_ID,
+            "reference": REFERENCE,
+            "sessionStart": "2026-09-04",
+            "amount": 21900,
+            "currency": "eur",
+        }
+        status, body = self.request("POST", "/v1/payment-intents", payment)
+        self.assertEqual((status, body["status"]), (201, "created"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/authorized",
+            {
+                "paymentIntentId": PAYMENT_INTENT_ID,
+                "reference": REFERENCE,
+            },
+        )
+        self.assertEqual((status, body["status"]), (200, "requires_capture"))
+
+        status, body = self.request("GET", "/v1/registrations/pending")
+        self.assertEqual(status, 200)
+        self.assertEqual(len(body["registrations"]), 1)
+        self.assertEqual(
+            body["registrations"][0]["paymentIntentId"], PAYMENT_INTENT_ID
+        )
+
+        identifiers = {
+            "paymentIntentId": PAYMENT_INTENT_ID,
+            "reference": REFERENCE,
+        }
+        status, body = self.request(
+            "POST", "/v1/payment-intents/approval/claim", identifiers
+        )
+        self.assertEqual((status, body["status"]), (200, "capturing"))
+
+        status, body = self.request(
+            "POST", "/v1/payment-intents/capture/claim-email", identifiers
+        )
+        self.assertEqual((status, body["status"]), (200, "ready"))
+        self.assertEqual(body["payload"], PAYLOAD)
+
+        status, body = self.request(
+            "POST", "/v1/payment-intents/capture/claim-email", identifiers
+        )
+        self.assertEqual((status, body["status"]), (200, "processing"))
+
+        status, body = self.request(
+            "POST", "/v1/payment-intents/capture/complete-email", identifiers
+        )
+        self.assertEqual((status, body["status"]), (200, "processed"))
+
+        status, body = self.request("GET", "/v1/registrations/paid")
+        self.assertEqual(status, 200)
+        self.assertEqual(len(body["registrations"]), 1)
+        self.assertEqual(
+            body["registrations"][0]["stripePaymentId"], PAYMENT_INTENT_ID
+        )
+        self.assertEqual(
+            body["registrations"][0]["paymentSource"], "payment_intent"
+        )
+
+    def test_sessions_can_be_managed_and_deleted_softly(self) -> None:
+        status, body = self.request("GET", "/v1/sessions")
+        self.assertEqual(status, 200)
+        self.assertEqual(len(body["sessions"]), 11)
+
+        status, body = self.request(
+            "POST",
+            "/v1/sessions",
+            {
+                "start": "2027-01-08",
+                "end": "2027-01-09",
+                "capacity": 18,
+                "status": "open",
+            },
+        )
+        self.assertEqual(status, 201)
+        self.assertEqual(body["session"]["capacity"], 18)
+
+        status, body = self.request(
+            "PATCH",
+            "/v1/sessions/2027-01-08",
+            {
+                "start": "2027-01-15",
+                "end": "2027-01-16",
+                "capacity": 16,
+                "status": "closed",
+            },
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(body["session"]["start"], "2027-01-15")
+        self.assertEqual(body["session"]["status"], "closed")
+
+        status, body = self.request("DELETE", "/v1/sessions/2027-01-15")
+        self.assertEqual((status, body["status"]), (200, "deleted"))
+
+        status, body = self.request("GET", "/v1/sessions")
+        archived = next(
+            session
+            for session in body["sessions"]
+            if session["start"] == "2027-01-15"
+        )
+        self.assertIsNotNone(archived["deletedAt"])
+
+    def test_capacity_claim_is_atomic_before_capture(self) -> None:
+        status, _ = self.request(
+            "PATCH",
+            "/v1/sessions/2026-09-04",
+            {
+                "start": "2026-09-04",
+                "end": "2026-09-05",
+                "capacity": 1,
+                "status": "open",
+            },
+        )
+        self.assertEqual(status, 200)
+
+        for reference in (REFERENCE, REFERENCE_TWO):
+            self.request(
+                "PUT",
+                f"/v1/registrations/{reference}",
+                {"payload": PAYLOAD, "sessionStart": "2026-09-04"},
+            )
+            self.upload_all_documents(reference=reference)
+
+        payments = (
+            (PAYMENT_INTENT_ID, REFERENCE),
+            ("pi_test_1234567890abcdeg", REFERENCE_TWO),
+        )
+        for payment_intent_id, reference in payments:
+            self.request(
+                "POST",
+                "/v1/payment-intents",
+                {
+                    "paymentIntentId": payment_intent_id,
+                    "reference": reference,
+                    "sessionStart": "2026-09-04",
+                    "amount": 21900,
+                    "currency": "eur",
+                },
+            )
+            self.request(
+                "POST",
+                "/v1/payment-intents/authorized",
+                {
+                    "paymentIntentId": payment_intent_id,
+                    "reference": reference,
+                },
+            )
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/approval/claim",
+            {"paymentIntentId": PAYMENT_INTENT_ID, "reference": REFERENCE},
+        )
+        self.assertEqual((status, body["status"]), (200, "capturing"))
+
+        status, body = self.request(
+            "POST",
+            "/v1/payment-intents/approval/claim",
+            {
+                "paymentIntentId": "pi_test_1234567890abcdeg",
+                "reference": REFERENCE_TWO,
+            },
+        )
+        self.assertEqual(status, 409)
+        self.assertEqual(body["error"], "conflict")
+        self.assertEqual(body["message"], "Session is full")
 
     def test_reference_cannot_be_overwritten(self) -> None:
         path = f"/v1/registrations/{REFERENCE}"

@@ -1,15 +1,22 @@
 "use server";
 
-import { getUpcomingRecoverySessions } from "@/lib/recovery-dates";
 import { isIdentityDocumentType } from "@/lib/recovery-documents";
+import type { RecoverySession } from "@/lib/recovery-dates";
 import {
+  createRecoveryPaymentAuthorization,
   createRecoveryDocumentUploadTargets,
   createRecoveryRegistrationReference,
+  getUpcomingRecoverySessions,
   savePendingRecoveryRegistration,
   verifyRecoveryDocuments,
   type RecoveryDocumentUploadTarget,
   type RecoveryRegistrantDetails,
 } from "@/lib/recovery-registration";
+import {
+  getStripeClient,
+  RECOVERY_PAYMENT_AMOUNT,
+  RECOVERY_PAYMENT_CURRENCY,
+} from "@/lib/stripe";
 
 export type RecoveryRegistrationState =
   | {
@@ -24,7 +31,7 @@ export type RecoveryRegistrationState =
   | null;
 
 export type RecoveryRegistrationFinalization =
-  | { status: "ready"; paymentUrl: string }
+  | { status: "ready"; clientSecret: string }
   | { status: "error"; message: string };
 
 const REQUIRED_FIELDS: Array<keyof RecoveryRegistrantDetails> = [
@@ -40,16 +47,6 @@ const REQUIRED_FIELDS: Array<keyof RecoveryRegistrantDetails> = [
   "numeroPermis",
   "typePieceIdentite",
 ];
-
-function getPaymentLink(): string | null {
-  const paymentLink = process.env.NEXT_PUBLIC_STRIPE_RECOVERY_LINK;
-  const paymentWebhookReady = Boolean(
-    process.env.STRIPE_WEBHOOK_SECRET &&
-      process.env.STRIPE_RECOVERY_PAYMENT_LINK_ID,
-  );
-
-  return paymentLink && paymentWebhookReady ? paymentLink : null;
-}
 
 function getField(
   formData: FormData,
@@ -67,7 +64,20 @@ export async function submitRecoveryRegistration(
   ) as unknown as RecoveryRegistrantDetails;
   const consentement = formData.get("consentement");
   const selectedSessionStart = ((formData.get("sessionStart") as string) ?? "").trim();
-  const selectedSession = getUpcomingRecoverySessions().find(
+  let availableSessions: RecoverySession[];
+
+  try {
+    availableSessions = await getUpcomingRecoverySessions();
+  } catch (error) {
+    console.error("Unable to load recovery sessions", error);
+    return {
+      status: "error",
+      message:
+        "Le calendrier est momentanément indisponible. Veuillez réessayer ou nous appeler au 01 45 09 09 35.",
+    };
+  }
+
+  const selectedSession = availableSessions.find(
     (session) => session.start === selectedSessionStart,
   );
 
@@ -115,9 +125,11 @@ export async function submitRecoveryRegistration(
     };
   }
 
-  const paymentLink = getPaymentLink();
-
-  if (!paymentLink) {
+  if (
+    !process.env.STRIPE_SECRET_KEY ||
+    !process.env.STRIPE_WEBHOOK_SECRET ||
+    !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ) {
     return {
       status: "error",
       message:
@@ -152,9 +164,7 @@ export async function submitRecoveryRegistration(
 export async function finalizeRecoveryRegistration(
   reference: string,
 ): Promise<RecoveryRegistrationFinalization> {
-  const paymentLink = getPaymentLink();
-
-  if (!paymentLink) {
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
     return {
       status: "error",
       message:
@@ -173,11 +183,49 @@ export async function finalizeRecoveryRegistration(
       };
     }
 
-    const paymentUrl = new URL(paymentLink);
-    paymentUrl.searchParams.set("client_reference_id", reference);
+    const compactSessionStart = reference.slice("recovery_".length, 17);
+    const sessionStart = `${compactSessionStart.slice(0, 4)}-${compactSessionStart.slice(4, 6)}-${compactSessionStart.slice(6, 8)}`;
+    const availableSessions = await getUpcomingRecoverySessions();
 
-    return { status: "ready", paymentUrl: paymentUrl.toString() };
-  } catch {
+    if (!availableSessions.some((session) => session.start === sessionStart)) {
+      return {
+        status: "error",
+        message:
+          "Cette session n’est plus disponible. Votre carte n’a pas été débitée.",
+      };
+    }
+
+    const paymentIntent = await getStripeClient().paymentIntents.create(
+      {
+        amount: RECOVERY_PAYMENT_AMOUNT,
+        currency: RECOVERY_PAYMENT_CURRENCY,
+        capture_method: "manual",
+        payment_method_types: ["card"],
+        description: "Stage de récupération de points",
+        metadata: {
+          payment_type: "recovery_points",
+          registration_reference: reference,
+          session_start: sessionStart,
+        },
+      },
+      { idempotencyKey: `recovery-registration/${reference}` },
+    );
+
+    if (!paymentIntent.client_secret) {
+      throw new Error("Stripe returned a PaymentIntent without a client secret");
+    }
+
+    await createRecoveryPaymentAuthorization({
+      paymentIntentId: paymentIntent.id,
+      reference,
+      sessionStart,
+      amount: RECOVERY_PAYMENT_AMOUNT,
+      currency: RECOVERY_PAYMENT_CURRENCY,
+    });
+
+    return { status: "ready", clientSecret: paymentIntent.client_secret };
+  } catch (error) {
+    console.error("Unable to prepare recovery payment", error);
     return {
       status: "error",
       message:

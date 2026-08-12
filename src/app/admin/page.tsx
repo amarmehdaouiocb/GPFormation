@@ -4,15 +4,27 @@ import {
   CalendarBlank,
   CheckCircle,
   ClockCounterClockwise,
+  CreditCard,
   EnvelopeSimple,
   FileText,
   IdentificationCard,
   MapPin,
+  PencilSimple,
   Phone,
+  Plus,
   SignOut,
+  Trash,
   UsersThree,
+  XCircle,
 } from "@phosphor-icons/react/dist/ssr";
-import { logoutAdmin } from "@/app/admin/actions";
+import {
+  approveRecoveryPayment,
+  createAdminRecoverySession,
+  deleteAdminRecoverySession,
+  logoutAdmin,
+  rejectRecoveryPayment,
+  updateAdminRecoverySession,
+} from "@/app/admin/actions";
 import AdminDocumentDownloadButton from "@/components/AdminDocumentDownloadButton";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
@@ -21,9 +33,13 @@ import {
   getRequiredRecoveryDocuments,
 } from "@/lib/recovery-documents";
 import {
+  getAllRecoverySessions,
+  getPendingRecoveryRegistrations,
   getPaidRecoveryRegistrations,
   type PaidRecoveryRegistration,
+  type PendingRecoveryRegistration,
 } from "@/lib/recovery-registration";
+import type { RecoverySession } from "@/lib/recovery-dates";
 
 export const dynamic = "force-dynamic";
 
@@ -236,22 +252,318 @@ function StudentCard({
   );
 }
 
-export default async function AdminPage() {
+function PendingRegistrationCard({
+  registration,
+}: {
+  registration: PendingRecoveryRegistration;
+}) {
+  const { data } = registration;
+  const requiredDocuments = getRequiredRecoveryDocuments(
+    data.typePieceIdentite,
+  );
+  const amount = new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: registration.currency.toUpperCase(),
+  }).format(registration.amount / 100);
+
+  return (
+    <article className="border border-amber-200 bg-white shadow-[0_16px_50px_rgba(24,24,27,0.035)]">
+      <div className="grid gap-6 p-5 lg:grid-cols-[minmax(220px,1.2fr)_minmax(220px,1fr)_auto] lg:items-center lg:p-6">
+        <div>
+          <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-amber-700">
+            Autorisation bancaire reçue
+          </p>
+          <h3 className="mt-2 text-2xl font-bold tracking-[-0.035em] text-zinc-950">
+            {data.prenoms} {data.nom}
+          </h3>
+          <p className="mt-2 flex items-center gap-2 text-sm text-zinc-500">
+            <CalendarBlank size={17} className="text-[#4CAF50]" />
+            {formatRecoveryDateRange(data.session)}
+          </p>
+        </div>
+
+        <div className="space-y-2 text-sm text-zinc-600">
+          <p>{data.email}</p>
+          <p>{data.telephone}</p>
+          <p className="font-semibold text-zinc-950">Montant autorisé : {amount}</p>
+          <p className="text-xs text-zinc-500">
+            Reçue le {formatDateTime(registration.authorizedAt)}
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
+          <form action={approveRecoveryPayment}>
+            <input type="hidden" name="reference" value={registration.reference} />
+            <input
+              type="hidden"
+              name="paymentIntentId"
+              value={registration.paymentIntentId}
+            />
+            <button
+              type="submit"
+              className="flex w-full items-center justify-center gap-2 bg-[#2E7D32] px-5 py-3 text-xs font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#246428]"
+            >
+              <CheckCircle size={17} weight="fill" />
+              Valider et encaisser
+            </button>
+          </form>
+          <form action={rejectRecoveryPayment}>
+            <input type="hidden" name="reference" value={registration.reference} />
+            <input
+              type="hidden"
+              name="paymentIntentId"
+              value={registration.paymentIntentId}
+            />
+            <button
+              type="submit"
+              className="flex w-full items-center justify-center gap-2 border border-zinc-300 px-5 py-3 text-xs font-bold uppercase tracking-[0.08em] text-zinc-700 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+            >
+              <XCircle size={17} />
+              Refuser
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <details className="group border-t border-zinc-100">
+        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-xs font-bold uppercase tracking-[0.12em] text-zinc-600 hover:bg-zinc-50 lg:px-6">
+          Vérifier le dossier avant validation
+          <ArrowSquareOut
+            size={17}
+            className="transition-transform group-open:rotate-45"
+          />
+        </summary>
+        <div className="grid gap-px border-t border-zinc-100 bg-zinc-200 md:grid-cols-3">
+          <div className="bg-[#fafaf8] p-5">
+            <p className="text-xs text-zinc-500">Naissance</p>
+            <p className="mt-1 text-sm font-semibold">
+              {formatDate(data.dateNaissance)} · {data.lieuNaissance}
+            </p>
+          </div>
+          <div className="bg-[#fafaf8] p-5">
+            <p className="text-xs text-zinc-500">Adresse</p>
+            <p className="mt-1 text-sm font-semibold">
+              {data.adresse}, {data.codePostal} {data.ville}
+            </p>
+          </div>
+          <div className="bg-[#fafaf8] p-5">
+            <p className="text-xs text-zinc-500">Permis</p>
+            <p className="mt-1 font-mono text-sm font-semibold">
+              {data.numeroPermis}
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-3 border-t border-zinc-200 bg-[#fafaf8] p-5 sm:grid-cols-2 xl:grid-cols-4 lg:p-6">
+          {requiredDocuments.map((document) => {
+            const uploadedDocument = registration.documents.find(
+              ({ kind }) => kind === document.kind,
+            );
+
+            return uploadedDocument ? (
+              <AdminDocumentDownloadButton
+                key={document.kind}
+                reference={registration.reference}
+                kind={document.kind}
+                label={`${document.label} — ${document.side}`}
+                detail={`Télécharger · ${formatFileSize(uploadedDocument.sizeBytes)}`}
+              />
+            ) : (
+              <div
+                key={document.kind}
+                className="border border-dashed border-red-200 bg-white px-4 py-3 text-xs text-red-600"
+              >
+                {document.label} indisponible
+              </div>
+            );
+          })}
+        </div>
+      </details>
+    </article>
+  );
+}
+
+function SessionManager({ sessions }: { sessions: RecoverySession[] }) {
+  const activeSessions = sessions.filter((session) => !session.deletedAt);
+  const archivedSessions = sessions.filter((session) => session.deletedAt);
+  const inputClass =
+    "h-11 w-full border border-zinc-300 bg-white px-3 text-sm outline-none focus:border-[#4CAF50]";
+
+  return (
+    <section id="sessions" className="mt-16 scroll-mt-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#2E7D32]">
+            Calendrier public
+          </p>
+          <h2 className="mt-2 text-3xl font-bold tracking-[-0.04em] text-zinc-950">
+            Sessions et capacités
+          </h2>
+        </div>
+        <p className="max-w-lg text-sm leading-relaxed text-zinc-500">
+          Les cinq prochaines sessions ouvertes et non complètes sont affichées
+          automatiquement sur le site.
+        </p>
+      </div>
+
+      <form
+        action={createAdminRecoverySession}
+        className="mt-6 grid gap-3 border border-[#4CAF50]/25 bg-[#f4faf4] p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_130px_150px_auto] lg:items-end"
+      >
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-600">
+          Début
+          <input type="date" name="start" required className={`mt-2 ${inputClass}`} />
+        </label>
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-600">
+          Fin
+          <input type="date" name="end" required className={`mt-2 ${inputClass}`} />
+        </label>
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-600">
+          Capacité
+          <input
+            type="number"
+            name="capacity"
+            min="1"
+            max="100"
+            defaultValue="20"
+            required
+            className={`mt-2 ${inputClass}`}
+          />
+        </label>
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-600">
+          État
+          <select name="status" defaultValue="open" className={`mt-2 ${inputClass}`}>
+            <option value="open">Ouverte</option>
+            <option value="closed">Fermée</option>
+          </select>
+        </label>
+        <button
+          type="submit"
+          className="flex h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-xs font-bold uppercase tracking-[0.08em] text-white hover:bg-zinc-800"
+        >
+          <Plus size={17} /> Ajouter
+        </button>
+      </form>
+
+      <div className="mt-4 space-y-3">
+        {activeSessions.map((session) => (
+          <form
+            key={session.start}
+            action={updateAdminRecoverySession.bind(null, session.start)}
+            className="grid gap-3 border border-zinc-200 bg-white p-4 lg:grid-cols-[1fr_1fr_130px_150px_150px_auto] lg:items-end"
+          >
+            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+              Début
+              <input
+                type="date"
+                name="start"
+                defaultValue={session.start}
+                required
+                className={`mt-2 ${inputClass}`}
+              />
+            </label>
+            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+              Fin
+              <input
+                type="date"
+                name="end"
+                defaultValue={session.end}
+                required
+                className={`mt-2 ${inputClass}`}
+              />
+            </label>
+            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+              Capacité
+              <input
+                type="number"
+                name="capacity"
+                min="1"
+                max="100"
+                defaultValue={session.capacity ?? 20}
+                required
+                className={`mt-2 ${inputClass}`}
+              />
+            </label>
+            <label className="text-xs font-bold uppercase tracking-[0.08em] text-zinc-500">
+              État
+              <select
+                name="status"
+                defaultValue={session.status ?? "open"}
+                className={`mt-2 ${inputClass}`}
+              >
+                <option value="open">Ouverte</option>
+                <option value="closed">Fermée</option>
+              </select>
+            </label>
+            <div className="h-11 border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-500">
+              <strong className="block text-sm text-zinc-900">
+                {session.paidCount ?? 0}/{session.capacity ?? 20}
+              </strong>
+              confirmées · {session.pendingCount ?? 0} en attente
+            </div>
+            <div className="flex h-11">
+              <button
+                type="submit"
+                aria-label={`Enregistrer la session du ${session.start}`}
+                className="flex flex-1 items-center justify-center border border-zinc-300 text-zinc-700 hover:border-zinc-950 hover:bg-zinc-950 hover:text-white"
+              >
+                <PencilSimple size={17} />
+              </button>
+              <button
+                type="submit"
+                formAction={deleteAdminRecoverySession.bind(null, session.start)}
+                aria-label={`Supprimer la session du ${session.start}`}
+                className="flex flex-1 items-center justify-center border border-l-0 border-zinc-300 text-red-600 hover:border-red-600 hover:bg-red-600 hover:text-white"
+              >
+                <Trash size={17} />
+              </button>
+            </div>
+          </form>
+        ))}
+      </div>
+
+      {archivedSessions.length > 0 ? (
+        <details className="mt-4 border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-500">
+          <summary className="cursor-pointer font-semibold text-zinc-700">
+            {archivedSessions.length} session
+            {archivedSessions.length > 1 ? "s" : ""} supprimée
+            {archivedSessions.length > 1 ? "s" : ""}
+          </summary>
+          <ul className="mt-3 space-y-1 font-mono text-xs">
+            {archivedSessions.map((session) => (
+              <li key={session.start}>{formatRecoveryDateRange(session)}</li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+    </section>
+  );
+}
+
+interface AdminPageProps {
+  searchParams: Promise<{ type?: string; message?: string }>;
+}
+
+export default async function AdminPage({ searchParams }: AdminPageProps) {
   await requireAdminSession();
 
   let registrations: PaidRecoveryRegistration[] = [];
+  let pendingRegistrations: PendingRecoveryRegistration[] = [];
+  let sessions: RecoverySession[] = [];
   let loadError = false;
 
   try {
-    registrations = await getPaidRecoveryRegistrations();
+    [registrations, pendingRegistrations, sessions] = await Promise.all([
+      getPaidRecoveryRegistrations(),
+      getPendingRecoveryRegistrations(),
+      getAllRecoverySessions(),
+    ]);
   } catch (error) {
-    console.error("Unable to load paid recovery registrations", error);
+    console.error("Unable to load recovery administration", error);
     loadError = true;
   }
 
-  const sessionCount = new Set(
-    registrations.map((registration) => registration.data.session.start),
-  ).size;
+  const notice = await searchParams;
+
   const latestPayment = registrations[0]?.paidAt;
 
   return (
@@ -298,11 +610,11 @@ export default async function AdminPage() {
               Administration / Stages
             </p>
             <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-[-0.05em] text-zinc-950 sm:text-5xl lg:text-6xl">
-              Inscriptions payées
+              Pilotage des inscriptions
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-600">
-              Seuls les élèves dont le paiement Stripe a été confirmé apparaissent
-              dans cette liste.
+              Contrôlez les dossiers, confirmez les paiements et gérez les dates
+              affichées sur le site depuis un seul espace.
             </p>
           </div>
 
@@ -312,20 +624,33 @@ export default async function AdminPage() {
           </div>
         </div>
 
+        {notice.message ? (
+          <div
+            role="status"
+            className={`mt-8 border px-5 py-4 text-sm font-medium ${
+              notice.type === "error"
+                ? "border-red-200 bg-red-50 text-red-700"
+                : "border-[#4CAF50]/30 bg-[#edf8ed] text-[#2E7D32]"
+            }`}
+          >
+            {notice.message}
+          </div>
+        ) : null}
+
         <section className="mt-10 grid gap-px border border-zinc-200 bg-zinc-200 sm:grid-cols-3">
           <div className="bg-white p-5 sm:p-6">
             <UsersThree size={24} className="text-[#4CAF50]" />
             <p className="mt-5 text-3xl font-bold tracking-[-0.04em]">
-              {registrations.length}
+              {pendingRegistrations.length}
             </p>
-            <p className="mt-1 text-sm text-zinc-500">Élèves inscrits et payés</p>
+            <p className="mt-1 text-sm text-zinc-500">Paiements à valider</p>
           </div>
           <div className="bg-white p-5 sm:p-6">
             <CalendarBlank size={24} className="text-[#4CAF50]" />
             <p className="mt-5 text-3xl font-bold tracking-[-0.04em]">
-              {sessionCount}
+              {registrations.length}
             </p>
-            <p className="mt-1 text-sm text-zinc-500">Sessions représentées</p>
+            <p className="mt-1 text-sm text-zinc-500">Élèves inscrits et payés</p>
           </div>
           <div className="bg-white p-5 sm:p-6">
             <ClockCounterClockwise size={24} className="text-[#4CAF50]" />
@@ -336,7 +661,46 @@ export default async function AdminPage() {
           </div>
         </section>
 
-        <section className="mt-10">
+        <section id="payments" className="mt-10 scroll-mt-8">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-zinc-700">
+                Paiements à valider
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500">
+                La carte du candidat est autorisée mais pas débitée. Vérifiez le
+                dossier et la place disponible avant d’encaisser.
+              </p>
+            </div>
+            <span className="font-mono text-[0.65rem] text-zinc-400">
+              {pendingRegistrations.length} en attente
+            </span>
+          </div>
+
+          {loadError ? (
+            <div className="border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+              Impossible de charger les paiements en attente.
+            </div>
+          ) : pendingRegistrations.length === 0 ? (
+            <div className="border border-dashed border-zinc-300 bg-white px-6 py-12 text-center">
+              <CreditCard size={34} className="mx-auto text-zinc-300" />
+              <p className="mt-4 text-sm font-semibold text-zinc-600">
+                Aucun paiement en attente de validation
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {pendingRegistrations.map((registration) => (
+                <PendingRegistrationCard
+                  key={registration.reference}
+                  registration={registration}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="mt-16">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-zinc-700">
               Liste des élèves
@@ -373,6 +737,8 @@ export default async function AdminPage() {
             </div>
           )}
         </section>
+
+        <SessionManager sessions={sessions} />
       </div>
     </main>
   );

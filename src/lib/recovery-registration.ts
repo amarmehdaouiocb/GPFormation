@@ -43,7 +43,7 @@ const ENCRYPTION_ALGORITHM = "aes-256-gcm";
 const STORE_REQUEST_TIMEOUT_MS = 8_000;
 
 interface StorePaymentClaimResponse {
-  status: "ready" | "processed";
+  status: "ready" | "processed" | "processing";
   payload?: string;
 }
 
@@ -51,7 +51,8 @@ interface StorePaidRegistration {
   reference: string;
   payload: string;
   registrationCreatedAt: string;
-  checkoutSessionId: string;
+  stripePaymentId: string;
+  paymentSource: "checkout" | "payment_intent";
   paidAt: string;
   emailSentAt: string | null;
   documents: RecoveryDocumentMetadata[];
@@ -61,19 +62,56 @@ interface StorePaidRegistrationsResponse {
   registrations: StorePaidRegistration[];
 }
 
+interface StorePendingRegistration {
+  reference: string;
+  payload: string;
+  registrationCreatedAt: string;
+  paymentIntentId: string;
+  paymentStatus: "requires_capture" | "capturing";
+  amount: number;
+  currency: string;
+  authorizedAt: string;
+  documents: RecoveryDocumentMetadata[];
+}
+
+interface StorePendingRegistrationsResponse {
+  registrations: StorePendingRegistration[];
+}
+
+interface StoreSessionsResponse {
+  sessions: RecoverySession[];
+}
+
 export type RecoveryPaymentClaim =
   | { status: "processed" }
   | { status: "ready"; data: RecoveryRegistrationData };
 
 export interface PaidRecoveryRegistration {
   reference: string;
-  checkoutSessionId: string;
+  stripePaymentId: string;
+  paymentSource: "checkout" | "payment_intent";
   createdAt: string;
   paidAt: string;
   emailSentAt: string | null;
   documents: RecoveryDocumentMetadata[];
   data: RecoveryRegistrationData;
 }
+
+export interface PendingRecoveryRegistration {
+  reference: string;
+  paymentIntentId: string;
+  paymentStatus: "requires_capture" | "capturing";
+  amount: number;
+  currency: string;
+  createdAt: string;
+  authorizedAt: string;
+  documents: RecoveryDocumentMetadata[];
+  data: RecoveryRegistrationData;
+}
+
+export type CapturedPaymentEmailClaim =
+  | { status: "processed" | "processing" }
+  | { status: "ready"; data: RecoveryRegistrationData };
 
 export interface RecoveryDocumentMetadata {
   kind: RecoveryDocumentKind;
@@ -247,6 +285,7 @@ export async function savePendingRecoveryRegistration(
     body: JSON.stringify({
       payload: encryptRegistration(registration),
       identityDocumentType: data.typePieceIdentite,
+      sessionStart: data.session.start,
     }),
   });
 }
@@ -278,6 +317,152 @@ export function createRecoveryDocumentDownloadUrl(
   kind: RecoveryDocumentKind,
 ): string {
   return createDocumentAccessUrl(reference, kind, "download");
+}
+
+export async function getUpcomingRecoverySessions(): Promise<RecoverySession[]> {
+  const response = await requestRegistrationStore<StoreSessionsResponse>(
+    "/v1/sessions/upcoming",
+    { method: "GET" },
+  );
+  return response.sessions;
+}
+
+export async function getAllRecoverySessions(): Promise<RecoverySession[]> {
+  const response = await requestRegistrationStore<StoreSessionsResponse>(
+    "/v1/sessions",
+    { method: "GET" },
+  );
+  return response.sessions;
+}
+
+export async function createRecoverySession(
+  session: Required<Pick<RecoverySession, "start" | "end" | "capacity" | "status">>,
+): Promise<void> {
+  await requestRegistrationStore("/v1/sessions", {
+    method: "POST",
+    body: JSON.stringify(session),
+  });
+}
+
+export async function updateRecoverySession(
+  originalStart: string,
+  session: Required<Pick<RecoverySession, "start" | "end" | "capacity" | "status">>,
+): Promise<void> {
+  await requestRegistrationStore(
+    `/v1/sessions/${encodeURIComponent(originalStart)}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(session),
+    },
+  );
+}
+
+export async function deleteRecoverySession(start: string): Promise<void> {
+  await requestRegistrationStore(
+    `/v1/sessions/${encodeURIComponent(start)}`,
+    { method: "DELETE" },
+  );
+}
+
+export async function createRecoveryPaymentAuthorization(input: {
+  paymentIntentId: string;
+  reference: string;
+  sessionStart: string;
+  amount: number;
+  currency: string;
+}): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function markRecoveryPaymentAuthorized(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents/authorized", {
+    method: "POST",
+    body: JSON.stringify({ paymentIntentId, reference }),
+  });
+}
+
+export async function claimRecoveryPaymentApproval(
+  paymentIntentId: string,
+  reference: string,
+): Promise<"capturing" | "paid"> {
+  const response = await requestRegistrationStore<{ status: "capturing" | "paid" }>(
+    "/v1/payment-intents/approval/claim",
+    {
+      method: "POST",
+      body: JSON.stringify({ paymentIntentId, reference }),
+    },
+  );
+  return response.status;
+}
+
+export async function releaseRecoveryPaymentApproval(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents/approval/release", {
+    method: "POST",
+    body: JSON.stringify({ paymentIntentId, reference }),
+  });
+}
+
+export async function claimCapturedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<CapturedPaymentEmailClaim> {
+  const claim = await requestRegistrationStore<StorePaymentClaimResponse>(
+    "/v1/payment-intents/capture/claim-email",
+    {
+      method: "POST",
+      body: JSON.stringify({ paymentIntentId, reference }),
+    },
+  );
+
+  if (claim.status !== "ready") {
+    return { status: claim.status };
+  }
+  if (!claim.payload) {
+    throw new Error("Registration store returned an empty encrypted payload");
+  }
+  return {
+    status: "ready",
+    data: decryptRegistration(claim.payload).data,
+  };
+}
+
+export async function completeCapturedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents/capture/complete-email", {
+    method: "POST",
+    body: JSON.stringify({ paymentIntentId, reference }),
+  });
+}
+
+export async function releaseCapturedRecoveryPaymentEmail(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents/capture/release-email", {
+    method: "POST",
+    body: JSON.stringify({ paymentIntentId, reference }),
+  });
+}
+
+export async function cancelRecoveryPaymentAuthorization(
+  paymentIntentId: string,
+  reference: string,
+): Promise<void> {
+  await requestRegistrationStore("/v1/payment-intents/cancel", {
+    method: "POST",
+    body: JSON.stringify({ paymentIntentId, reference }),
+  });
 }
 
 export async function claimRecoveryPayment(
@@ -330,10 +515,37 @@ export async function getPaidRecoveryRegistrations(): Promise<
 
     return {
       reference: registration.reference,
-      checkoutSessionId: registration.checkoutSessionId,
+      stripePaymentId: registration.stripePaymentId,
+      paymentSource: registration.paymentSource,
       createdAt: decrypted.createdAt,
       paidAt: registration.paidAt,
       emailSentAt: registration.emailSentAt,
+      documents: registration.documents,
+      data: decrypted.data,
+    };
+  });
+}
+
+export async function getPendingRecoveryRegistrations(): Promise<
+  PendingRecoveryRegistration[]
+> {
+  const response =
+    await requestRegistrationStore<StorePendingRegistrationsResponse>(
+      "/v1/registrations/pending",
+      { method: "GET" },
+    );
+
+  return response.registrations.map((registration) => {
+    const decrypted = decryptRegistration(registration.payload);
+
+    return {
+      reference: registration.reference,
+      paymentIntentId: registration.paymentIntentId,
+      paymentStatus: registration.paymentStatus,
+      amount: registration.amount,
+      currency: registration.currency,
+      createdAt: decrypted.createdAt,
+      authorizedAt: registration.authorizedAt,
       documents: registration.documents,
       data: decrypted.data,
     };

@@ -3,6 +3,13 @@
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import {
   ArrowRight,
   CheckCircle,
   CreditCard,
@@ -42,6 +49,10 @@ const inputClass =
   "w-full rounded-none border-0 border-b-2 border-zinc-300 bg-transparent px-0 py-3 text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-950";
 const labelClass = "text-xs font-bold uppercase tracking-widest text-zinc-950";
 const allowedFileExtension = /\.(?:jpe?g|png|pdf|heic|heif)$/i;
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripePublishableKey
+  ? loadStripe(stripePublishableKey)
+  : null;
 
 function Field({
   id,
@@ -134,7 +145,7 @@ function PermitNumberHelp({ onClose }: { onClose: () => void }) {
 
         <div className="grid gap-px bg-zinc-200 lg:grid-cols-2">
           <article className="bg-white p-5 sm:p-8">
-            <div className="flex items-center justify-between gap-4">
+            <div>
               <div>
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-zinc-400">
                   Ancien modèle
@@ -143,22 +154,19 @@ function PermitNumberHelp({ onClose }: { onClose: () => void }) {
                   Permis rose à trois volets
                 </h5>
               </div>
-              <span className="border border-[#4CAF50]/30 bg-[#edf8ed] px-3 py-1 font-mono text-[0.65rem] font-bold text-[#2E7D32]">
-                REPÈRE 5
-              </span>
             </div>
             <div className="mt-5 overflow-hidden border border-zinc-200 bg-[#f4d0d0]">
               <Image
-                src="/images/permis/ancien-permis-recto.jpg"
-                alt="Ancien permis français avec le numéro de permis identifié par le repère 5"
-                width={1446}
-                height={914}
+                src="/images/permis/ancien-permis-repere-5.png"
+                alt="Ancien permis français avec uniquement le point numéro 5 indiqué"
+                width={1577}
+                height={997}
                 className="h-auto w-full"
               />
             </div>
             <p className="mt-4 text-sm leading-relaxed text-zinc-600">
-              Le numéro se trouve à côté de la photographie. Saisissez tous les
-              caractères, sans espace ajouté.
+              Le numéro du permis se trouve en point numéro 5. Saisissez les
+              chiffres sans espace.
             </p>
           </article>
 
@@ -189,8 +197,8 @@ function PermitNumberHelp({ onClose }: { onClose: () => void }) {
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-zinc-600">
-              Retournez la carte : le numéro de dossier apparaît en haut à
-              gauche, généralement sur deux lignes à réunir sans espace.
+              Retournez la carte : le numéro du permis apparaît en haut à gauche
+              (encadré vert), sur deux lignes à saisir sans espace.
             </p>
           </article>
         </div>
@@ -295,6 +303,130 @@ function DocumentField({
   );
 }
 
+function RecoveryPaymentForm({ session }: { session?: RecoverySession }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  if (isAuthorized) {
+    return (
+      <div className="border border-[#4CAF50]/30 bg-[#edf8ed] p-6 sm:p-8">
+        <CheckCircle size={34} weight="fill" className="text-[#2E7D32]" />
+        <h4 className="mt-4 text-2xl font-bold tracking-[-0.03em] text-zinc-950">
+          Votre demande est transmise
+        </h4>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600">
+          Votre carte a été autorisée, mais elle n’est pas encore débitée. GP
+          Formation vérifie maintenant le dossier et les places disponibles. Le
+          paiement et l’inscription ne deviennent définitifs qu’après validation
+          dans l’administration.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        if (!stripe || !elements || isConfirming) {
+          return;
+        }
+
+        setIsConfirming(true);
+        setErrorMessage("");
+        const result = await stripe.confirmPayment({
+          elements,
+          redirect: "if_required",
+          confirmParams: {
+            return_url: `${window.location.origin}/recuperation-de-points/confirmation`,
+          },
+        });
+
+        if (result.error) {
+          setErrorMessage(
+            result.error.message ??
+              "Le paiement n’a pas pu être autorisé. Vérifiez votre carte.",
+          );
+          setIsConfirming(false);
+          return;
+        }
+
+        if (
+          result.paymentIntent?.status === "requires_capture" ||
+          result.paymentIntent?.status === "processing"
+        ) {
+          setIsAuthorized(true);
+          return;
+        }
+
+        setErrorMessage(
+          "Stripe n’a pas confirmé l’autorisation. Veuillez réessayer.",
+        );
+        setIsConfirming(false);
+      }}
+      className="space-y-6"
+    >
+      <div className="border border-zinc-200 bg-white p-5 sm:p-6">
+        <div className="flex flex-col gap-3 border-b border-zinc-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#2E7D32]">
+              Autorisation bancaire
+            </p>
+            <p className="mt-2 text-lg font-bold text-zinc-950">
+              Stage de récupération de points
+            </p>
+            {session ? (
+              <p className="mt-1 text-sm text-zinc-500">
+                {formatRecoveryDateRange(session)}
+              </p>
+            ) : null}
+          </div>
+          <p className="text-3xl font-bold tracking-[-0.04em] text-zinc-950">
+            219 €
+          </p>
+        </div>
+        <div className="mt-6">
+          <PaymentElement
+            options={{
+              layout: "tabs",
+              terms: { card: "never" },
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3 border-l-2 border-amber-500 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-900">
+        <Info size={17} className="mt-0.5 shrink-0" />
+        Le montant est seulement réservé à cette étape. Il sera encaissé après
+        validation du dossier par GP Formation. En cas de refus ou de session
+        complète, l’autorisation sera annulée.
+      </div>
+
+      {errorMessage ? (
+        <div role="alert" className="border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {errorMessage}
+        </div>
+      ) : null}
+
+      <button
+        type="submit"
+        disabled={!stripe || !elements || isConfirming}
+        className="flex w-full items-center justify-between bg-zinc-950 px-6 py-5 font-bold uppercase tracking-wide text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <span>{isConfirming ? "Autorisation en cours..." : "Autoriser le paiement"}</span>
+        {isConfirming ? (
+          <SpinnerGap size={20} className="animate-spin" />
+        ) : (
+          <CreditCard size={20} />
+        )}
+      </button>
+    </form>
+  );
+}
+
 export default function RecoveryRegistrationForm({
   recoveryDates,
   initialSelectedSession,
@@ -315,6 +447,7 @@ export default function RecoveryRegistrationForm({
   const [uploadError, setUploadError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [paymentClientSecret, setPaymentClientSecret] = useState("");
   const [identityDocumentType, setIdentityDocumentType] =
     useState<IdentityDocumentType>("carte_identite");
   const startedReference = useRef("");
@@ -374,7 +507,8 @@ export default function RecoveryRegistrationForm({
           throw new Error(finalization.message);
         }
 
-        window.location.assign(finalization.paymentUrl);
+        setPaymentClientSecret(finalization.clientSecret);
+        setIsUploading(false);
       } catch (error) {
         setUploadError(
           error instanceof Error
@@ -391,6 +525,50 @@ export default function RecoveryRegistrationForm({
   const isBusy = isPending || isUploading;
   const errorMessage =
     uploadError || (state?.status === "error" ? state.message : "");
+
+  if (paymentClientSecret && stripePromise) {
+    const paymentSession = recoveryDates.find(
+      (session) => session.start === selectedSession,
+    );
+
+    return (
+      <section
+        id="inscription-points"
+        className="mt-16 scroll-mt-28 border border-zinc-200 bg-zinc-50 p-6 md:p-8 lg:p-10"
+      >
+        <div className="mb-8">
+          <span className="eyebrow mb-2 block text-[0.7rem] text-[#4CAF50]">
+            Paiement sur le site
+          </span>
+          <h3 className="text-2xl font-bold tracking-tight text-zinc-950 md:text-3xl">
+            Autorisez votre paiement
+          </h3>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600 md:text-base">
+            Votre dossier et vos justificatifs ont bien été reçus. Finalisez
+            maintenant l’autorisation bancaire sécurisée par Stripe.
+          </p>
+        </div>
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret: paymentClientSecret,
+            locale: "fr",
+            appearance: {
+              theme: "stripe",
+              variables: {
+                colorPrimary: "#2E7D32",
+                colorText: "#18181b",
+                borderRadius: "0px",
+                fontFamily: "Arial, sans-serif",
+              },
+            },
+          }}
+        >
+          <RecoveryPaymentForm session={paymentSession} />
+        </Elements>
+      </section>
+    );
+  }
 
   return (
     <section

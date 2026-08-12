@@ -1,5 +1,6 @@
 import { getMarkdownContent } from "@/lib/markdown";
-import { getUpcomingRecoverySessions } from "@/lib/recovery-dates";
+import type { RecoverySession } from "@/lib/recovery-dates";
+import { getUpcomingRecoverySessions } from "@/lib/recovery-registration";
 import FormationDetailTemplate from "@/components/FormationDetailTemplate";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,13 @@ interface RecoveryPointsPageProps {
 
 export default async function Page({ searchParams }: RecoveryPointsPageProps) {
   const { content } = getMarkdownContent("recuperation-de-points");
-  const recoveryDates = getUpcomingRecoverySessions();
+  let recoveryDates: RecoverySession[] = [];
+
+  try {
+    recoveryDates = await getUpcomingRecoverySessions();
+  } catch (error) {
+    console.error("Unable to load public recovery sessions", error);
+  }
   const requestedSession = (await searchParams).session;
   const selectedRecoverySession =
     typeof requestedSession === "string" &&
@@ -34,5 +41,11 @@ export default async function Page({ searchParams }: RecoveryPointsPageProps) {
   const breadcrumbs = [
     { label: "Stage de Récupération de points", href: "#" }
   ];
-  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" certification="Attestation de suivi" tag="PERMIS" stripePaymentLink={process.env.NEXT_PUBLIC_STRIPE_RECOVERY_LINK} financementVariant="points" recoveryDates={recoveryDates} selectedRecoverySession={selectedRecoverySession} />;
+  const recoveryPaymentEnabled = Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+      process.env.STRIPE_WEBHOOK_SECRET &&
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  );
+
+  return <FormationDetailTemplate title="Stage de Récupération de points" content={content} breadcrumbs={breadcrumbs} duration="14 heures (2 jours)" location="Aulnay-sous-Bois" certification="Attestation de suivi" tag="PERMIS" financementVariant="points" recoveryDates={recoveryDates} selectedRecoverySession={selectedRecoverySession} recoveryPaymentEnabled={recoveryPaymentEnabled} />;
 }
