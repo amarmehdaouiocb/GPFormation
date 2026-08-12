@@ -28,7 +28,7 @@ type ContactEmailData = {
 };
 
 interface RecoveryPaymentDetails {
-  checkoutSessionId: string;
+  stripePaymentId: string;
   amountTotal: number | null;
   currency: string | null;
 }
@@ -170,7 +170,7 @@ function buildRecoveryRegistrationEmailHtml(
   const rows = [
     ["Session choisie", formatRecoveryDateRange(data.session)],
     ["Paiement Stripe", formatPaymentAmount(payment)],
-    ["Référence Stripe", payment.checkoutSessionId],
+    ["Référence Stripe", payment.stripePaymentId],
     ["Email", data.email],
     ["Téléphone", data.telephone],
     ["Nom", data.nom],
@@ -277,7 +277,7 @@ export async function sendRecoveryRegistrationEmail(
       html: buildRecoveryRegistrationEmailHtml(data, payment),
     },
     {
-      idempotencyKey: `recovery-payment/${payment.checkoutSessionId}`,
+      idempotencyKey: `recovery-payment/${payment.stripePaymentId}`,
     },
   );
 

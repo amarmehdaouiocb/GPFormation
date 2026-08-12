@@ -1,9 +1,13 @@
 import Stripe from "stripe";
 import { sendRecoveryRegistrationEmail } from "@/lib/email";
+import { processCapturedRecoveryPayment } from "@/lib/recovery-payment";
 import {
+  cancelRecoveryPaymentAuthorization,
   claimRecoveryPayment,
   completeRecoveryPayment,
+  markRecoveryPaymentAuthorized,
 } from "@/lib/recovery-registration";
+import { getRecoveryPaymentMetadata } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
@@ -27,11 +31,72 @@ function getPaymentLinkId(
   return paymentLink?.id ?? null;
 }
 
-function isPaidRecoveryEvent(event: Stripe.Event): boolean {
-  return (
-    event.type === "checkout.session.completed" ||
-    event.type === "checkout.session.async_payment_succeeded"
-  );
+async function processLegacyCheckoutEvent(
+  session: Stripe.Checkout.Session,
+): Promise<string> {
+  if (session.payment_status !== "paid") {
+    return "Payment not confirmed";
+  }
+
+  const expectedPaymentLinkId = process.env.STRIPE_RECOVERY_PAYMENT_LINK_ID;
+  if (
+    !expectedPaymentLinkId ||
+    getPaymentLinkId(session.payment_link) !== expectedPaymentLinkId
+  ) {
+    return "Payment Link ignored";
+  }
+
+  const reference = session.client_reference_id;
+  if (!reference?.startsWith("recovery_")) {
+    return "Registration reference ignored";
+  }
+
+  const claim = await claimRecoveryPayment(session.id, reference);
+  if (claim.status === "processed") {
+    return "Paid registration already processed";
+  }
+
+  await sendRecoveryRegistrationEmail(claim.data, {
+    stripePaymentId: session.id,
+    amountTotal: session.amount_total,
+    currency: session.currency,
+  });
+  await completeRecoveryPayment(session.id, reference);
+  return "Paid registration processed";
+}
+
+async function processPaymentIntentEvent(
+  event: Stripe.Event,
+): Promise<string> {
+  const paymentIntent = event.data.object as Stripe.PaymentIntent;
+  const metadata = getRecoveryPaymentMetadata(paymentIntent);
+
+  if (!metadata) {
+    return "PaymentIntent ignored";
+  }
+
+  if (event.type === "payment_intent.amount_capturable_updated") {
+    await markRecoveryPaymentAuthorized(paymentIntent.id, metadata.reference);
+    return "Payment authorization recorded";
+  }
+
+  if (event.type === "payment_intent.succeeded") {
+    const status = await processCapturedRecoveryPayment(
+      paymentIntent,
+      metadata.reference,
+    );
+    return `Captured payment ${status}`;
+  }
+
+  if (event.type === "payment_intent.canceled") {
+    await cancelRecoveryPaymentAuthorization(
+      paymentIntent.id,
+      metadata.reference,
+    );
+    return "Payment authorization canceled";
+  }
+
+  return "Event ignored";
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -54,53 +119,36 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Invalid Stripe webhook", { status: 400 });
   }
 
-  if (!isPaidRecoveryEvent(event)) {
-    return new Response("Event ignored", { status: 200 });
-  }
-
-  const session = event.data.object as Stripe.Checkout.Session;
-
-  if (session.payment_status !== "paid") {
-    return new Response("Payment not confirmed", { status: 200 });
-  }
-
-  const expectedPaymentLinkId = process.env.STRIPE_RECOVERY_PAYMENT_LINK_ID;
-
-  if (!expectedPaymentLinkId) {
-    console.error("STRIPE_RECOVERY_PAYMENT_LINK_ID is not configured");
-    return new Response("Webhook configuration error", { status: 500 });
-  }
-
-  if (getPaymentLinkId(session.payment_link) !== expectedPaymentLinkId) {
-    return new Response("Payment Link ignored", { status: 200 });
-  }
-
-  const reference = session.client_reference_id;
-
-  if (!reference?.startsWith("recovery_")) {
-    return new Response("Registration reference ignored", { status: 200 });
-  }
-
   try {
-    const claim = await claimRecoveryPayment(session.id, reference);
-
-    if (claim.status === "processed") {
-      return new Response("Paid registration already processed", { status: 200 });
+    if (
+      event.type === "checkout.session.completed" ||
+      event.type === "checkout.session.async_payment_succeeded"
+    ) {
+      return new Response(
+        await processLegacyCheckoutEvent(
+          event.data.object as Stripe.Checkout.Session,
+        ),
+        { status: 200 },
+      );
     }
 
-    await sendRecoveryRegistrationEmail(claim.data, {
-      checkoutSessionId: session.id,
-      amountTotal: session.amount_total,
-      currency: session.currency,
-    });
-    await completeRecoveryPayment(session.id, reference);
+    if (
+      event.type === "payment_intent.amount_capturable_updated" ||
+      event.type === "payment_intent.succeeded" ||
+      event.type === "payment_intent.canceled"
+    ) {
+      return new Response(await processPaymentIntentEvent(event), {
+        status: 200,
+      });
+    }
+
+    return new Response("Event ignored", { status: 200 });
   } catch (error) {
-    console.error("Paid recovery registration processing failed", {
-      checkoutSessionId: session.id,
+    console.error("Recovery payment webhook processing failed", {
+      eventId: event.id,
+      eventType: event.type,
       error,
     });
     return new Response("Webhook processing failed", { status: 500 });
   }
-
-  return new Response("Paid registration processed", { status: 200 });
 }
