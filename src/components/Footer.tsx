@@ -60,6 +60,7 @@ export default function Footer() {
               <li><Link href="/blog" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Actualités & Blog</Link></li>
               <li><Link href="/faq" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">FAQ</Link></li>
               <li><Link href="/services" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Services</Link></li>
+              <li><a href="/documents/certificat-qualiopi-grand-paris-formation.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Certificat Qualiopi</a></li>
               <li><Link href="/contact" className="hover:text-[#4CAF50] hover:translate-x-1 transition-all inline-block">Contact</Link></li>
             </ul>
           </div>

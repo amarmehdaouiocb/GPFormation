@@ -4,7 +4,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, CheckCircle } from "@phosphor-icons/react";
+import {
+  ArrowRight,
+  CheckCircle,
+  FilePdf,
+  GraduationCap,
+} from "@phosphor-icons/react";
 import ScrollHeroSection from "./ScrollHeroSection";
 
 const GENERATED_IMAGE_BASE = "/images/gpformation-generated";
@@ -18,7 +23,13 @@ const StatsSection = () => (
       <div className="grid grid-cols-2 md:grid-cols-2 gap-x-8 gap-y-12 max-w-2xl mx-auto">
         {[
           { value: "12", suffix: "ans", label: "D'expérience dans la formation" },
-          { value: "100", suffix: "%", label: "Certifié et reconnu Qualiopi" },
+          {
+            value: "100",
+            suffix: "%",
+            label: "Certifié et reconnu Qualiopi",
+            certificateHref:
+              "/documents/certificat-qualiopi-grand-paris-formation.pdf",
+          },
         ].map((stat, i) => (
           <motion.div 
             key={i}
@@ -37,9 +48,26 @@ const StatsSection = () => (
               </span>
             </div>
             <div className="w-full h-px bg-zinc-200 my-4"></div>
-            <span className="text-sm font-medium text-zinc-600 leading-snug">
-              {stat.label}
-            </span>
+            {stat.certificateHref ? (
+              <a
+                href={stat.certificateHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-start gap-3"
+              >
+                <span className="text-sm font-medium leading-snug text-zinc-600 transition-colors group-hover:text-zinc-950">
+                  {stat.label}
+                </span>
+                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.1em] text-[#2E7D32]">
+                  <FilePdf size={18} weight="duotone" />
+                  Voir le certificat
+                </span>
+              </a>
+            ) : (
+              <span className="text-sm font-medium leading-snug text-zinc-600">
+                {stat.label}
+              </span>
+            )}
           </motion.div>
         ))}
       </div>
