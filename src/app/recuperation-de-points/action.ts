@@ -1,5 +1,13 @@
 "use server";
 
+import { cookies } from "next/headers";
+import {
+  DEFAULT_RECOVERY_CHANNEL,
+  normalizeRecoveryChannel,
+  RECOVERY_CHANNEL_COOKIE,
+  RECOVERY_CHANNEL_LABELS,
+  type RecoveryChannel,
+} from "@/lib/recovery-channel";
 import { isIdentityDocumentType } from "@/lib/recovery-documents";
 import type { RecoverySession } from "@/lib/recovery-dates";
 import {
@@ -53,6 +61,24 @@ function getField(
   key: keyof RecoveryRegistrantDetails,
 ): string {
   return ((formData.get(key) as string) ?? "").trim();
+}
+
+/**
+ * The acquisition channel is persisted in a first-touch cookie set by
+ * `src/proxy.ts` when the visitor lands with `?canal=…`. It is never trusted
+ * as-is: any unknown value falls back to the default channel.
+ */
+async function getRecoveryChannelFromCookie(): Promise<RecoveryChannel> {
+  const cookieStore = await cookies();
+  return normalizeRecoveryChannel(cookieStore.get(RECOVERY_CHANNEL_COOKIE)?.value);
+}
+
+function getRecoveryPaymentDescription(channel: RecoveryChannel): string {
+  const description = "Stage de récupération de points";
+
+  return channel === DEFAULT_RECOVERY_CHANNEL
+    ? description
+    : `${description} — via ${RECOVERY_CHANNEL_LABELS[channel]}`;
 }
 
 export async function submitRecoveryRegistration(
@@ -139,9 +165,11 @@ export async function submitRecoveryRegistration(
 
   try {
     const reference = createRecoveryRegistrationReference(selectedSession.start);
+    const channel = await getRecoveryChannelFromCookie();
     await savePendingRecoveryRegistration(reference, {
       ...details,
       session: selectedSession,
+      channel,
     });
 
     return {
@@ -195,17 +223,21 @@ export async function finalizeRecoveryRegistration(
       };
     }
 
+    // Same browser, a few minutes after `submitRecoveryRegistration`: the
+    // first-touch cookie still holds the channel stored in the payload.
+    const channel = await getRecoveryChannelFromCookie();
     const paymentIntent = await getStripeClient().paymentIntents.create(
       {
         amount: RECOVERY_PAYMENT_AMOUNT,
         currency: RECOVERY_PAYMENT_CURRENCY,
         capture_method: "manual",
         payment_method_types: ["card"],
-        description: "Stage de récupération de points",
+        description: getRecoveryPaymentDescription(channel),
         metadata: {
           payment_type: "recovery_points",
           registration_reference: reference,
           session_start: sessionStart,
+          channel,
         },
       },
       { idempotencyKey: `recovery-registration/${reference}` },

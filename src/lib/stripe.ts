@@ -1,6 +1,10 @@
 import "server-only";
 
 import Stripe from "stripe";
+import {
+  normalizeRecoveryChannel,
+  type RecoveryChannel,
+} from "@/lib/recovery-channel";
 
 export const RECOVERY_PAYMENT_AMOUNT = 21_900;
 export const RECOVERY_PAYMENT_CURRENCY = "eur";
@@ -20,7 +24,7 @@ export function getStripeClient(): Stripe {
 
 export function getRecoveryPaymentMetadata(
   paymentIntent: Stripe.PaymentIntent,
-): { reference: string; sessionStart: string } | null {
+): { reference: string; sessionStart: string; channel: RecoveryChannel } | null {
   const { registration_reference: reference, session_start: sessionStart } =
     paymentIntent.metadata;
 
@@ -32,5 +36,11 @@ export function getRecoveryPaymentMetadata(
     return null;
   }
 
-  return { reference, sessionStart };
+  // `channel` is optional: PaymentIntents created before channel tracking
+  // have no such metadata and fall back to the default channel.
+  return {
+    reference,
+    sessionStart,
+    channel: normalizeRecoveryChannel(paymentIntent.metadata.channel),
+  };
 }
