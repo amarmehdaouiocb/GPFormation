@@ -9,6 +9,10 @@ import {
   verifyAdminCredentials,
 } from "@/lib/admin-auth";
 import {
+  isRecoveryChannel,
+  RECOVERY_CHANNEL_QUERY_PARAM,
+} from "@/lib/recovery-channel";
+import {
   isRecoveryDocumentKind,
   type RecoveryDocumentKind,
 } from "@/lib/recovery-documents";
@@ -80,8 +84,12 @@ function redirectToAdmin(
   type: "success" | "error",
   message: string,
   anchor: "payments" | "sessions",
+  channelFilter?: unknown,
 ): never {
   const parameters = new URLSearchParams({ type, message, area: anchor });
+  if (isRecoveryChannel(channelFilter)) {
+    parameters.set(RECOVERY_CHANNEL_QUERY_PARAM, channelFilter);
+  }
   redirect(`/admin?${parameters.toString()}#${anchor}`);
 }
 
@@ -201,11 +209,12 @@ export async function deleteAdminRecoverySession(
 export async function approveRecoveryPayment(formData: FormData): Promise<void> {
   await requireAdminSession();
 
+  const channelFilter = formData.get(RECOVERY_CHANNEL_QUERY_PARAM);
   let identifiers: ReturnType<typeof getPaymentIdentifiers>;
   try {
     identifiers = getPaymentIdentifiers(formData);
   } catch (error) {
-    redirectToAdmin("error", getAdminErrorMessage(error), "payments");
+    redirectToAdmin("error", getAdminErrorMessage(error), "payments", channelFilter);
   }
 
   let approvalClaimed = false;
@@ -257,24 +266,26 @@ export async function approveRecoveryPayment(formData: FormData): Promise<void> 
         console.error("Unable to release payment approval", releaseError);
       }
     }
-    redirectToAdmin("error", getAdminErrorMessage(error), "payments");
+    redirectToAdmin("error", getAdminErrorMessage(error), "payments", channelFilter);
   }
 
   redirectToAdmin(
     "success",
     "Le paiement a été encaissé et l’inscription confirmée.",
     "payments",
+    channelFilter,
   );
 }
 
 export async function rejectRecoveryPayment(formData: FormData): Promise<void> {
   await requireAdminSession();
 
+  const channelFilter = formData.get(RECOVERY_CHANNEL_QUERY_PARAM);
   let identifiers: ReturnType<typeof getPaymentIdentifiers>;
   try {
     identifiers = getPaymentIdentifiers(formData);
   } catch (error) {
-    redirectToAdmin("error", getAdminErrorMessage(error), "payments");
+    redirectToAdmin("error", getAdminErrorMessage(error), "payments", channelFilter);
   }
 
   try {
@@ -301,13 +312,14 @@ export async function rejectRecoveryPayment(formData: FormData): Promise<void> {
     );
     revalidatePath("/admin");
   } catch (error) {
-    redirectToAdmin("error", getAdminErrorMessage(error), "payments");
+    redirectToAdmin("error", getAdminErrorMessage(error), "payments", channelFilter);
   }
 
   redirectToAdmin(
     "success",
     "La demande a été refusée. Aucun paiement n’a été encaissé.",
     "payments",
+    channelFilter,
   );
 }
 
