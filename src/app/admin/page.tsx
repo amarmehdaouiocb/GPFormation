@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowSquareOut,
   CalendarBlank,
@@ -27,6 +28,13 @@ import {
 } from "@/app/admin/actions";
 import AdminDocumentDownloadButton from "@/components/AdminDocumentDownloadButton";
 import { requireAdminSession } from "@/lib/admin-auth";
+import {
+  isRecoveryChannel,
+  RECOVERY_CHANNEL_LABELS,
+  RECOVERY_CHANNEL_QUERY_PARAM,
+  RECOVERY_CHANNELS,
+  type RecoveryChannel,
+} from "@/lib/recovery-channel";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
 import {
   getIdentityDocumentLabel,
@@ -72,6 +80,87 @@ function formatFileSize(sizeBytes: number): string {
   })} Mo`;
 }
 
+const CHANNEL_BADGE_CLASSES: Record<RecoveryChannel, string> = {
+  gpformation: "border-zinc-200 bg-zinc-50 text-zinc-600",
+  ecolegallieni: "border-sky-200 bg-sky-50 text-sky-700",
+};
+
+function ChannelBadge({ channel }: { channel: RecoveryChannel }) {
+  return (
+    <span
+      className={`inline-flex items-center border px-2 py-0.5 font-mono text-[0.6rem] font-bold uppercase tracking-[0.1em] ${CHANNEL_BADGE_CLASSES[channel]}`}
+    >
+      {RECOVERY_CHANNEL_LABELS[channel]}
+    </span>
+  );
+}
+
+type ChannelFilter = RecoveryChannel | "all";
+
+function getChannelFilterHref(filter: ChannelFilter): string {
+  return filter === "all"
+    ? "/admin#payments"
+    : `/admin?${RECOVERY_CHANNEL_QUERY_PARAM}=${filter}#payments`;
+}
+
+function ChannelFilterBar({
+  activeFilter,
+  counts,
+}: {
+  activeFilter: ChannelFilter;
+  counts: Record<ChannelFilter, number>;
+}) {
+  const filters: Array<{ value: ChannelFilter; label: string }> = [
+    { value: "all", label: "Tous" },
+    ...RECOVERY_CHANNELS.map((channel) => ({
+      value: channel,
+      label: RECOVERY_CHANNEL_LABELS[channel],
+    })),
+  ];
+
+  return (
+    <nav
+      aria-label="Filtrer par canal d’acquisition"
+      className="mb-6 flex flex-wrap items-center gap-2 border border-zinc-200 bg-white px-4 py-3"
+    >
+      <span className="mr-2 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+        Canal
+      </span>
+      {filters.map((filter, index) => {
+        const isActive = filter.value === activeFilter;
+
+        return (
+          <span key={filter.value} className="flex items-center gap-2">
+            {index > 0 ? (
+              <span aria-hidden="true" className="text-zinc-300">
+                ·
+              </span>
+            ) : null}
+            <Link
+              href={getChannelFilterHref(filter.value)}
+              aria-current={isActive ? "page" : undefined}
+              className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.08em] transition-colors ${
+                isActive
+                  ? "border-zinc-950 bg-zinc-950 text-white"
+                  : "border-zinc-200 text-zinc-600 hover:border-zinc-950 hover:text-zinc-950"
+              }`}
+            >
+              {filter.label}
+              <span
+                className={`font-mono text-[0.62rem] ${
+                  isActive ? "text-zinc-300" : "text-zinc-400"
+                }`}
+              >
+                ({counts[filter.value]})
+              </span>
+            </Link>
+          </span>
+        );
+      })}
+    </nav>
+  );
+}
+
 function StudentCard({
   registration,
   index,
@@ -98,9 +187,12 @@ function StudentCard({
         </div>
 
         <div>
-          <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[#2E7D32]">
-            Élève inscrit
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[#2E7D32]">
+              Élève inscrit
+            </p>
+            <ChannelBadge channel={data.channel} />
+          </div>
           <h2 className="mt-2 text-2xl font-bold tracking-[-0.035em] text-zinc-950">
             {data.prenoms} {data.nom}
           </h2>
@@ -254,8 +346,10 @@ function StudentCard({
 
 function PendingRegistrationCard({
   registration,
+  activeFilter,
 }: {
   registration: PendingRecoveryRegistration;
+  activeFilter: ChannelFilter;
 }) {
   const { data } = registration;
   const requiredDocuments = getRequiredRecoveryDocuments(
@@ -270,9 +364,12 @@ function PendingRegistrationCard({
     <article className="border border-amber-200 bg-white shadow-[0_16px_50px_rgba(24,24,27,0.035)]">
       <div className="grid gap-6 p-5 lg:grid-cols-[minmax(220px,1.2fr)_minmax(220px,1fr)_auto] lg:items-center lg:p-6">
         <div>
-          <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-amber-700">
-            Autorisation bancaire reçue
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-amber-700">
+              Autorisation bancaire reçue
+            </p>
+            <ChannelBadge channel={data.channel} />
+          </div>
           <h3 className="mt-2 text-2xl font-bold tracking-[-0.035em] text-zinc-950">
             {data.prenoms} {data.nom}
           </h3>
@@ -293,6 +390,13 @@ function PendingRegistrationCard({
 
         <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
           <form action={approveRecoveryPayment}>
+            {activeFilter !== "all" ? (
+              <input
+                type="hidden"
+                name={RECOVERY_CHANNEL_QUERY_PARAM}
+                value={activeFilter}
+              />
+            ) : null}
             <input type="hidden" name="reference" value={registration.reference} />
             <input
               type="hidden"
@@ -308,6 +412,13 @@ function PendingRegistrationCard({
             </button>
           </form>
           <form action={rejectRecoveryPayment}>
+            {activeFilter !== "all" ? (
+              <input
+                type="hidden"
+                name={RECOVERY_CHANNEL_QUERY_PARAM}
+                value={activeFilter}
+              />
+            ) : null}
             <input type="hidden" name="reference" value={registration.reference} />
             <input
               type="hidden"
@@ -386,6 +497,7 @@ type AdminNotice = {
   type?: string;
   message?: string;
   area?: string;
+  canal?: string;
 };
 
 function SessionManager({
@@ -631,6 +743,25 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   }
 
   const notice = await searchParams;
+  const channelFilter: ChannelFilter = isRecoveryChannel(notice.canal)
+    ? notice.canal
+    : "all";
+  const channelCounts: Record<ChannelFilter, number> = {
+    all: registrations.length + pendingRegistrations.length,
+    gpformation: 0,
+    ecolegallieni: 0,
+  };
+  for (const { data } of [...registrations, ...pendingRegistrations]) {
+    channelCounts[data.channel] += 1;
+  }
+  const filterByChannel = <T extends { data: { channel: RecoveryChannel } }>(
+    items: T[],
+  ): T[] =>
+    channelFilter === "all"
+      ? items
+      : items.filter(({ data }) => data.channel === channelFilter);
+  const visibleRegistrations = filterByChannel(registrations);
+  const visiblePendingRegistrations = filterByChannel(pendingRegistrations);
 
   const latestPayment = registrations[0]?.paidAt;
 
@@ -730,6 +861,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <section id="payments" className="mt-10 scroll-mt-8">
+          <ChannelFilterBar activeFilter={channelFilter} counts={channelCounts} />
+
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-zinc-700">
@@ -741,7 +874,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               </p>
             </div>
             <span className="font-mono text-[0.65rem] text-zinc-400">
-              {pendingRegistrations.length} en attente
+              {visiblePendingRegistrations.length} en attente
             </span>
           </div>
 
@@ -749,19 +882,22 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             <div className="border border-red-200 bg-red-50 p-6 text-sm text-red-700">
               Impossible de charger les paiements en attente.
             </div>
-          ) : pendingRegistrations.length === 0 ? (
+          ) : visiblePendingRegistrations.length === 0 ? (
             <div className="border border-dashed border-zinc-300 bg-white px-6 py-12 text-center">
               <CreditCard size={34} className="mx-auto text-zinc-300" />
               <p className="mt-4 text-sm font-semibold text-zinc-600">
-                Aucun paiement en attente de validation
+                {channelFilter === "all"
+                  ? "Aucun paiement en attente de validation"
+                  : `Aucun paiement en attente pour le canal ${RECOVERY_CHANNEL_LABELS[channelFilter]}`}
               </p>
             </div>
           ) : (
             <div className="space-y-4">
-              {pendingRegistrations.map((registration) => (
+              {visiblePendingRegistrations.map((registration) => (
                 <PendingRegistrationCard
                   key={registration.reference}
                   registration={registration}
+                  activeFilter={channelFilter}
                 />
               ))}
             </div>
@@ -774,7 +910,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               Liste des élèves
             </h2>
             <span className="font-mono text-[0.65rem] text-zinc-400">
-              {registrations.length} dossier{registrations.length > 1 ? "s" : ""}
+              {visibleRegistrations.length} dossier
+              {visibleRegistrations.length > 1 ? "s" : ""}
             </span>
           </div>
 
@@ -783,11 +920,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               Impossible de charger les inscriptions pour le moment. Réessayez dans
               quelques instants.
             </div>
-          ) : registrations.length === 0 ? (
+          ) : visibleRegistrations.length === 0 ? (
             <div className="border border-dashed border-zinc-300 bg-white px-6 py-16 text-center">
               <UsersThree size={36} className="mx-auto text-zinc-300" />
               <h3 className="mt-5 text-xl font-bold text-zinc-800">
-                Aucun élève inscrit pour l’instant
+                {channelFilter === "all"
+                  ? "Aucun élève inscrit pour l’instant"
+                  : `Aucun élève inscrit via ${RECOVERY_CHANNEL_LABELS[channelFilter]}`}
               </h3>
               <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-zinc-500">
                 Un dossier apparaîtra ici dès qu’un paiement Stripe aura été validé.
@@ -795,7 +934,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </div>
           ) : (
             <div className="space-y-4">
-              {registrations.map((registration, index) => (
+              {visibleRegistrations.map((registration, index) => (
                 <StudentCard
                   key={registration.reference}
                   registration={registration}
