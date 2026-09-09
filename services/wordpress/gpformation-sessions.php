@@ -260,9 +260,11 @@ function gpformation_sessions_styles()
     echo '<style id="gpformation-sessions-css">'
         . '.gpf-sessions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}'
         . '.gpf-sessions--boutons{flex-direction:column;align-items:stretch}'
-        . '.gpf-sessions__label{font-weight:600}'
-        . '.gpf-sessions__select{min-width:240px;padding:10px 12px;border:1px solid #ccc;border-radius:4px}'
-        . '.gpf-sessions__button{cursor:pointer;text-align:center}'
+        . '.gpf-sessions--liste{width:100%}'
+        . '.gpf-sessions__label{font-weight:600;color:#333333}'
+        . '.gpf-sessions__select{flex:1 1 240px;min-width:0;padding:10px 12px;color:#333333;background:#ffffff;border:1px solid #cccccc;border-radius:4px}'
+        . '.gpf-sessions .et_pb_button.gpf-sessions__button{cursor:pointer;text-align:center;color:#ffffff!important;background-color:rgba(237,28,35,0.97)!important;border:0!important;border-radius:54px!important;padding:0.5em 1.5em!important}'
+        . '.gpf-sessions .et_pb_button.gpf-sessions__button:hover{background-color:#c4131a!important;padding:0.5em 1.5em!important}'
         . '</style>';
 }
 add_action('wp_head', 'gpformation_sessions_styles');
