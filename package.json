@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:wordpress": "php -l services/wordpress/gpformation-sessions.php && php services/wordpress/test-gpformation-sessions.php"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
