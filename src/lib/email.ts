@@ -1,4 +1,9 @@
 import { Resend } from "resend";
+import {
+  DEFAULT_RECOVERY_CHANNEL,
+  RECOVERY_CHANNEL_LABELS,
+  type RecoveryChannel,
+} from "@/lib/recovery-channel";
 import { formatRecoveryDateRange } from "@/lib/recovery-dates";
 import {
   getIdentityDocumentLabel,
@@ -144,6 +149,12 @@ function buildContactEmailHtml(data: ContactEmailData): string {
 </html>`;
 }
 
+function getRecoveryEmailSubjectPrefix(channel: RecoveryChannel): string {
+  return channel === DEFAULT_RECOVERY_CHANNEL
+    ? ""
+    : `[${RECOVERY_CHANNEL_LABELS[channel]}] `;
+}
+
 function formatPaymentAmount(payment: RecoveryPaymentDetails): string {
   if (payment.amountTotal === null || !payment.currency) {
     return "Paiement validé";
@@ -173,6 +184,7 @@ function buildRecoveryRegistrationEmailHtml(
   ).length;
   const rows = [
     ["Session choisie", formatRecoveryDateRange(data.session)],
+    ["Canal", RECOVERY_CHANNEL_LABELS[data.channel]],
     ["Paiement Stripe", formatPaymentAmount(payment)],
     ["Référence Stripe", payment.stripePaymentId],
     ["Email", data.email],
@@ -264,6 +276,7 @@ function buildRecoveryAuthorizationEmailHtml(
   const rows = [
     ["Candidat", `${data.prenoms} ${data.nom}`.trim()],
     ["Session choisie", formatRecoveryDateRange(data.session)],
+    ["Canal", RECOVERY_CHANNEL_LABELS[data.channel]],
     ["Montant autorisé", formatPaymentAmount(payment)],
     ["Email", data.email],
     ["Téléphone", data.telephone],
@@ -354,7 +367,7 @@ export async function sendRecoveryRegistrationEmail(
       from: "GP Formation <noreply@gpformation.fr>",
       to: "contact@gpformation.fr",
       replyTo: data.email,
-      subject: `Paiement validé — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
+      subject: `${getRecoveryEmailSubjectPrefix(data.channel)}Paiement validé — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
       html: buildRecoveryRegistrationEmailHtml(data, payment),
     },
     {
@@ -380,7 +393,7 @@ export async function sendRecoveryAuthorizationEmail(
       from: "GP Formation <noreply@gpformation.fr>",
       to: "contact@gpformation.fr",
       replyTo: data.email,
-      subject: `À valider — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
+      subject: `${getRecoveryEmailSubjectPrefix(data.channel)}À valider — stage récupération de points : ${data.prenoms} ${data.nom}`.trim(),
       html: buildRecoveryAuthorizationEmailHtml(data, payment),
     },
     {

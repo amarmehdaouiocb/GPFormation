@@ -7,6 +7,10 @@ import {
   randomBytes,
   randomUUID,
 } from "node:crypto";
+import {
+  normalizeRecoveryChannel,
+  type RecoveryChannel,
+} from "@/lib/recovery-channel";
 import type { RecoverySession } from "@/lib/recovery-dates";
 import {
   getRequiredRecoveryDocuments,
@@ -31,6 +35,7 @@ export interface RecoveryRegistrantDetails {
 
 export interface RecoveryRegistrationData extends RecoveryRegistrantDetails {
   session: RecoverySession;
+  channel: RecoveryChannel;
 }
 
 interface StoredRecoveryRegistration {
@@ -264,6 +269,12 @@ function decryptRegistration(payload: string): StoredRecoveryRegistration {
   if (!isIdentityDocumentType(registration.data.typePieceIdentite)) {
     registration.data.typePieceIdentite = "carte_identite";
   }
+
+  // Registrations stored before channel tracking have no `channel` field:
+  // they are attributed to the default channel.
+  registration.data.channel = normalizeRecoveryChannel(
+    registration.data.channel,
+  );
 
   return registration;
 }
